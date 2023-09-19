@@ -1,10 +1,11 @@
+import MainPage from "./pages/MainPage"
 const App = () => {
 
   return (
     <>
-      <div>
-        To jest główna strona
-      </div>
+
+      To jest główna strona
+      <MainPage />
     </>
   )
 }
