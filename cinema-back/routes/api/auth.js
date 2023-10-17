@@ -24,7 +24,7 @@ router.get("/me", auth, async (req, res) => {
 // @route   POST api/auth
 // @desc    Authenticate user & get token
 // @access  Public
-router.post("/",
+router.post("/login",
     [
         check('email', "Please include a valid email").isEmail(),
         check('password', "Password is required").exists(),
@@ -57,7 +57,7 @@ router.post("/",
                 }
             }
 
-            jwt.sign(payload, config.get('jwtToken'), { expiresIn: 360000 }, (err, token) => {
+            jwt.sign(payload, config.get('jwtToken'), { expiresIn: 3600 }, (err, token) => {
                 if (err) throw err;
                 res.json({ token });
             })
