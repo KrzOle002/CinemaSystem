@@ -5,6 +5,21 @@ const ProfileSchema = new mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: 'user'
   },
+  birthDate: {
+    type: Date,
+  },
+  gender: {
+    type: String,
+  },
+  city: {
+    type: String
+  },
+  zipCode: {
+    type: String
+  },
+  phoneNumber: {
+    type: String
+  },
   date: {
     type: Date,
     default: Date.now

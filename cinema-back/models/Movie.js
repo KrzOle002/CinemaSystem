@@ -1,7 +1,11 @@
 const MovieSchema = new mongoose.Schema({
-    tytul: String,
-    opis: String,
-    obraz: {
+    title: {
+        type: String,
+    },
+    description: {
+        type: String,
+    },
+    cover: {
         data: Buffer,
         contentType: String
     }
