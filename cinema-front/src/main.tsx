@@ -1,5 +1,5 @@
 import ReactDOM from 'react-dom/client'
-import App from './App.tsx'
+import App from './template/App.tsx'
 import './index.css'
 
 import { theme } from './assets/styles/theme.tsx'
