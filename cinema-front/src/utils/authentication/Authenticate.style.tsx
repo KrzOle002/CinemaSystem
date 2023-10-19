@@ -7,4 +7,5 @@ export const Wrapper = styled.div`
 	justify-content: center;
 	align-items: center;
 	color: ${({ theme }) => theme.colors.white};
+	row-gap: 50px;
 `

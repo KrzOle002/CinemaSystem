@@ -29,7 +29,7 @@ export const Wrapper = styled.div`
 export const AuthContainer = styled.div`
 	@media screen and (max-width: 768px) {
 	}
-	width: 50%;
+	width: 30%;
 	border-radius: 10px;
 	background-color: ${({ theme }) => theme.colors.whiterMid};
 `
