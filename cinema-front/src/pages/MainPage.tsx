@@ -1,8 +1,16 @@
+import styled from 'styled-components'
+import { MainRoutes } from '../routes/MainRoutes'
 
 const MainPage = () => {
-    return (
-        <div>MainPage</div>
-    )
+	return (
+		<Wrapper>
+			<MainRoutes />
+		</Wrapper>
+	)
 }
 
 export default MainPage
+
+export const Wrapper = styled.div`
+	width: 100%;
+`

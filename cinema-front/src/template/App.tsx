@@ -1,12 +1,26 @@
-import MainPage from '../pages/MainPage'
 import '@fontsource/saira-stencil-one'
-import { AuthForm } from '../pages/AuthForm/AuthForm'
+import { BrowserRouter, Link, Route, Routes } from 'react-router-dom'
+
 import { Wrapper } from './App.styles'
+import Login from '../pages/AuthForm/Login'
+import Register from '../pages/AuthForm/Register'
+import Dashboard from '../pages/Dashboard'
 
 const App = () => {
-	const isLogin = false
+	return (
+		<Wrapper>
+			<BrowserRouter>
+				<Link to='/login'>Authform</Link>
 
-	return <Wrapper>{isLogin ? <MainPage /> : <AuthForm />}</Wrapper>
+				<Routes>
+					<Route path='login' element={<Login />} />
+					<Route path='register' element={<Register />} />
+
+					<Route path='/' element={<Dashboard />} />
+				</Routes>
+			</BrowserRouter>
+		</Wrapper>
+	)
 }
 
 export default App

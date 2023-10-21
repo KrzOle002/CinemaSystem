@@ -63,10 +63,10 @@ const StyledInput = styled.input`
 	transition: 0.1s linear;
 
 	&.error {
-		border: 1px solid rgb(255, 0, 0);
+		border: 1px solid rgba(255, 0, 0, 0.5);
 	}
 
-	&:focus {
+	:focus {
 		outline: none;
 	}
 `

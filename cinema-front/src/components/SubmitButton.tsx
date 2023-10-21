@@ -4,7 +4,7 @@ import styled from 'styled-components'
 interface SubmitButtonType {
 	className?: string
 	children?: ReactNode
-	type: 'button' | 'submit' | 'reset' | undefined
+	type: 'button' | 'submit' | 'reset'
 	onClick?: () => void
 }
 
@@ -23,7 +23,7 @@ const StyledButton = styled.button`
 	border: none;
 	border-radius: 4px;
 	padding: 8px 0;
-	text-transform: uppercase;
+
 	box-shadow: 0px 3px 1px -2px rgba(0, 0, 0, 0.2), 0px 2px 2px rgba(0, 0, 0, 0.14), 0px 1px 5px rgba(0, 0, 0, 0.12);
 	transition: 0.5s;
 	font-weight: 700;
@@ -31,23 +31,16 @@ const StyledButton = styled.button`
 	line-height: 26px;
 	letter-spacing: 0.46px;
 	text-align: center;
-	:hover {
+	&:hover {
 		cursor: pointer;
 	}
 
 	&.primary {
-		background-color: #0288d1;
+		background-color: ${({ theme }) => theme.colors.primary};
 		color: white;
-		:hover {
+		&:hover {
 			cursor: pointer;
-			background-color: #014c75;
-		}
-	}
-
-	&.secondary {
-		background-color: #e0e0e0;
-		:hover {
-			background-color: #e0e0e0;
+			background-color: ${({ theme }) => theme.colors.secondary};
 		}
 	}
 
