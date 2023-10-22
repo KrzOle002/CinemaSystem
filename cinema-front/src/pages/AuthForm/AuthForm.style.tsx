@@ -23,7 +23,7 @@ export const AuthContainer = styled.div`
 	border-radius: 10px;
 	background-color: ${({ theme }) => theme.colors.whiterMid};
 `
-export const Container = styled.div`
+export const Container = styled.form`
 	@media screen and (max-width: 640px) {
 	}
 	width: 70%;
