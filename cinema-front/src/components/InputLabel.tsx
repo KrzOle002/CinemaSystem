@@ -10,6 +10,7 @@ interface InputLabelType {
 	disabled?: boolean
 	onChange?: () => void
 	placeholder?: string
+	validation?: string
 }
 const InputLabel = ({
 	type,
@@ -21,6 +22,7 @@ const InputLabel = ({
 	disabled,
 	onChange,
 	placeholder,
+	validation,
 }: InputLabelType) => {
 	return (
 		<Wrapper>
@@ -37,6 +39,12 @@ const InputLabel = ({
 				value={value}
 				{...inputRef}
 			/>
+			{validation ? (
+				<ValidationInfo>
+					<RequiredDot>*</RequiredDot>
+					{validation}
+				</ValidationInfo>
+			) : null}
 		</Wrapper>
 	)
 }
@@ -72,6 +80,14 @@ const StyledInput = styled.input`
 `
 
 const RequiredDot = styled.span`
-	color: red;
+	color: #a50000;
+	font-weight: 700;
+`
+const ValidationInfo = styled.span`
+	margin: 0;
+	padding: 0;
+	color: #a50000;
+	font-size: 13px;
+	text-align: left;
 	font-weight: 700;
 `
