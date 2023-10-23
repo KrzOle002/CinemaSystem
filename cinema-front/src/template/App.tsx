@@ -1,23 +1,17 @@
-import { BrowserRouter, Link, Route, Routes } from 'react-router-dom'
-import 'react-toastify/dist/ReactToastify.css'
-import { Wrapper } from './App.styles'
-import Login from '../pages/AuthForm/Login'
-import Register from '../pages/AuthForm/Register'
-import Dashboard from '../pages/Dashboard'
+import { BrowserRouter, Link } from 'react-router-dom'
 import { ToastContainer } from 'react-toastify'
+import 'react-toastify/dist/ReactToastify.css'
+import MainPage from '../pages/MainPage'
+import { Wrapper } from './App.styles'
+import Navbar from '../utils/navigation/Navbar'
 
 const App = () => {
 	return (
 		<Wrapper>
 			<BrowserRouter>
-				<Link to='/login'>Authform</Link>
+				<Navbar />
 
-				<Routes>
-					<Route path='login' element={<Login />} />
-					<Route path='register' element={<Register />} />
-
-					<Route path='/' element={<Dashboard />} />
-				</Routes>
+				<MainPage />
 			</BrowserRouter>
 			<ToastContainer autoClose={750} />
 		</Wrapper>
