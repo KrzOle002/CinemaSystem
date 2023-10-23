@@ -1,5 +1,4 @@
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faXmark } from '@fortawesome/free-solid-svg-icons'
+import CloseIcon from '@mui/icons-material/Close'
 import styled from 'styled-components'
 import { Link } from 'react-router-dom'
 
@@ -11,7 +10,7 @@ const CloseTag = ({ link }: CloseTagType) => {
 	return (
 		<Wrapper>
 			<Link to={link}>
-				<StyledIcon icon={faXmark} size='2x' />
+				<StyledIcon style={{ fontSize: '45px' }} />
 			</Link>
 		</Wrapper>
 	)
@@ -24,7 +23,7 @@ const Wrapper = styled.div`
 	top: 10px;
 	right: 10px;
 `
-const StyledIcon = styled(FontAwesomeIcon)`
+const StyledIcon = styled(CloseIcon)`
 	color: white;
 	&:hover {
 		color: ${({ theme }) => theme.colors.primary};
