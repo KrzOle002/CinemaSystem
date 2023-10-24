@@ -59,6 +59,7 @@ const Label = styled.div`
 	box-sizing: border-box;
 	width: 100%;
 	padding: 6px 0;
+	font-family: 'Roboto';
 `
 
 const StyledInput = styled.input`
@@ -69,6 +70,7 @@ const StyledInput = styled.input`
 	line-height: 24px;
 	padding: 6px;
 	transition: 0.1s linear;
+	font-family: 'Roboto';
 
 	&.error {
 		border: 1px solid rgb(255, 0, 0);
@@ -84,6 +86,7 @@ const RequiredDot = styled.span`
 	font-weight: 700;
 `
 const ValidationInfo = styled.span`
+	font-family: 'Roboto';
 	margin: 0;
 	padding: 0;
 	color: #a50000;

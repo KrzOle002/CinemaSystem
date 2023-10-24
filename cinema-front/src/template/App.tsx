@@ -1,16 +1,15 @@
-import { BrowserRouter, Link } from 'react-router-dom'
+import { BrowserRouter } from 'react-router-dom'
 import { ToastContainer } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
 import MainPage from '../pages/MainPage'
+import Nav from '../utils/navigation/Nav'
 import { Wrapper } from './App.styles'
-import Navbar from '../utils/navigation/Navbar'
 
 const App = () => {
 	return (
 		<Wrapper>
 			<BrowserRouter>
-				<Navbar />
-
+				<Nav />
 				<MainPage />
 			</BrowserRouter>
 			<ToastContainer autoClose={750} />

@@ -1,7 +1,7 @@
 import AuthHeader from '../../components/AuthHeader'
 import CloseTag from '../../components/CloseTag'
 import InputLabel from '../../components/InputLabel'
-import Reminder from '../../components/Reminder'
+import NavigationLink from '../../components/NavigationLink'
 import SubmitButton from '../../components/SubmitButton'
 import { AuthContainer, Container, HelpSection, Wrapper } from './AuthForm.style'
 import { useForm } from 'react-hook-form'
@@ -105,7 +105,9 @@ const Register = () => {
 						validation={errors.rePassword?.message}
 					/>
 					<HelpSection>
-						<Reminder link={'/login'}>Masz już konto?</Reminder>
+						<NavigationLink size={'15px'} link={'/login'}>
+							Masz już konto?
+						</NavigationLink>
 					</HelpSection>
 					<SubmitButton type={'submit'} className={'primary'}>
 						Zarejestruj się

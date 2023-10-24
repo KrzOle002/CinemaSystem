@@ -30,6 +30,7 @@ const StyledButton = styled.button`
 	font-size: 15px;
 	line-height: 26px;
 	letter-spacing: 0.46px;
+	font-family: 'Roboto';
 	text-align: center;
 	&:hover {
 		cursor: pointer;

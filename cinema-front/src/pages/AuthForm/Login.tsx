@@ -1,7 +1,7 @@
 import AuthHeader from '../../components/AuthHeader'
 import CloseTag from '../../components/CloseTag'
 import InputLabel from '../../components/InputLabel'
-import Reminder from '../../components/Reminder'
+import NavigationLink from '../../components/NavigationLink'
 import SubmitButton from '../../components/SubmitButton'
 import { useScreenWidth } from '../../hooks/useScreenWidth'
 import { AuthContainer, Container, HelpSection, Wrapper } from './AuthForm.style'
@@ -17,9 +17,13 @@ const Login = () => {
 					<InputLabel placeholder={'Email'} />
 					<InputLabel placeholder={'Hasło'} type={'password'} />
 					<HelpSection>
-						<Reminder link={'/register'}>Nie masz konta?</Reminder>
+						<NavigationLink link={'/register'} size={'15px'}>
+							Nie masz konta?
+						</NavigationLink>
 						{resolution > 640 ? <span>|</span> : null}
-						<Reminder link={'/'}>Nie pamiętasz hasła ? </Reminder>
+						<NavigationLink size={'15px'} link={'/'}>
+							Nie pamiętasz hasła ?{' '}
+						</NavigationLink>
 					</HelpSection>
 					<SubmitButton type={'submit'} className={'primary'} onClick={() => console.log('dupa')}>
 						Zaloguj się

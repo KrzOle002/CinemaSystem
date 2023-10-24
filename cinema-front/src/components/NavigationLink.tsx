@@ -1,26 +1,28 @@
 import { ReactNode } from 'react'
 import styled from 'styled-components'
 import { Link } from 'react-router-dom'
-interface ReminderType {
+interface NavigationLinkType {
 	children?: ReactNode
 	link: string
 	onClick?: () => void
+	size: string
 }
 
-const Reminder = ({ link, children }: ReminderType) => {
+const NavigationLink = ({ link, children, size }: NavigationLinkType) => {
 	return (
 		<Wrapper>
-			<StyledLink to={link}>{children}</StyledLink>
+			<StyledLink to={link} style={{ fontSize: size }}>
+				{children}
+			</StyledLink>
 		</Wrapper>
 	)
 }
 
-export default Reminder
+export default NavigationLink
 
 const Wrapper = styled.div``
 const StyledLink = styled(Link)`
 	color: ${({ theme }) => theme.colors.primary};
-	font-size: 15px;
 	&:link {
 		text-decoration: none;
 		color: ${({ theme }) => theme.colors.white};
