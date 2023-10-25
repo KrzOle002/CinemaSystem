@@ -2,7 +2,7 @@ import { Route, Routes } from 'react-router-dom'
 import styled from 'styled-components'
 import Login from './AuthForm/Login'
 import Register from './AuthForm/Register'
-import Dashboard from './Dashboard'
+import Dashboard from './Dashboard/Dashboard'
 
 const MainPage = () => {
 	return (
