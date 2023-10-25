@@ -20,7 +20,9 @@ export default MainPage
 
 export const Wrapper = styled.div`
 	width: 100%;
-	background: ${({ theme }) => theme.gradient.ground};
-	height: 100vh;
+	background: ${({ theme }) => theme.colors.original};
 	background-attachment: fixed;
+	display: flex;
+	flex-direction: row;
+	position: relative;
 `

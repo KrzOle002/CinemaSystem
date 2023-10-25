@@ -1,49 +1,52 @@
+import MenuIcon from '@mui/icons-material/Menu'
+import { AppBar, Box, IconButton, Toolbar, Typography } from '@mui/material'
 import styled from 'styled-components'
-import NavigationLink from '../../components/NavigationLink'
-import DesktopNav from '../navigation/DesktopNav'
-import AuthHeader from '../../components/AuthHeader'
 import logo from '../../assets/logo-icon.png'
+import NavigationLink from '../../components/NavigationLink'
+import { useMenuBarContext } from '../../context/MenuBarContext'
+import MenuBar from '../navigation/MenuBar'
+import { useNavigate } from 'react-router-dom'
 const Header = () => {
+	const { toggleMenuBar } = useMenuBarContext()
+	const navigate = useNavigate()
 	return (
-		<Wrapper>
-			<Container>
-				<StyledLogo>
-					<FitImg src={logo} alt={'Obrazek logo'} />
-					<AuthHeader>Cinema Fordon</AuthHeader>
-				</StyledLogo>
-				<DesktopNav />
-				<NavigationLink size='15px' link={'/login'}>
-					Zaloguj się
-				</NavigationLink>
-			</Container>
-		</Wrapper>
+		<Box sx={{ flexGrow: 1 }}>
+			<AppBar
+				position='fixed'
+				sx={{ zIndex: theme => theme.zIndex.drawer + 1, backgroundColor: '#D0153F ', position: 'relative' }}>
+				<Toolbar>
+					<IconButton
+						size='large'
+						edge='start'
+						color='inherit'
+						aria-label='menu'
+						sx={{ mr: 2 }}
+						onClick={() => toggleMenuBar()}>
+						<MenuIcon />
+					</IconButton>
+					<Typography variant='h6' component='div' sx={{ flexGrow: 1, alignItems: 'left', justifyContent: 'left' }}>
+						<StyledLogo onClick={() => navigate('/')}>
+							<FitImg src={logo} alt={'Obrazek logo'} />
+							<h3 style={{ margin: '0' }}>Cinema Fordon</h3>
+						</StyledLogo>
+					</Typography>
+					<NavigationLink size='15px' link={'/login'}>
+						ZALOGUJ SIĘ
+					</NavigationLink>
+				</Toolbar>
+			</AppBar>
+			<MenuBar />
+		</Box>
 	)
 }
 
 export default Header
 
-const Wrapper = styled.div`
-	width: 100%;
-	background-color: ${({ theme }) => theme.colors.primary};
-	padding: 20px 0;
-`
-const Container = styled.div`
-	display: flex;
-	flex-direction: row;
-	justify-content: space-between;
-	align-items: center;
-	color: white;
-	font-family: 'Roboto', sans-serif;
-	width: 98%;
-	margin: 0 auto;
-`
-
 const StyledLogo = styled.div`
 	display: flex;
 	flex-direction: row;
-	justify-content: space-between;
+	column-gap: 10px;
 	align-items: center;
-	column-gap: 5px;
 	&:hover {
 		cursor: pointer;
 		color: ${({ theme }) => theme.colors.mid};
