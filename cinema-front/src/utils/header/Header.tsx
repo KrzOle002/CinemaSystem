@@ -11,9 +11,7 @@ const Header = () => {
 	const navigate = useNavigate()
 	return (
 		<Box sx={{ flexGrow: 1 }}>
-			<AppBar
-				position='fixed'
-				sx={{ zIndex: theme => theme.zIndex.drawer + 1, backgroundColor: '#D0153F ', position: 'relative' }}>
+			<AppBar sx={{ zIndex: theme => theme.zIndex.drawer + 1, backgroundColor: '#D0153F ', position: 'relative' }}>
 				<Toolbar>
 					<IconButton
 						size='large'
