@@ -26,7 +26,7 @@ const Wrapper = styled.div`
 	flex-direction: column;
 	justify-content: space-between;
 	position: relative;
-	width: 25%;
+	width: 22%;
 
 	&:hover {
 		cursor: pointer;
@@ -35,6 +35,7 @@ const Wrapper = styled.div`
 const MovieImg = styled.img`
 	transition: filter 0.3s ease;
 	max-width: 100%;
+	margin: 0 auto;
 	height: auto;
 `
 
@@ -44,7 +45,7 @@ const MovieTitle = styled.span`
 		font-size: 5vw;
 	}
 	text-align: center;
-	font-size: 2vw;
+	font-size: 1.2vw;
 	font-family: 'Saira', sans-serif;
 	text-transform: uppercase;
 	text-decoration: underline;

@@ -1,11 +1,12 @@
 import styled from 'styled-components'
 import MovieInstance from './MovieInstance'
+import SectionHeader from '../../../components/SectionHeader'
 
 const Actualshow = () => {
-	const data = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]
+	const data = [1, 2, 3, 4, 5, 6, 7, 8]
 	return (
 		<Wrapper>
-			<Header>Teraz gramy</Header>
+			<SectionHeader>Teraz gramy</SectionHeader>
 			<Container>
 				{data.map(age => (
 					<MovieInstance movieTitle={'OpenHeimer'} />
@@ -22,15 +23,7 @@ const Wrapper = styled.div`
 	width: 60%;
 	margin: 0 auto;
 `
-const Header = styled.p`
-	@media screen and (max-width: 640px) {
-		font-size: 24px;
-		text-align: center;
-	}
-	font-size: 36px;
-	font-family: 'Saira Stencil One', sans-serif;
-	text-transform: uppercase;
-`
+
 const Container = styled.div`
 	@media screen and (max-width: 640px) {
 		justify-content: center;
