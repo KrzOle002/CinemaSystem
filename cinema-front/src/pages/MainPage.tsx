@@ -3,6 +3,7 @@ import styled from 'styled-components'
 import Login from './AuthForm/Login'
 import Register from './AuthForm/Register'
 import Dashboard from './Dashboard/Dashboard'
+import PageFooter from './PageFooter'
 
 const MainPage = () => {
 	return (
@@ -12,6 +13,7 @@ const MainPage = () => {
 				<Route path='register' element={<Register />} />
 				<Route path='/' element={<Dashboard />} />
 			</Routes>
+			<PageFooter />
 		</Wrapper>
 	)
 }
@@ -23,6 +25,6 @@ export const Wrapper = styled.div`
 	background: ${({ theme }) => theme.colors.original};
 	background-attachment: fixed;
 	display: flex;
-	flex-direction: row;
+	flex-direction: column;
 	position: relative;
 `
