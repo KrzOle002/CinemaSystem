@@ -7,9 +7,9 @@ const Announcements = () => {
 		<Wrapper>
 			<SectionHeader>Zapowiedzi</SectionHeader>
 			<Container>
-				<YouTubeVideo link={'https://www.youtube.com/embed/bWdZbAgmVFY?si=WCx1i0kSrLUPNFiT'} />
-				<YouTubeVideo link={'https://www.youtube.com/embed/bWdZbAgmVFY?si=WCx1i0kSrLUPNFiT'} />
-				<YouTubeVideo link={'https://www.youtube.com/embed/bWdZbAgmVFY?si=WCx1i0kSrLUPNFiT'} />
+				<YouTubeVideo link={'https://www.youtube.com/embed/3X9u2bNG2aY?si=xmbbUE3m4z8MbFuk'} />
+				<YouTubeVideo link={'https://www.youtube.com/embed/3X9u2bNG2aY?si=xmbbUE3m4z8MbFuk'} />
+				<YouTubeVideo link={'https://www.youtube.com/embed/3X9u2bNG2aY?si=xmbbUE3m4z8MbFuk'} />
 			</Container>
 		</Wrapper>
 	)
@@ -24,6 +24,12 @@ const Wrapper = styled.div`
 	flex-direction: column;
 `
 const Container = styled.div`
+	@media screen and (max-width: 640px) {
+		flex-direction: column;
+		row-gap: 20px;
+		justify-content: center;
+		align-items: center;
+	}
 	width: 100%;
 	margin: 0 auto;
 	display: flex;
