@@ -4,7 +4,9 @@ import Login from './AuthForm/Login'
 import Register from './AuthForm/Register'
 import Dashboard from './Dashboard/Dashboard'
 import PageFooter from './PageFooter'
-
+import PurchaseForm from './PurchaseForm/PurchaseForm'
+import { RequireAuth } from 'react-auth-kit'
+import Account from './Account/Account'
 const MainPage = () => {
 	return (
 		<Wrapper>
@@ -12,6 +14,8 @@ const MainPage = () => {
 				<Route path='login' element={<Login />} />
 				<Route path='register' element={<Register />} />
 				<Route path='/' element={<Dashboard />} />
+				<Route path='purchase' element={<PurchaseForm />} />
+				<Route path='account' element={<Account />} />
 			</Routes>
 			<PageFooter />
 		</Wrapper>

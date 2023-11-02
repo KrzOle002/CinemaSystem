@@ -7,17 +7,24 @@ import { Wrapper } from './App.styles'
 import { MenuBarProvider } from '../context/MenuBarContext'
 import Footer from '../utils/footer/Footer'
 import { useScreenWidth } from '../hooks/useScreenWidth'
+import { AuthProvider } from 'react-auth-kit'
 
 const App = () => {
 	const resolution = useScreenWidth()
 	return (
 		<MenuBarProvider>
 			<Wrapper>
-				<BrowserRouter>
-					<Nav />
-					<MainPage />
-					{resolution < 600 ? <Footer /> : null}
-				</BrowserRouter>
+				<AuthProvider
+					authType={'cookie'}
+					authName={'_auth'}
+					cookieDomain={window.location.hostname}
+					cookieSecure={window.location.protocol === 'https:'}>
+					<BrowserRouter>
+						<Nav />
+						<MainPage />
+						{resolution < 600 ? <Footer /> : null}
+					</BrowserRouter>
+				</AuthProvider>
 				<ToastContainer autoClose={750} />
 			</Wrapper>
 		</MenuBarProvider>

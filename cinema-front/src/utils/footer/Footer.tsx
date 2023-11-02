@@ -5,8 +5,38 @@ import BallotOutlinedIcon from '@mui/icons-material/BallotOutlined'
 import PermPhoneMsgOutlinedIcon from '@mui/icons-material/PermPhoneMsgOutlined'
 import AccountCircleOutlinedIcon from '@mui/icons-material/AccountCircleOutlined'
 import { useNavigate } from 'react-router-dom'
+import { useAuthHeader, useAuthUser, useIsAuthenticated } from 'react-auth-kit'
+import axios from 'axios'
+import { useEffect, useState } from 'react'
 const Footer = () => {
 	const navigate = useNavigate()
+	const isAuthenticated = useIsAuthenticated()
+	const [avatarUrl, setAvatarUrl] = useState('')
+	const auth = useAuthUser()
+	const userName = auth() != null ? auth()?.email : 'User'
+	const authHead = useAuthHeader()
+	const authH = authHead()
+	const api = import.meta.env.VITE_API_BASE_URL
+	const authenticated = isAuthenticated()
+
+	const myAxios = axios.create({
+		headers: {
+			'Content-Type': 'application/json',
+			'x-auth-token': `${authH.slice(7)}`,
+		},
+	})
+	const fetchAvatar = async () => {
+		try {
+			const response = await myAxios.get(api + '/api/users/avatar', {})
+			console.log(response.data.avatar)
+			setAvatarUrl(response.data.avatar)
+		} catch (error) {
+			console.error('Błąd podczas pobierania awatara:', error)
+		}
+	}
+
+	fetchAvatar()
+
 	return (
 		<BottomNavigation
 			showLabels
@@ -20,7 +50,7 @@ const Footer = () => {
 				fontSize: '9px',
 			}}>
 			<BottomNavigationAction
-				onClick={() => navigate('/')}
+				onClick={() => navigate('/purchase')}
 				label='Home'
 				sx={{
 					color: '#f5f5f5',
@@ -37,7 +67,6 @@ const Footer = () => {
 				icon={<HomeIcon />}
 			/>
 			<BottomNavigationAction
-				onClick={() => navigate('/')}
 				label='Repertuar'
 				sx={{
 					color: '#f5f5f5',
@@ -88,8 +117,7 @@ const Footer = () => {
 				icon={<PermPhoneMsgOutlinedIcon />}
 			/>
 			<BottomNavigationAction
-				onClick={() => navigate('/login')}
-				label='Konto'
+				onClick={() => navigate(isAuthenticated() ? '/account' : '/login')}
 				sx={{
 					color: '#f5f5f5',
 					fontSize: '9px',
@@ -104,7 +132,14 @@ const Footer = () => {
 						minWidth: '0',
 					},
 				}}
-				icon={<AccountCircleOutlinedIcon />}
+				label={isAuthenticated() ? `${userName}` : 'Konto'}
+				icon={
+					isAuthenticated() ? (
+						<img style={{ width: 'auto', height: '24px', borderRadius: '20px' }} src={avatarUrl} />
+					) : (
+						<AccountCircleOutlinedIcon />
+					)
+				}
 			/>
 		</BottomNavigation>
 	)

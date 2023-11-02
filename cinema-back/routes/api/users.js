@@ -6,6 +6,7 @@ const bcrypt = require('bcryptjs')
 const jwt = require('jsonwebtoken')
 const config = require('config')
 const User = require('../../models/User')
+const auth = require('../../middleware/auth')
 
 // @route   Post api/users
 // @desc    Test route
@@ -69,5 +70,11 @@ router.post(
 		}
 	}
 )
+
+router.get('/avatar', auth, async (req, res) => {
+	const user = await User.findById(req.user.id).select('avatar')
+
+	res.json(user)
+})
 
 module.exports = router

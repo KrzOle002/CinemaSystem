@@ -6,9 +6,39 @@ import NavigationLink from '../../components/NavigationLink'
 import { useMenuBarContext } from '../../context/MenuBarContext'
 import MenuBar from '../navigation/MenuBar'
 import { useNavigate } from 'react-router-dom'
+import { useAuthHeader, useAuthUser, useIsAuthenticated } from 'react-auth-kit'
+import { useEffect, useState } from 'react'
+import axios from 'axios'
 const Header = () => {
 	const { toggleMenuBar } = useMenuBarContext()
 	const navigate = useNavigate()
+
+	const isAuthenticated = useIsAuthenticated()
+	const [avatarUrl, setAvatarUrl] = useState('')
+	const auth = useAuthUser()
+	const userName = auth() != null ? auth()?.email : 'User'
+	const authHead = useAuthHeader()
+	const authH = authHead()
+	const api = import.meta.env.VITE_API_BASE_URL
+
+	const myAxios = axios.create({
+		headers: {
+			'Content-Type': 'application/json',
+			'x-auth-token': `${authH.slice(7)}`,
+		},
+	})
+	const fetchAvatar = async () => {
+		try {
+			const response = await myAxios.get(api + '/api/users/avatar', {})
+			console.log(response.data.avatar)
+			setAvatarUrl(response.data.avatar)
+		} catch (error) {
+			console.error('Błąd podczas pobierania awatara:', error)
+		}
+	}
+
+	fetchAvatar()
+
 	return (
 		<Box sx={{ flexGrow: 1 }}>
 			<AppBar sx={{ zIndex: theme => theme.zIndex.drawer + 1, backgroundColor: '#D0153F ', position: 'relative' }}>
@@ -28,9 +58,15 @@ const Header = () => {
 							<h3 style={{ margin: '0' }}>Cinema Fordon</h3>
 						</StyledLogo>
 					</Typography>
-					<NavigationLink size='15px' link={'/login'}>
-						ZALOGUJ SIĘ
-					</NavigationLink>
+					{isAuthenticated() ? (
+						<NavigationLink size='15px' link={'/account'}>
+							<img style={{ height: '50px', borderRadius: '50px' }} src={avatarUrl} />
+						</NavigationLink>
+					) : (
+						<NavigationLink size='15px' link={'/login'}>
+							ZALOGUJ SIĘ
+						</NavigationLink>
+					)}
 				</Toolbar>
 			</AppBar>
 			<MenuBar />

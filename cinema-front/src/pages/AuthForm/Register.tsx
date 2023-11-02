@@ -28,9 +28,9 @@ const Register = () => {
 		watch,
 	} = useForm<RegisterDataType>()
 
-	const onSubmit = (data: RegisterDataType) => {
+	const onSubmit = async (data: RegisterDataType) => {
 		if (data.password == data.rePassword) {
-			axios
+			await axios
 				.post(api + '/api/users/register', data)
 				.then(() => {
 					toast.success('Utworzono konto', {
