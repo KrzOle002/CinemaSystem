@@ -32,20 +32,16 @@ const Overlay = styled.div`
 	transition: opacity 0.3s ease;
 `
 const Container = styled.div`
+	height: 100%;
 	position: relative;
-	-webkit-box-shadow: 0px 8px 30px 3px rgba(0, 0, 0, 1);
-	-moz-box-shadow: 0px 8px 30px 3px rgba(0, 0, 0, 1);
 	box-shadow: 0px 8px 30px 3px rgba(0, 0, 0, 0.7);
 `
 const Wrapper = styled.div`
-	@media screen and (max-width: 640px) {
-		min-width: 200px;
-	}
 	display: flex;
 	flex-direction: column;
 	justify-content: space-evenly;
 	position: relative;
-	width: 22%;
+	width: 100%;
 
 	&:hover {
 		cursor: pointer;
@@ -58,13 +54,13 @@ const Wrapper = styled.div`
 `
 const MovieImg = styled.img`
 	transition: filter 0.3s ease;
-	max-width: 100%;
+	width: 100%;
 	margin: 0 auto;
 	height: auto;
 `
 
 const MovieTitle = styled.span`
-	@media screen and (max-width: 640px) {
+	@media screen and (max-width: 1080px) {
 		padding-top: 5px;
 		font-size: 5vw;
 	}
