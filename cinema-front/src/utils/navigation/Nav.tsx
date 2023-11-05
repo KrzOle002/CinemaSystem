@@ -25,7 +25,9 @@ const Nav = () => {
 
 export default Nav
 
-export const Wrapper = styled.div``
+export const Wrapper = styled.div`
+	position: relative;
+`
 
 export const Top = styled.div`
 	width: 100%;

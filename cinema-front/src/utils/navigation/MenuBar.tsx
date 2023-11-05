@@ -10,7 +10,7 @@ const MenuBar = () => {
 			<div style={{ height: '66px' }} />
 			<List sx={{ width: '150px', height: '100%' }}>
 				<ListItemButton>
-					<ListItemText primary='Repertuar' onClick={() => navigate('/')} />
+					<ListItemText primary='Repertuar' onClick={() => navigate('/schedule')} />
 				</ListItemButton>
 
 				<ListItemButton>

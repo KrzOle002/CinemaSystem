@@ -13,6 +13,20 @@ const Header = () => {
 	const { toggleMenuBar } = useMenuBarContext()
 	const navigate = useNavigate()
 
+	const [scrolledPixels, setScrolledPixels] = useState(0)
+
+	const handleScroll = () => {
+		setScrolledPixels(window.scrollY)
+	}
+
+	useEffect(() => {
+		window.addEventListener('scroll', handleScroll)
+
+		return () => {
+			window.removeEventListener('scroll', handleScroll)
+		}
+	}, [])
+
 	const isAuthenticated = useIsAuthenticated()
 	const [avatarUrl, setAvatarUrl] = useState('')
 	const auth = useAuthUser()
@@ -40,7 +54,7 @@ const Header = () => {
 	fetchAvatar()
 
 	return (
-		<Box sx={{ flexGrow: 1 }}>
+		<Box sx={{ flexGrow: 1, position: scrolledPixels > 0 ? 'fixed' : 'relative', zIndex: 200, width: '100%' }}>
 			<AppBar sx={{ zIndex: theme => theme.zIndex.drawer + 1, backgroundColor: '#D0153F ', position: 'relative' }}>
 				<Toolbar>
 					<IconButton

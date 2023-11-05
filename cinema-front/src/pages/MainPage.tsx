@@ -3,10 +3,10 @@ import styled from 'styled-components'
 import Login from './AuthForm/Login'
 import Register from './AuthForm/Register'
 import Dashboard from './Dashboard/Dashboard'
-import PageFooter from './PageFooter'
 import PurchaseForm from './PurchaseForm/PurchaseForm'
 import { RequireAuth } from 'react-auth-kit'
 import Account from './Account/Account'
+import MovieSchedule from './MovieSchedule/MovieSchedule'
 const MainPage = () => {
 	return (
 		<Wrapper>
@@ -16,8 +16,8 @@ const MainPage = () => {
 				<Route path='/' element={<Dashboard />} />
 				<Route path='purchase' element={<PurchaseForm />} />
 				<Route path='account' element={<Account />} />
+				<Route path='schedule' element={<MovieSchedule />} />
 			</Routes>
-			<PageFooter />
 		</Wrapper>
 	)
 }

@@ -9,11 +9,7 @@ interface MovieInstanceType {
 const MovieInstance = ({ movieTitle }: MovieInstanceType) => {
 	return (
 		<Wrapper>
-			<Container>
-				<MovieImg src={cover} />
-				<Overlay />
-			</Container>
-
+			<MovieImg src={cover} />
 			<MovieTitle>{movieTitle}</MovieTitle>
 		</Wrapper>
 	)
@@ -21,21 +17,13 @@ const MovieInstance = ({ movieTitle }: MovieInstanceType) => {
 
 export default MovieInstance
 
-const Overlay = styled.div`
-	position: absolute;
-	top: 0;
-	left: 0;
+const MovieImg = styled.img`
+	transition: filter 0.3s ease;
 	width: 100%;
-	height: 100%;
-	background: rgba(0, 0, 0, 0.5); /* Kolor tła z przyciemnieniem */
-	opacity: 0;
-	transition: opacity 0.3s ease;
+	margin: 0 auto;
+	height: 50%;
 `
-const Container = styled.div`
-	height: 100%;
-	position: relative;
-	box-shadow: 0px 8px 30px 3px rgba(0, 0, 0, 0.7);
-`
+
 const Wrapper = styled.div`
 	display: flex;
 	flex-direction: column;
@@ -46,21 +34,14 @@ const Wrapper = styled.div`
 	&:hover {
 		cursor: pointer;
 		color: ${({ theme }) => theme.colors.primary};
-
-		${Container} > ${Overlay} {
-			opacity: 1;
+		${MovieImg} {
+			box-shadow: 0px 8px 30px 3px rgba(0, 0, 0, 0.7);
 		}
 	}
 `
-const MovieImg = styled.img`
-	transition: filter 0.3s ease;
-	width: 100%;
-	margin: 0 auto;
-	height: auto;
-`
 
 const MovieTitle = styled.span`
-	@media screen and (max-width: 1080px) {
+	@media screen and (max-width: 600px) {
 		padding-top: 5px;
 		font-size: 5vw;
 	}
