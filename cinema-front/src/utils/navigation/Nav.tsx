@@ -30,7 +30,7 @@ export const Wrapper = styled.div``
 export const Top = styled.div`
 	width: 100%;
 	height: 40px;
-	background-color: ${({ theme }) => theme.colors.primary};
+	background-color: #d0153f;
 	z-index: 100;
 	display: flex;
 	flex-direction: row;

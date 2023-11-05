@@ -9,7 +9,7 @@ const Actualshow = () => {
 			<SectionHeader>Teraz gramy</SectionHeader>
 			<Container>
 				{data.map(age => (
-					<MovieInstance movieTitle={'OpenHeimer'} />
+					<MovieInstance movieTitle={'Openheimer'} />
 				))}
 			</Container>
 		</Wrapper>
