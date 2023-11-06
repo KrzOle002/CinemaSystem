@@ -5,8 +5,9 @@ import SubmitButton from '../../components/SubmitButton'
 import { useForm } from 'react-hook-form'
 import { MovieModel } from '../../types/MovieModelType'
 import InputLabel from '../../components/InputLabel'
-import Button from '@mui/material/Button'
-import CloudUploadIcon from '@mui/icons-material/CloudUpload'
+
+import useAuthHook from '../../utils/auth/useAuth'
+import { toast } from 'react-toastify'
 
 interface MovieDialogType {
 	isOpen: boolean
@@ -14,13 +15,38 @@ interface MovieDialogType {
 }
 
 const AdditionMovieDialog = ({ isOpen, close }: MovieDialogType) => {
+	const { axiosAuth } = useAuthHook()
 	const {
 		register,
 		handleSubmit,
 		formState: { errors },
 	} = useForm<MovieModel>()
-	const onSubmit = (data: MovieModel) => {
+	const api = import.meta.env.VITE_API_BASE_URL
+	const onSubmit = async (data: MovieModel) => {
 		console.log(data)
+		const formData = new FormData()
+		formData.append('title', data.title)
+		formData.append('description', data.description)
+		formData.append('director', data.director)
+		formData.append('genre', JSON.stringify(data.genre))
+		formData.append('casts', JSON.stringify(data.casts))
+		formData.append('productionCountry', data.productionCountry)
+		formData.append('screeningLength', data.screeningLength)
+		formData.append('ageRestrictions', data.ageRestrictions)
+		formData.append('cover', data.cover[0])
+		formData.append('banner', data.banner[0])
+
+		try {
+			await axiosAuth.post(api + '/api/movie/movies', formData, {
+				headers: {
+					'Content-Type': 'multipart/form-data',
+				},
+			})
+
+			toast.success('Dodano film')
+		} catch (err) {
+			toast.error('Nie dodać filmu')
+		}
 	}
 	return (
 		<Dialog open={isOpen} onClose={close} fullWidth maxWidth={'md'}>
@@ -48,17 +74,88 @@ const AdditionMovieDialog = ({ isOpen, close }: MovieDialogType) => {
 						validation={errors.title?.message}
 					/>
 
-					<Button component='label' variant='contained' startIcon={<CloudUploadIcon />}>
-						Upload file
-						<VisuallyHiddenInput
-							placeholder={'Plakat'}
-							{...register('cover', {
+					<InputLabel
+						type='file'
+						title='Wybierz plakat:'
+						inputRef={{
+							...register('cover', {
 								required: 'To pole jest wymagane',
-							})}
-							type='file'
-							className={errors.title && 'error'}
-						/>
-					</Button>
+							}),
+						}}
+						className={errors.title && 'error'}
+						validation={errors.title?.message}
+					/>
+					<InputLabel
+						type='file'
+						title='Wybierz baner:'
+						inputRef={{
+							...register('banner', {
+								required: 'To pole jest wymagane',
+							}),
+						}}
+						className={errors.title && 'error'}
+						validation={errors.title?.message}
+					/>
+					<InputLabel
+						placeholder={'Reżyser'}
+						inputRef={{
+							...register('director', {
+								required: 'To pole jest wymagane',
+							}),
+						}}
+						className={errors.title && 'error'}
+						validation={errors.title?.message}
+					/>
+					<InputLabel
+						placeholder={'Gatunek'}
+						inputRef={{
+							...register('genre', {
+								required: 'To pole jest wymagane',
+							}),
+						}}
+						className={errors.title && 'error'}
+						validation={errors.title?.message}
+					/>
+					<InputLabel
+						placeholder={'Obsada'}
+						inputRef={{
+							...register('casts', {
+								required: 'To pole jest wymagane',
+							}),
+						}}
+						className={errors.title && 'error'}
+						validation={errors.title?.message}
+					/>
+					<InputLabel
+						placeholder={'Kraj produkcji'}
+						inputRef={{
+							...register('productionCountry', {
+								required: 'To pole jest wymagane',
+							}),
+						}}
+						className={errors.title && 'error'}
+						validation={errors.title?.message}
+					/>
+					<InputLabel
+						placeholder={'Długość'}
+						inputRef={{
+							...register('screeningLength', {
+								required: 'To pole jest wymagane',
+							}),
+						}}
+						className={errors.title && 'error'}
+						validation={errors.title?.message}
+					/>
+					<InputLabel
+						placeholder={'Wiek'}
+						inputRef={{
+							...register('ageRestrictions', {
+								required: 'To pole jest wymagane',
+							}),
+						}}
+						className={errors.title && 'error'}
+						validation={errors.title?.message}
+					/>
 				</DialogContent>
 
 				<DialogActions sx={{ width: '40%', marginLeft: 'auto' }}>
@@ -79,14 +176,3 @@ export default AdditionMovieDialog
 const ContainerForm = styled.form`
 	width: 100%;
 `
-const VisuallyHiddenInput = styled('input')({
-	clip: 'rect(0 0 0 0)',
-	clipPath: 'inset(50%)',
-	height: 1,
-	overflow: 'hidden',
-	position: 'absolute',
-	bottom: 0,
-	left: 0,
-	whiteSpace: 'nowrap',
-	width: 1,
-})

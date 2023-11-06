@@ -1,44 +1,13 @@
 export interface MovieModel {
-	uid?: {
-		type: String
-		require: true
-	}
-	title: {
-		type: String
-		require: true
-	}
-	description: {
-		type: String
-		required: true
-	}
-	cover: {
-		type: String
-		required: true
-	}
-	banner: {
-		type: String
-	}
-	genre: {
-		type: [String]
-		require: true
-	}
-	director: {
-		type: String
-		require: true
-	}
-	casts: {
-		type: [String]
-		require: true
-	}
-	productionCountry: {
-		type: String
-		require: true
-	}
-	screeningLength: {
-		type: Number
-		require: true
-	}
-	ageRestrictions: {
-		type: Number
-	}
+	uid?: string
+	title: string
+	description: string
+	cover: FileList
+	banner: FileList
+	genre: string[]
+	director: string
+	casts: string[]
+	productionCountry: string
+	screeningLength: string
+	ageRestrictions: string
 }

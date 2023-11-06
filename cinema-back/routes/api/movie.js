@@ -2,6 +2,7 @@ const express = require('express')
 const router = express.Router()
 const Movie = require('../../models/Movie')
 const multer = require('multer')
+const auth = require('../../middleware/auth')
 
 const storage = multer.diskStorage({
 	destination: function (req, file, cb) {
@@ -35,15 +36,25 @@ router.get('/movies/:uid', async (req, res) => {
 	}
 })
 
-router.post('/movies', upload.fields([{ name: 'cover', maxCount: 1 }]), async (req, res) => {
-	const movie = new Movie(req.body)
-	try {
-		const newMovie = await movie.save()
-		res.status(201).json(newMovie)
-	} catch (error) {
-		res.status(400).json({ message: error.message })
+router.post(
+	'/movies',
+	upload.fields([
+		{ name: 'cover', maxCount: 1 },
+		{ name: 'banner', maxCount: 1 },
+	]),
+	async (req, res) => {
+		const cover = req.files['cover'][0] // Pobierz obraz okładki
+		const banner = req.files['banner'][0] // Pobierz obraz bannera
+
+		const movie = new Movie(req.body)
+		try {
+			const newMovie = await movie.save()
+			res.status(201).json(newMovie)
+		} catch (error) {
+			res.status(400).json({ message: error.message })
+		}
 	}
-})
+)
 
 router.patch('/movies/:id', async (req, res) => {
 	try {
