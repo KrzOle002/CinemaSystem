@@ -9,8 +9,8 @@ const Actualshow = () => {
 		<Wrapper>
 			<SectionHeader>Teraz gramy</SectionHeader>
 			<Grid container lg={12} item spacing={4}>
-				{data.map(age => (
-					<Grid item lg={3} sm={4} xs={12} justifyContent={'flex-end'}>
+				{data.map((age, index) => (
+					<Grid key={index} item lg={3} sm={4} xs={12} justifyContent={'flex-end'}>
 						<MovieInstance movieTitle={'Openheimer'} />
 					</Grid>
 				))}

@@ -1,41 +1,33 @@
-import { BottomNavigation, BottomNavigationAction } from '@mui/material'
-import VideocamIcon from '@mui/icons-material/Videocam'
-import HomeIcon from '@mui/icons-material/Home'
-import BallotOutlinedIcon from '@mui/icons-material/BallotOutlined'
-import PermPhoneMsgOutlinedIcon from '@mui/icons-material/PermPhoneMsgOutlined'
 import AccountCircleOutlinedIcon from '@mui/icons-material/AccountCircleOutlined'
-import { useNavigate } from 'react-router-dom'
-import { useAuthHeader, useAuthUser, useIsAuthenticated } from 'react-auth-kit'
-import axios from 'axios'
+import BallotOutlinedIcon from '@mui/icons-material/BallotOutlined'
+import HomeIcon from '@mui/icons-material/Home'
+import PermPhoneMsgOutlinedIcon from '@mui/icons-material/PermPhoneMsgOutlined'
+import VideocamIcon from '@mui/icons-material/Videocam'
+import { BottomNavigation, BottomNavigationAction } from '@mui/material'
 import { useEffect, useState } from 'react'
+import { useNavigate } from 'react-router-dom'
+import useAuthHook from '../auth/useAuth'
 const Footer = () => {
 	const navigate = useNavigate()
-	const isAuthenticated = useIsAuthenticated()
+	const { isAuthenticated, axiosAuth, userData } = useAuthHook()
 	const [avatarUrl, setAvatarUrl] = useState('')
-	const auth = useAuthUser()
-	const userName = auth() != null ? auth()?.email : 'User'
-	const authHead = useAuthHeader()
-	const authH = authHead()
+
 	const api = import.meta.env.VITE_API_BASE_URL
-	const authenticated = isAuthenticated()
 
-	const myAxios = axios.create({
-		headers: {
-			'Content-Type': 'application/json',
-			'x-auth-token': `${authH.slice(7)}`,
-		},
-	})
-	const fetchAvatar = async () => {
-		try {
-			const response = await myAxios.get(api + '/api/users/avatar', {})
-			console.log(response.data.avatar)
-			setAvatarUrl(response.data.avatar)
-		} catch (error) {
-			console.error('Błąd podczas pobierania awatara:', error)
+	useEffect(() => {
+		const fetchAvatar = async () => {
+			if (isAuthenticated()) {
+				try {
+					const response = await axiosAuth.get(api + '/api/users/avatar', {})
+
+					setAvatarUrl(response.data.avatar)
+				} catch (error) {
+					setAvatarUrl('')
+				}
+			}
 		}
-	}
-
-	fetchAvatar()
+		fetchAvatar()
+	}, [])
 
 	return (
 		<BottomNavigation
@@ -50,7 +42,7 @@ const Footer = () => {
 				fontSize: '9px',
 			}}>
 			<BottomNavigationAction
-				onClick={() => navigate('/purchase')}
+				onClick={() => navigate('/')}
 				label='Home'
 				sx={{
 					color: '#f5f5f5',
@@ -67,6 +59,7 @@ const Footer = () => {
 				icon={<HomeIcon />}
 			/>
 			<BottomNavigationAction
+				onClick={() => navigate('/schedule')}
 				label='Repertuar'
 				sx={{
 					color: '#f5f5f5',
@@ -132,7 +125,7 @@ const Footer = () => {
 						minWidth: '0',
 					},
 				}}
-				label={isAuthenticated() ? `${userName}` : 'Konto'}
+				label={isAuthenticated() ? `${userData?.email}` : 'Konto'}
 				icon={
 					isAuthenticated() ? (
 						<img style={{ width: 'auto', height: '24px', borderRadius: '20px' }} src={avatarUrl} />

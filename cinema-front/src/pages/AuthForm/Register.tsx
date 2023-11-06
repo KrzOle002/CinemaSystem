@@ -30,6 +30,7 @@ const Register = () => {
 
 	const onSubmit = async (data: RegisterDataType) => {
 		if (data.password == data.rePassword) {
+			data.email = data.email.toLocaleLowerCase()
 			await axios
 				.post(api + '/api/users/register', data)
 				.then(() => {

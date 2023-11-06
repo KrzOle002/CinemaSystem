@@ -1,18 +1,35 @@
-import React from 'react'
 import styled from 'styled-components'
-import { Slideshow } from '../../utils/slider/Slideshow'
+import InputLabel from '../../components/InputLabel'
 import PageDescription from '../../components/PageDescription'
+import SubmitButton from '../../components/SubmitButton'
+import { useDialogHandler } from '../../utils/dialog/useDialogHandler'
+import { Slideshow } from '../../utils/slider/Slideshow'
+import useAuthHook from './../../utils/auth/useAuth'
+import AdditionMovieDialog from './AdditionMovieDialog'
 
 const MovieSchedule = () => {
+	const { isAdmin } = useAuthHook()
+	const { isOpen, open, close } = useDialogHandler()
 	return (
 		<Wrapper>
 			<Slideshow />
 			<Container>
 				<PageDescription>Repertuar Cinema Fordon</PageDescription>
+				<MovieControl>
+					<InputLabel placeholder={'Filtr'} />
+
+					{isAdmin ? (
+						<SubmitButton type={'button'} onClick={() => open()} className={'primary'}>
+							Dodaj film
+						</SubmitButton>
+					) : null}
+				</MovieControl>
 				<MoviesList>
-					<MovieItem></MovieItem>
+					<MovieItem>ddd</MovieItem>
 				</MoviesList>
 			</Container>
+
+			<AdditionMovieDialog isOpen={isOpen} close={close} />
 		</Wrapper>
 	)
 }
@@ -26,6 +43,13 @@ const Wrapper = styled.div`
 const Container = styled.div`
 	width: 50%;
 	margin: 0 auto;
+`
+const MovieControl = styled.div`
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	justify-content: center;
+	width: 100%;
 `
 const MoviesList = styled.div`
 	width: 100%;

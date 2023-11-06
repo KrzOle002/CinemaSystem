@@ -8,9 +8,9 @@ const Discount = () => {
 		<Wrapper>
 			<SectionHeader>Promocje</SectionHeader>
 			<Container>
-				{data.map(img => {
+				{data.map((img, index) => {
 					return (
-						<PhotoContainer>
+						<PhotoContainer key={index}>
 							<Photo src={img} />
 							<DiscountDescription>Piątki z rodziną</DiscountDescription>
 						</PhotoContainer>

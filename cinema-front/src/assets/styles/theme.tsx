@@ -11,6 +11,7 @@ export const theme = {
 		whiterMid: '#6982a7',
 		extras: '#584A86',
 		original: '#1C1C27',
+		accept: '#004600',
 	},
 	fontSize: {
 		xxl: '34px',

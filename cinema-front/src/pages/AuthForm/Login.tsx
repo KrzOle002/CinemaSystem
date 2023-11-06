@@ -33,6 +33,7 @@ const Login = () => {
 	} = useForm<LoginDataType>()
 
 	const onSubmit = async (data: LoginDataType) => {
+		data.email = data.email.toLocaleLowerCase()
 		try {
 			const res: ResponseType = await axios.post(api + '/api/auth/login', data)
 

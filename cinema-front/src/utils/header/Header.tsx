@@ -1,14 +1,14 @@
 import MenuIcon from '@mui/icons-material/Menu'
 import { AppBar, Box, IconButton, Toolbar, Typography } from '@mui/material'
+import { useEffect, useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 import styled from 'styled-components'
 import logo from '../../assets/logo-icon.png'
 import NavigationLink from '../../components/NavigationLink'
 import { useMenuBarContext } from '../../context/MenuBarContext'
 import MenuBar from '../navigation/MenuBar'
-import { useNavigate } from 'react-router-dom'
-import { useAuthHeader, useAuthUser, useIsAuthenticated } from 'react-auth-kit'
-import { useEffect, useState } from 'react'
-import axios from 'axios'
+import useAuthHook from './../auth/useAuth'
+
 const Header = () => {
 	const { toggleMenuBar } = useMenuBarContext()
 	const navigate = useNavigate()
@@ -26,35 +26,29 @@ const Header = () => {
 			window.removeEventListener('scroll', handleScroll)
 		}
 	}, [])
-
-	const isAuthenticated = useIsAuthenticated()
+	const { isAuthenticated, axiosAuth } = useAuthHook()
 	const [avatarUrl, setAvatarUrl] = useState('')
-	const auth = useAuthUser()
-	const userName = auth() != null ? auth()?.email : 'User'
-	const authHead = useAuthHeader()
-	const authH = authHead()
+
 	const api = import.meta.env.VITE_API_BASE_URL
 
-	const myAxios = axios.create({
-		headers: {
-			'Content-Type': 'application/json',
-			'x-auth-token': `${authH.slice(7)}`,
-		},
-	})
-	const fetchAvatar = async () => {
-		try {
-			const response = await myAxios.get(api + '/api/users/avatar', {})
-			console.log(response.data.avatar)
-			setAvatarUrl(response.data.avatar)
-		} catch (error) {
-			console.error('Błąd podczas pobierania awatara:', error)
-		}
-	}
+	useEffect(() => {
+		const fetchAvatar = async () => {
+			if (isAuthenticated()) {
+				try {
+					const response = await axiosAuth.get(api + '/api/users/avatar', {})
 
-	fetchAvatar()
+					setAvatarUrl(response.data.avatar)
+				} catch (error) {
+					setAvatarUrl('')
+				}
+			}
+		}
+
+		fetchAvatar()
+	}, [])
 
 	return (
-		<Box sx={{ flexGrow: 1, position: scrolledPixels > 0 ? 'fixed' : 'relative', zIndex: 200, width: '100%' }}>
+		<Box sx={{ flexGrow: 1, position: scrolledPixels > 10 ? 'fixed' : 'relative', zIndex: 1500, width: '100%' }}>
 			<AppBar sx={{ zIndex: theme => theme.zIndex.drawer + 1, backgroundColor: '#D0153F ', position: 'relative' }}>
 				<Toolbar>
 					<IconButton

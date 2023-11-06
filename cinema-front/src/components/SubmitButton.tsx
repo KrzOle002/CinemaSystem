@@ -45,11 +45,11 @@ const StyledButton = styled.button`
 		}
 	}
 
-	&.error {
-		background-color: #d32f2f;
+	&.success {
+		background-color: ${({ theme }) => theme.colors.accept};
 		color: white;
-		:hover {
-			background-color: #8a1d1d;
+		&:hover {
+			background-color: ${({ theme }) => theme.colors.success};
 		}
 	}
 

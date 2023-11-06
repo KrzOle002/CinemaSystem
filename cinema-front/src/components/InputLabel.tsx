@@ -26,10 +26,12 @@ const InputLabel = ({
 }: InputLabelType) => {
 	return (
 		<Wrapper>
-			<Label>
-				{title}
-				{required ? <RequiredDot>*</RequiredDot> : null}
-			</Label>
+			{title ? (
+				<Label>
+					{title}
+					{required ? <RequiredDot>*</RequiredDot> : null}
+				</Label>
+			) : null}
 			<StyledInput
 				placeholder={placeholder}
 				disabled={disabled ? true : false}
