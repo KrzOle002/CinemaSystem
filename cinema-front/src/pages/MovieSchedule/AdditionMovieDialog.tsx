@@ -3,7 +3,7 @@ import { theme } from '../../assets/styles/theme'
 import styled from 'styled-components'
 import SubmitButton from '../../components/SubmitButton'
 import { useForm } from 'react-hook-form'
-import { MovieModel } from '../../types/MovieModelType'
+import { MovieModelSend } from '../../types/MovieModelType'
 import InputLabel from '../../components/InputLabel'
 
 import useAuthHook from '../../utils/auth/useAuth'
@@ -20,11 +20,11 @@ const AdditionMovieDialog = ({ isOpen, close }: MovieDialogType) => {
 		register,
 		handleSubmit,
 		formState: { errors },
-	} = useForm<MovieModel>()
+	} = useForm<MovieModelSend>()
 	const api = import.meta.env.VITE_API_BASE_URL
-	const onSubmit = async (data: MovieModel) => {
-		console.log(data)
+	const onSubmit = async (data: MovieModelSend) => {
 		const formData = new FormData()
+		formData.append('cover', data.cover[0])
 		formData.append('title', data.title)
 		formData.append('description', data.description)
 		formData.append('director', data.director)
@@ -33,8 +33,6 @@ const AdditionMovieDialog = ({ isOpen, close }: MovieDialogType) => {
 		formData.append('productionCountry', data.productionCountry)
 		formData.append('screeningLength', data.screeningLength)
 		formData.append('ageRestrictions', data.ageRestrictions)
-		formData.append('cover', data.cover[0])
-		formData.append('banner', data.banner[0])
 
 		try {
 			await axiosAuth.post(api + '/api/movie/movies', formData, {
@@ -85,17 +83,7 @@ const AdditionMovieDialog = ({ isOpen, close }: MovieDialogType) => {
 						className={errors.title && 'error'}
 						validation={errors.title?.message}
 					/>
-					<InputLabel
-						type='file'
-						title='Wybierz baner:'
-						inputRef={{
-							...register('banner', {
-								required: 'To pole jest wymagane',
-							}),
-						}}
-						className={errors.title && 'error'}
-						validation={errors.title?.message}
-					/>
+
 					<InputLabel
 						placeholder={'Reżyser'}
 						inputRef={{

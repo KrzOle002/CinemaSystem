@@ -6,10 +6,30 @@ import { useDialogHandler } from '../../utils/dialog/useDialogHandler'
 import { Slideshow } from '../../utils/slider/Slideshow'
 import useAuthHook from './../../utils/auth/useAuth'
 import AdditionMovieDialog from './AdditionMovieDialog'
+import { useEffect, useState } from 'react'
+import { MovieModel } from '../../types/MovieModelType'
+import axios from 'axios'
 
 const MovieSchedule = () => {
-	const { isAdmin } = useAuthHook()
+	const { isAdmin, api, isAuthenticated } = useAuthHook()
 	const { isOpen, open, close } = useDialogHandler()
+	const [movieList, setMovieList] = useState<MovieModel[] | null>(null)
+
+	useEffect(() => {
+		const fetchMovies = async () => {
+			if (isAuthenticated()) {
+				try {
+					const response = await axios.get(api + '/api/movie/movies')
+
+					setMovieList(response.data)
+				} catch (error) {
+					setMovieList(null)
+				}
+			}
+		}
+		fetchMovies()
+	}, [])
+
 	return (
 		<Wrapper>
 			<Slideshow />
@@ -25,7 +45,18 @@ const MovieSchedule = () => {
 					) : null}
 				</MovieControl>
 				<MoviesList>
-					<MovieItem>ddd</MovieItem>
+					{movieList ? (
+						movieList.map((movie, index) => {
+							return (
+								<MovieItem key={index}>
+									{movie.title}
+									<img src={api + movie.cover.path} />
+								</MovieItem>
+							)
+						})
+					) : (
+						<>Brak filmów</>
+					)}
 				</MoviesList>
 			</Container>
 

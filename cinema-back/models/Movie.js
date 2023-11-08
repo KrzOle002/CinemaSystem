@@ -15,12 +15,9 @@ const MovieSchema = new mongoose.Schema({
 		required: true,
 	},
 	cover: {
-		type: String,
-		required: true,
+		path: String,
 	},
-	banner: {
-		type: String,
-	},
+
 	genre: {
 		type: [String],
 		require: true,

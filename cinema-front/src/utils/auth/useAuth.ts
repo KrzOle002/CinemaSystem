@@ -52,6 +52,7 @@ const useAuthHook = () => {
 		isAuthenticated,
 		userName,
 		authHead,
+		api,
 	}
 }
 

@@ -36,25 +36,27 @@ router.get('/movies/:uid', async (req, res) => {
 	}
 })
 
-router.post(
-	'/movies',
-	upload.fields([
-		{ name: 'cover', maxCount: 1 },
-		{ name: 'banner', maxCount: 1 },
-	]),
-	async (req, res) => {
-		const cover = req.files['cover'][0] // Pobierz obraz okładki
-		const banner = req.files['banner'][0] // Pobierz obraz bannera
-
-		const movie = new Movie(req.body)
-		try {
-			const newMovie = await movie.save()
-			res.status(201).json(newMovie)
-		} catch (error) {
-			res.status(400).json({ message: error.message })
-		}
+router.post('/movies', upload.single('cover'), async (req, res) => {
+	const movie = new Movie({
+		title: req.body.title,
+		description: req.body.description,
+		director: req.body.director,
+		genre: req.body.genre,
+		casts: req.body.casts,
+		productionCountry: req.body.productionCountry,
+		screeningLength: req.body.screeningLength,
+		ageRestrictions: req.body.ageRestrictions,
+		cover: {
+			path: req.file.path.replace(/\\/g, '/').replace('public', ''),
+		},
+	})
+	try {
+		const newMovie = await movie.save()
+		res.status(201).json(newMovie)
+	} catch (error) {
+		res.status(400).json({ message: error.message })
 	}
-)
+})
 
 router.patch('/movies/:id', async (req, res) => {
 	try {

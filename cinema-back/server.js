@@ -2,7 +2,7 @@ const express = require('express')
 const connectDB = require('./config/db')
 const cors = require('cors')
 const app = express()
-
+const path = require('path')
 connectDB()
 
 app.use(express.json({ extended: false }))
@@ -14,7 +14,7 @@ app.use((req, res, next) => {
 	res.setHeader('Access-Control-Allow-Credentials', 'true')
 	next()
 })
-
+app.use(express.static(path.join(__dirname, 'public')))
 app.get('/', (req, res) => res.send('API Running'))
 
 app.use('/api/users', require('./routes/api/users'))
