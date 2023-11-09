@@ -9,6 +9,7 @@ import AdditionMovieDialog from './AdditionMovieDialog'
 import { useEffect, useState } from 'react'
 import { MovieModel } from '../../types/MovieModelType'
 import axios from 'axios'
+import MovieItem from './MovieItem'
 
 const MovieSchedule = () => {
 	const { isAdmin, api, isAuthenticated } = useAuthHook()
@@ -37,22 +38,19 @@ const MovieSchedule = () => {
 			<Container>
 				<PageDescription>Repertuar Cinema Fordon</PageDescription>
 				<MovieControl>
-					<InputLabel placeholder={'Filtr'} />
+					<InputLabel placeholder={'Filtr'}  />
 
 					{isAdmin ? (
-						<SubmitButton type={'button'} onClick={() => open()} className={'primary'}>
+						<SubmitButton type={'button'} onClick={() => open()} className={'primary'} >
 							Dodaj film
 						</SubmitButton>
 					) : null}
 				</MovieControl>
 				<MoviesList>
 					{movieList ? (
-						movieList.map((movie, index) => {
+						movieList.map((movie) => {
 							return (
-								<MovieItem key={index}>
-									{movie.title}
-									<img src={api + movie.cover.path} />
-								</MovieItem>
+								<MovieItem key={movie._id} movie={movie} />
 							)
 						})
 					) : (
@@ -77,15 +75,22 @@ const Container = styled.div`
 	margin: 0 auto;
 `
 const MovieControl = styled.div`
+@media screen and (max-width: 640px) {
+	flex-direction: column-reverse;
+	row-gap: 50px;
+}
 	display: flex;
 	flex-direction: row;
 	align-items: center;
 	justify-content: center;
 	width: 100%;
+	column-gap:20px;
+	& button{
+		width: 50%;
+	}
 `
 const MoviesList = styled.div`
 	width: 100%;
-`
-const MovieItem = styled.div`
-	width: 100%;
+	display: flex;
+	flex-direction: column;
 `
