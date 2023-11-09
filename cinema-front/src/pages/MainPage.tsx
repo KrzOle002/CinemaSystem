@@ -14,7 +14,7 @@ const MainPage = () => {
 				<Route path='login' element={<Login />} />
 				<Route path='register' element={<Register />} />
 				<Route path='/' element={<Dashboard />} />
-				<Route path='purchase' element={<PurchaseForm />} />
+				<Route path='purchase/:movieId' element={<PurchaseForm />} />
 				<Route path='account' element={<Account />} />
 				<Route path='schedule' element={<MovieSchedule />} />
 			</Routes>

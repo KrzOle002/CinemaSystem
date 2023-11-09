@@ -17,7 +17,6 @@ const MovieSchedule = () => {
 	const [movieList, setMovieList] = useState<MovieModel[] | null>(null)
 
 	useEffect(() => {
-		console.log("licznik")
 		const fetchMovies = async () => {
 			if (isAuthenticated()) {
 				try {
@@ -38,20 +37,18 @@ const MovieSchedule = () => {
 			<Container>
 				<PageDescription>Repertuar Cinema Fordon</PageDescription>
 				<MovieControl>
-					<InputLabel placeholder={'Filtr'}  />
+					<InputLabel placeholder={'Filtr'} />
 
 					{isAdmin ? (
-						<SubmitButton type={'button'} onClick={() => open()} className={'primary'} >
+						<SubmitButton type={'button'} onClick={() => open()} className={'primary'}>
 							Dodaj film
 						</SubmitButton>
 					) : null}
 				</MovieControl>
 				<MoviesList>
 					{movieList ? (
-						movieList.map((movie) => {
-							return (
-								<MovieItem key={movie._id} movie={movie} />
-							)
+						movieList.map(movie => {
+							return <MovieItem key={movie._id} movie={movie} />
 						})
 					) : (
 						<>Brak filmów</>
@@ -75,17 +72,17 @@ const Container = styled.div`
 	margin: 0 auto;
 `
 const MovieControl = styled.div`
-@media screen and (max-width: 640px) {
-	flex-direction: column-reverse;
-	row-gap: 50px;
-}
+	@media screen and (max-width: 640px) {
+		flex-direction: column-reverse;
+		row-gap: 50px;
+	}
 	display: flex;
 	flex-direction: row;
 	align-items: center;
 	justify-content: center;
 	width: 100%;
-	column-gap:20px;
-	& button{
+	column-gap: 20px;
+	& button {
 		width: 50%;
 	}
 `
