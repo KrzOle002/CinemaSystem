@@ -9,6 +9,7 @@ export interface MovieModelSend {
 	productionCountry: string
 	screeningLength: string
 	ageRestrictions: string
+	productionYear: string
 }
 
 export interface MovieModel {
@@ -23,4 +24,5 @@ export interface MovieModel {
 	productionCountry: string
 	screeningLength: number
 	ageRestrictions: number
+	productionYear: number
 }

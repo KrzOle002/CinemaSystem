@@ -47,12 +47,13 @@ const AdditionMovieDialog = ({ isOpen, close }: MovieDialogType) => {
 		}
 	}
 	return (
-		<Dialog open={isOpen} onClose={close} fullWidth maxWidth={'md'}>
+		<Dialog open={isOpen} onClose={close} fullWidth maxWidth={'md'} sx={{zIndex:"2000"}}>
 			<DialogTitle sx={{ backgroundColor: theme.colors.primary, color: theme.colors.white }}>Dodaj film</DialogTitle>
-			<ContainerForm onSubmit={handleSubmit(onSubmit)}>
-				<DialogContent sx={{ width: '60%', margin: '0 auto' }}>
+			<ContainerForm onSubmit={handleSubmit(onSubmit)} >
+				<DialogContent sx={{ width: '60%', margin: '0 auto', rowGap: "20px", display:'flex', flexDirection:"column" }}>
 					<InputLabel
-						placeholder={'Tytuł'}
+						title={'Tytuł'}
+						
 						inputRef={{
 							...register('title', {
 								required: 'To pole jest wymagane',
@@ -62,7 +63,7 @@ const AdditionMovieDialog = ({ isOpen, close }: MovieDialogType) => {
 						validation={errors.title?.message}
 					/>
 					<InputLabel
-						placeholder={'Opis'}
+						title={'Opis'}
 						inputRef={{
 							...register('description', {
 								required: 'To pole jest wymagane',
@@ -85,7 +86,7 @@ const AdditionMovieDialog = ({ isOpen, close }: MovieDialogType) => {
 					/>
 
 					<InputLabel
-						placeholder={'Reżyser'}
+						title={'Reżyser'}
 						inputRef={{
 							...register('director', {
 								required: 'To pole jest wymagane',
@@ -95,7 +96,7 @@ const AdditionMovieDialog = ({ isOpen, close }: MovieDialogType) => {
 						validation={errors.title?.message}
 					/>
 					<InputLabel
-						placeholder={'Gatunek'}
+						title={'Gatunek'}
 						inputRef={{
 							...register('genre', {
 								required: 'To pole jest wymagane',
@@ -105,7 +106,7 @@ const AdditionMovieDialog = ({ isOpen, close }: MovieDialogType) => {
 						validation={errors.title?.message}
 					/>
 					<InputLabel
-						placeholder={'Obsada'}
+						title={'Obsada'}
 						inputRef={{
 							...register('casts', {
 								required: 'To pole jest wymagane',
@@ -115,7 +116,7 @@ const AdditionMovieDialog = ({ isOpen, close }: MovieDialogType) => {
 						validation={errors.title?.message}
 					/>
 					<InputLabel
-						placeholder={'Kraj produkcji'}
+						title={'Kraj produkcji'}
 						inputRef={{
 							...register('productionCountry', {
 								required: 'To pole jest wymagane',
@@ -125,7 +126,17 @@ const AdditionMovieDialog = ({ isOpen, close }: MovieDialogType) => {
 						validation={errors.title?.message}
 					/>
 					<InputLabel
-						placeholder={'Długość'}
+						title={'Rok produkcji'}
+						inputRef={{
+							...register('productionYear', {
+								required: 'To pole jest wymagane',
+							}),
+						}}
+						className={errors.title && 'error'}
+						validation={errors.title?.message}
+					/>
+					<InputLabel
+						title={'Długość'}
 						inputRef={{
 							...register('screeningLength', {
 								required: 'To pole jest wymagane',
@@ -135,11 +146,9 @@ const AdditionMovieDialog = ({ isOpen, close }: MovieDialogType) => {
 						validation={errors.title?.message}
 					/>
 					<InputLabel
-						placeholder={'Wiek'}
+						title={'Wiek'}
 						inputRef={{
-							...register('ageRestrictions', {
-								required: 'To pole jest wymagane',
-							}),
+							...register('ageRestrictions'),
 						}}
 						className={errors.title && 'error'}
 						validation={errors.title?.message}
@@ -163,4 +172,5 @@ export default AdditionMovieDialog
 
 const ContainerForm = styled.form`
 	width: 100%;
+	overflow: scroll;
 `

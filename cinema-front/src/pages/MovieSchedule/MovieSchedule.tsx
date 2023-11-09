@@ -16,6 +16,7 @@ const MovieSchedule = () => {
 	const [movieList, setMovieList] = useState<MovieModel[] | null>(null)
 
 	useEffect(() => {
+		console.log("licznik")
 		const fetchMovies = async () => {
 			if (isAuthenticated()) {
 				try {

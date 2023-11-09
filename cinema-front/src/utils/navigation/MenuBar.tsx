@@ -9,24 +9,24 @@ const MenuBar = () => {
 		<Drawer open={isMenuBarOpen} onClose={() => toggleMenuBar()}>
 			<div style={{ height: '66px' }} />
 			<List sx={{ width: '150px', height: '100%' }}>
-				<ListItemButton>
-					<ListItemText primary='Repertuar' onClick={() => navigate('/schedule')} />
+				<ListItemButton onClick={() => navigate('/schedule')}>
+					<ListItemText primary='Repertuar'  />
 				</ListItemButton>
 
-				<ListItemButton>
-					<ListItemText primary='Oferta' onClick={() => navigate('/')} />
+				<ListItemButton onClick={() => navigate('/')}>
+					<ListItemText primary='Oferta'  />
 				</ListItemButton>
 
-				<ListItemButton>
-					<ListItemText primary='Aktualności' onClick={() => navigate('/')} />
+				<ListItemButton onClick={() => navigate('/')}>
+					<ListItemText primary='Aktualności'  />
 				</ListItemButton>
 
-				<ListItemButton>
-					<ListItemText primary='Kino' onClick={() => navigate('/')} />
+				<ListItemButton onClick={() => navigate('/')}>
+					<ListItemText primary='Kino'  />
 				</ListItemButton>
 
-				<ListItemButton>
-					<ListItemText primary='Kontakt' onClick={() => navigate('/')} />
+				<ListItemButton onClick={() => navigate('/')}>
+					<ListItemText primary='Kontakt'  />
 				</ListItemButton>
 			</List>
 		</Drawer>

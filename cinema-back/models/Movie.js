@@ -34,6 +34,10 @@ const MovieSchema = new mongoose.Schema({
 		type: String,
 		require: true,
 	},
+	productionYear: {
+		type: Number,
+		require: true,
+	},
 	screeningLength: {
 		type: Number,
 		require: true,
