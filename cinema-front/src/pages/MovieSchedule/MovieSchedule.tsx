@@ -12,22 +12,21 @@ import axios from 'axios'
 import MovieItem from './MovieItem'
 
 const MovieSchedule = () => {
-	const { isAdmin, api, isAuthenticated } = useAuthHook()
+	const { isAdmin, api } = useAuthHook()
 	const { isOpen, open, close } = useDialogHandler()
 	const [movieList, setMovieList] = useState<MovieModel[] | null>(null)
 
 	useEffect(() => {
 		const fetchMovies = async () => {
-			if (isAuthenticated()) {
-				try {
-					const response = await axios.get(api + '/api/movie/movies')
+			try {
+				const response = await axios.get(api + '/api/movie/movies')
 
-					setMovieList(response.data)
-				} catch (error) {
-					setMovieList(null)
-				}
+				setMovieList(response.data)
+			} catch (error) {
+				setMovieList(null)
 			}
 		}
+
 		fetchMovies()
 	}, [])
 

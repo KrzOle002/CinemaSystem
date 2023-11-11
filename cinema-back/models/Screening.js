@@ -1,14 +1,17 @@
 const mongoose = require('mongoose')
 
 const ScreeningSchema = new mongoose.Schema({
-	roomNumber: {
-		type: Number,
+	roomId: {
+		type: mongoose.Schema.Types.ObjectId,
+		ref: 'room',
 	},
-	places: {
-		type: Number,
+	movieId: {
+		type: mongoose.Schema.Types.ObjectId,
+		ref: 'movie',
 	},
-	description: {
-		type: String,
+	date: {
+		type: Date,
+		required: true,
 	},
 })
 

@@ -2,10 +2,6 @@ const mongoose = require('mongoose')
 const Screening = require('./Screening')
 
 const MovieSchema = new mongoose.Schema({
-	uid: {
-		type: String,
-		require: true,
-	},
 	title: {
 		type: String,
 		require: true,
@@ -45,9 +41,12 @@ const MovieSchema = new mongoose.Schema({
 	ageRestrictions: {
 		type: Number,
 	},
-	screeningOptions: {
-		type: [Screening.Schema],
-	},
+	screenings: [
+		{
+			type: mongoose.Schema.Types.ObjectId,
+			ref: 'screening',
+		},
+	],
 })
 
 module.exports = Movie = mongoose.model('movie', MovieSchema)

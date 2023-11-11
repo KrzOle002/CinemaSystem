@@ -26,15 +26,15 @@ router.post(
 		}
 
 		const { name, surname, email, password } = req.body
-
+		const correctEmail = email.toLowerCase()
 		try {
-			let user = await User.findOne({ email })
+			let user = await User.findOne({ correctEmail })
 
 			if (user) {
 				return res.status(400).json({ errors: [{ msg: 'User already exists' }] })
 			}
 
-			const avatar = gravatar.url(email, {
+			const avatar = gravatar.url(correctEmail, {
 				s: '200',
 				r: 'pg',
 				d: 'mm',
@@ -42,7 +42,7 @@ router.post(
 
 			user = new User({
 				name,
-				email,
+				email: correctEmail,
 				surname,
 				avatar,
 				password,

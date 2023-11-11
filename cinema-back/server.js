@@ -23,6 +23,9 @@ app.use('/api/cinema', require('./routes/api/cinema'))
 app.use('/api/profile', require('./routes/api/profile'))
 app.use('/api/posts', require('./routes/api/posts'))
 app.use('/api/movie', require('./routes/api/movie'))
+app.use('/api/room', require('./routes/api/room'))
+app.use('/api/screening', require('./routes/api/screening'))
+app.use('/api/reservation', require('./routes/api/reservation'))
 const PORT = process.env.PORT || 5000
 
 app.listen(PORT, () => console.log(`Server started on port ${PORT}`))
