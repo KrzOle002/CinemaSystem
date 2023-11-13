@@ -2,9 +2,11 @@ const express = require('express')
 const router = express.Router()
 const { check, validationResult } = require('express-validator')
 const Room = require('../../models/Room')
+const Seat = require('../../models/Seat')
 const Movie = require('../../models/Movie')
 const Screening = require('../../models/Screening')
 const auth = require('../../middleware/auth')
+const mongoose = require('mongoose')
 
 router.get('/rooms', async (req, res) => {
 	try {
@@ -36,6 +38,24 @@ router.post('/rooms', async (req, res) => {
 		const newRoom = new Room(req.body)
 		const savedRoom = await newRoom.save()
 		res.status(200).json({ success: true, message: 'Dodano nowy pokój' })
+	} catch (error) {
+		console.error(error)
+		res.status(500).json({ success: false, message: 'Błąd serwera' })
+	}
+})
+
+router.get('/roomsSeat/:id', async (req, res) => {
+	try {
+		const room = await Room.findById(req.params.id)
+		if (!room) {
+			return res.status(404).json({ success: false, message: 'Pokój nie znaleziony' })
+		}
+		const roomId = req.params.id
+		const seats = await Seat.find({ roomId })
+
+		const newRoomObject = { room, seats }
+
+		res.status(200).json(newRoomObject)
 	} catch (error) {
 		console.error(error)
 		res.status(500).json({ success: false, message: 'Błąd serwera' })

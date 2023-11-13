@@ -1,5 +1,5 @@
 const mongoose = require('mongoose')
-
+const Seat = require('../models/Seat')
 const RoomSchema = new mongoose.Schema({
 	roomNumber: {
 		type: Number,

@@ -10,6 +10,7 @@ import { useEffect, useState } from 'react'
 import { MovieModel } from '../../types/MovieModelType'
 import axios from 'axios'
 import MovieItem from './MovieItem'
+import EmptyState from '../../utils/empty/EmptyState'
 
 const MovieSchedule = () => {
 	const { isAdmin, api } = useAuthHook()
@@ -50,7 +51,7 @@ const MovieSchedule = () => {
 							return <MovieItem key={movie._id} movie={movie} />
 						})
 					) : (
-						<>Brak filmów</>
+						<EmptyState />
 					)}
 				</MoviesList>
 			</Container>

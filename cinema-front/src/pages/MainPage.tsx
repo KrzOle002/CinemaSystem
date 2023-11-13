@@ -1,23 +1,9 @@
-import { Route, Routes } from 'react-router-dom'
 import styled from 'styled-components'
-import Login from './AuthForm/Login'
-import Register from './AuthForm/Register'
-import Dashboard from './Dashboard/Dashboard'
-import PurchaseForm from './PurchaseForm/PurchaseForm'
-import { RequireAuth } from 'react-auth-kit'
-import Account from './Account/Account'
-import MovieSchedule from './MovieSchedule/MovieSchedule'
+import NavList from './../../routes/NavList'
 const MainPage = () => {
 	return (
 		<Wrapper>
-			<Routes>
-				<Route path='login' element={<Login />} />
-				<Route path='register' element={<Register />} />
-				<Route path='/' element={<Dashboard />} />
-				<Route path='purchase/:movieId' element={<PurchaseForm />} />
-				<Route path='account' element={<Account />} />
-				<Route path='schedule' element={<MovieSchedule />} />
-			</Routes>
+			<NavList />
 		</Wrapper>
 	)
 }

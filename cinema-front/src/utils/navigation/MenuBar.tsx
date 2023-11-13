@@ -10,23 +10,23 @@ const MenuBar = () => {
 			<div style={{ height: '66px' }} />
 			<List sx={{ width: '150px', height: '100%' }}>
 				<ListItemButton onClick={() => navigate('/schedule')}>
-					<ListItemText primary='Repertuar'  />
+					<ListItemText primary='Repertuar' />
+				</ListItemButton>
+
+				<ListItemButton onClick={() => navigate('/empty')}>
+					<ListItemText primary='Oferta' />
 				</ListItemButton>
 
 				<ListItemButton onClick={() => navigate('/')}>
-					<ListItemText primary='Oferta'  />
+					<ListItemText primary='Aktualności' />
 				</ListItemButton>
 
 				<ListItemButton onClick={() => navigate('/')}>
-					<ListItemText primary='Aktualności'  />
+					<ListItemText primary='Kino' />
 				</ListItemButton>
 
 				<ListItemButton onClick={() => navigate('/')}>
-					<ListItemText primary='Kino'  />
-				</ListItemButton>
-
-				<ListItemButton onClick={() => navigate('/')}>
-					<ListItemText primary='Kontakt'  />
+					<ListItemText primary='Kontakt' />
 				</ListItemButton>
 			</List>
 		</Drawer>
