@@ -6,8 +6,12 @@ import useAuthHook from '../../utils/auth/useAuth'
 import { useEffect, useState } from 'react'
 import SubmitButton from '../../components/SubmitButton'
 import EmptyState from '../../utils/empty/EmptyState'
-
+import PaypalCheckoutButton from '../../components/PaypalCheckoutButton'
 const PurchaseForm = () => {
+	const product = {
+		description: 'Design+Code',
+		price: 19,
+	}
 	const { movieId } = useParams()
 	const { api, isAuthenticated } = useAuthHook()
 
@@ -53,6 +57,9 @@ const PurchaseForm = () => {
 						<SubmitButton className='primary' type='submit'>
 							Zarezerwuj bilety
 						</SubmitButton>
+						<div className='paypal-button-container'>
+							<PaypalCheckoutButton product={product} />
+						</div>
 					</TicketForm>
 				</>
 			) : (

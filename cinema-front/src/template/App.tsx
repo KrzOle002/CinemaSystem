@@ -8,26 +8,28 @@ import { MenuBarProvider } from '../context/MenuBarContext'
 import Footer from '../utils/footer/Footer'
 import { useScreenWidth } from '../hooks/useScreenWidth'
 import { AuthProvider } from 'react-auth-kit'
-
+import { PayPalScriptProvider } from '@paypal/react-paypal-js'
 const App = () => {
 	const resolution = useScreenWidth()
 	return (
-		<MenuBarProvider>
-			<Wrapper>
-				<AuthProvider
-					authType={'cookie'}
-					authName={'_auth'}
-					cookieDomain={window.location.hostname}
-					cookieSecure={window.location.protocol === 'https:'}>
-					<BrowserRouter>
-						<Nav />
-						<MainPage />
-						{resolution < 600 ? <Footer /> : null}
-					</BrowserRouter>
-				</AuthProvider>
-				<ToastContainer autoClose={750} />
-			</Wrapper>
-		</MenuBarProvider>
+		<PayPalScriptProvider options={{ clientId: import.meta.env.VITE_PAYPAL_KEY, currency: 'PLN' }}>
+			<MenuBarProvider>
+				<Wrapper>
+					<AuthProvider
+						authType={'cookie'}
+						authName={'_auth'}
+						cookieDomain={window.location.hostname}
+						cookieSecure={window.location.protocol === 'https:'}>
+						<BrowserRouter>
+							<Nav />
+							<MainPage />
+							{resolution < 600 ? <Footer /> : null}
+						</BrowserRouter>
+					</AuthProvider>
+					<ToastContainer autoClose={750} />
+				</Wrapper>
+			</MenuBarProvider>
+		</PayPalScriptProvider>
 	)
 }
 
