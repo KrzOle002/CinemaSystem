@@ -36,7 +36,7 @@ router.get('/rooms/:id', async (req, res) => {
 router.post('/rooms', async (req, res) => {
 	try {
 		const newRoom = new Room(req.body)
-		const savedRoom = await newRoom.save()
+		await newRoom.save()
 		res.status(200).json({ success: true, message: 'Dodano nowy pokój' })
 	} catch (error) {
 		console.error(error)

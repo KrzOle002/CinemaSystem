@@ -35,7 +35,7 @@ router.get('/screenings/:id', async (req, res) => {
 router.post('/screenings', async (req, res) => {
 	try {
 		const newScreening = new Screening(req.body)
-		const savedScreening = await newScreening.save()
+		await newScreening.save()
 		res.status(201).json({ success: true, message: 'Dodano nową ekranizację' })
 	} catch (error) {
 		console.error(error)

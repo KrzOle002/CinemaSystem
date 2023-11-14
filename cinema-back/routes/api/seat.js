@@ -11,7 +11,7 @@ router.post('/seats', async (req, res) => {
 		const newSeats = seatsData.map(seatData => new Seat(seatData))
 
 		// Zapisz nowe miejsca w bazie danych
-		const savedSeats = await Seat.insertMany(newSeats)
+		await Seat.insertMany(newSeats)
 
 		res.status(200).json({ success: true, message: 'Dodano nowe miejsca' })
 	} catch (error) {
