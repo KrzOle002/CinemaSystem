@@ -1,3 +1,4 @@
+import { ChangeEvent } from 'react'
 import styled from 'styled-components'
 
 interface InputLabelType {
@@ -8,7 +9,7 @@ interface InputLabelType {
 	required?: boolean
 	className?: string
 	disabled?: boolean
-	onChange?: () => void
+	onChange?: (args: ChangeEvent<HTMLInputElement>) => void
 	placeholder?: string
 	validation?: string
 }

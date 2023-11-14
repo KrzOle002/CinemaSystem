@@ -46,11 +46,13 @@ const PageFooter = () => {
 export default PageFooter
 
 const Wrapper = styled.div`
+	bottom: 0;
+	min-width: 0;
+	width: 100%;
 	margin-top: 40px;
-	border-radius: 50px 50px 0 0;
+	border-radius: 0 0;
 	background-color: ${({ theme }) => theme.colors.primary};
 	color: ${({ theme }) => theme.colors.white};
-	width: 100%;
 	padding: 40px 0;
 `
 const Container = styled.div`

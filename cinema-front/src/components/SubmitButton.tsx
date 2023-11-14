@@ -6,11 +6,16 @@ interface SubmitButtonType {
 	children?: ReactNode
 	type: 'button' | 'submit' | 'reset'
 	onClick?: () => void
+	fullWidth?: boolean
 }
 
-const SubmitButton = ({ className, children, type, onClick }: SubmitButtonType) => {
+const SubmitButton = ({ className, children, type, onClick, fullWidth }: SubmitButtonType) => {
 	return (
-		<StyledButton className={className} type={type} onClick={onClick}>
+		<StyledButton
+			className={className}
+			type={type}
+			onClick={onClick}
+			style={{ width: fullWidth ? '100%' : 'max-content' }}>
 			{children}
 		</StyledButton>
 	)
@@ -22,7 +27,7 @@ const StyledButton = styled.button`
 	width: 100%;
 	border: none;
 	border-radius: 4px;
-	padding: 8px 0;
+	padding: 8px 8px;
 
 	box-shadow: 0px 3px 1px -2px rgba(0, 0, 0, 0.2), 0px 2px 2px rgba(0, 0, 0, 0.14), 0px 1px 5px rgba(0, 0, 0, 0.12);
 	transition: 0.5s;

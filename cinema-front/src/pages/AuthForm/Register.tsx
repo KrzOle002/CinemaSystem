@@ -110,7 +110,7 @@ const Register = () => {
 							Masz już konto?
 						</NavigationLink>
 					</HelpSection>
-					<SubmitButton type={'submit'} className={'primary'}>
+					<SubmitButton fullWidth type={'submit'} className={'primary'}>
 						Zarejestruj się
 					</SubmitButton>
 				</Container>

@@ -1,5 +1,6 @@
 import styled from 'styled-components'
 import NavList from './../../routes/NavList'
+import PageFooter from './PageFooter'
 const MainPage = () => {
 	return (
 		<Wrapper>

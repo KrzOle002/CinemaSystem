@@ -91,7 +91,7 @@ const Login = () => {
 							Nie pamiętasz hasła ?{' '}
 						</NavigationLink>
 					</HelpSection>
-					<SubmitButton type={'submit'} className={'primary'}>
+					<SubmitButton type={'submit'} className={'primary'} fullWidth>
 						Zaloguj się
 					</SubmitButton>
 				</Container>

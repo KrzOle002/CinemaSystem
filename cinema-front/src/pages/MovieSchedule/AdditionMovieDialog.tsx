@@ -47,13 +47,13 @@ const AdditionMovieDialog = ({ isOpen, close }: MovieDialogType) => {
 		}
 	}
 	return (
-		<Dialog open={isOpen} onClose={close} fullWidth maxWidth={'md'} sx={{zIndex:"2000"}}>
+		<Dialog open={isOpen} onClose={close} fullWidth maxWidth={'md'} sx={{ zIndex: '2000' }}>
 			<DialogTitle sx={{ backgroundColor: theme.colors.primary, color: theme.colors.white }}>Dodaj film</DialogTitle>
-			<ContainerForm onSubmit={handleSubmit(onSubmit)} >
-				<DialogContent sx={{ width: '60%', margin: '0 auto', rowGap: "20px", display:'flex', flexDirection:"column" }}>
+			<ContainerForm onSubmit={handleSubmit(onSubmit)}>
+				<DialogContent
+					sx={{ width: '60%', margin: '0 auto', rowGap: '20px', display: 'flex', flexDirection: 'column' }}>
 					<InputLabel
 						title={'Tytuł'}
-						
 						inputRef={{
 							...register('title', {
 								required: 'To pole jest wymagane',
@@ -156,10 +156,10 @@ const AdditionMovieDialog = ({ isOpen, close }: MovieDialogType) => {
 				</DialogContent>
 
 				<DialogActions sx={{ width: '40%', marginLeft: 'auto' }}>
-					<SubmitButton type={'submit'} className='success'>
+					<SubmitButton fullWidth type={'submit'} className='success'>
 						Dodaj
 					</SubmitButton>
-					<SubmitButton onClick={() => close()} type={'button'} className='primary'>
+					<SubmitButton fullWidth onClick={() => close()} type={'button'} className='primary'>
 						Anuluj
 					</SubmitButton>
 				</DialogActions>

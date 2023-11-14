@@ -48,7 +48,7 @@ const Header = () => {
 	}, [])
 
 	return (
-		<Box sx={{ flexGrow: 1, position: scrolledPixels > 10 ? 'fixed' : 'relative', zIndex: 1500, width: '100%' }}>
+		<Box sx={{ flexGrow: 1, position: scrolledPixels > 80 ? 'fixed' : 'relative', zIndex: 1500, width: '100%' }}>
 			<AppBar sx={{ zIndex: theme => theme.zIndex.drawer + 1, backgroundColor: '#D0153F ', position: 'relative' }}>
 				<Toolbar>
 					<IconButton

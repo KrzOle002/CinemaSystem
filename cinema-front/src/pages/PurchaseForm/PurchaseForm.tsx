@@ -5,6 +5,7 @@ import { MovieModel } from '../../types/MovieModelType'
 import useAuthHook from '../../utils/auth/useAuth'
 import { useEffect, useState } from 'react'
 import SubmitButton from '../../components/SubmitButton'
+import EmptyState from '../../utils/empty/EmptyState'
 
 const PurchaseForm = () => {
 	const { movieId } = useParams()
@@ -19,19 +20,18 @@ const PurchaseForm = () => {
 	}
 	useEffect(() => {
 		const fetchMovies = async () => {
-			if (isAuthenticated()) {
-				try {
-					const response = await axios.get(api + `/api/movie/movies/${movieId}`)
+			try {
+				const response = await axios.get(api + `/api/movie/movies/${movieId}`)
 
-					setMovie(response.data)
-				} catch (error) {
-					setMovie(null)
-				}
+				setMovie(response.data)
+			} catch (error) {
+				setMovie(null)
 			}
 		}
 		fetchMovies()
 	}, [])
 
+	console.log(movie)
 	return (
 		<DashboardContainer>
 			{movie && movie != undefined ? (
@@ -56,7 +56,7 @@ const PurchaseForm = () => {
 					</TicketForm>
 				</>
 			) : (
-				<>Nie udało się załadowąc filmu</>
+				<EmptyState />
 			)}
 		</DashboardContainer>
 	)
@@ -65,16 +65,14 @@ const PurchaseForm = () => {
 export default PurchaseForm
 
 const DashboardContainer = styled.div`
-	background-color: #333;
 	color: white;
-	padding: 20px;
+	padding: 20px 0;
 	border-radius: 10px;
 	box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
 	display: flex;
 	flex-direction: column;
 	justify-content: center;
 	align-items: center;
-	height: 100vh;
 `
 
 const MovieInfo = styled.div`
