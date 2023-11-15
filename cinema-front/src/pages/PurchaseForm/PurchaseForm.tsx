@@ -7,6 +7,7 @@ import { useEffect, useState } from 'react'
 import SubmitButton from '../../components/SubmitButton'
 import EmptyState from '../../utils/empty/EmptyState'
 import PaypalCheckoutButton from '../../components/PaypalCheckoutButton'
+import Calendar from '../../components/Calendar'
 const PurchaseForm = () => {
 	const product = {
 		description: 'Design+Code',
@@ -36,10 +37,13 @@ const PurchaseForm = () => {
 	}, [])
 
 	console.log(movie)
+
+	const today = new Date()
 	return (
 		<DashboardContainer>
 			{movie && movie != undefined ? (
 				<>
+					<Calendar startDate={today} />
 					<MovieInfo>
 						<MoviePoster src={api + movie.cover.path} alt={movie.title} />
 						<MovieDetails>
