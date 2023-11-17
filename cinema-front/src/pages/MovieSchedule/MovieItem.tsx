@@ -3,17 +3,37 @@ import { MovieModel } from '../../types/MovieModelType'
 import useAuthHook from '../../utils/auth/useAuth'
 import CircleAge from '../../components/CircleAge'
 import SubmitButton from '../../components/SubmitButton'
-import { Tooltip } from '@mui/material'
+import EditIcon from '@mui/icons-material/Edit'
+import DeleteForeverIcon from '@mui/icons-material/DeleteForever'
 import { useNavigate } from 'react-router-dom'
-import { useState } from 'react'
+import { toast } from 'react-toastify'
+import { useDialogHandler } from '../../utils/dialog/useDialogHandler'
+import AdditionMovieDialog from './AdditionMovieDialog'
 
 interface MovieItemType {
 	movie: MovieModel
 }
 
 const MovieItem = ({ movie }: MovieItemType) => {
-	const { api } = useAuthHook()
+	const { api, axiosAuth, isAdmin } = useAuthHook()
+	const { isOpen, open, close } = useDialogHandler()
 	const navigate = useNavigate()
+
+	const editMovie = () => {
+		open()
+	}
+
+	const deleteMovie = async (id: number) => {
+		if (isAdmin) {
+			try {
+				await axiosAuth.delete(api + `/api/movie/movies/${id}`)
+
+				toast.success('Dodano film')
+			} catch (err) {
+				toast.error('Nie dodać filmu')
+			}
+		}
+	}
 
 	const handleReservationClick = () => {
 		navigate(`/purchase/${movie._id}`)
@@ -32,7 +52,18 @@ const MovieItem = ({ movie }: MovieItemType) => {
 						Zarezerwuj
 					</SubmitButton>
 				</MovieInfo>
+				<MovieController>
+					<ControlButton className='warn' type={'button'} onClick={editMovie}>
+						<EditIcon />
+						Edytuj
+					</ControlButton>
+					<ControlButton className='important' type={'button'} onClick={() => deleteMovie(movie._id)}>
+						<DeleteForeverIcon />
+						Usuń
+					</ControlButton>
+				</MovieController>
 			</MovieItemContainer>
+			<AdditionMovieDialog movieId={movie._id} isOpen={isOpen} close={close} />
 		</Wrapper>
 	)
 }
@@ -55,7 +86,7 @@ const MovieImage = styled.img`
 `
 
 const MovieInfo = styled.div`
-	flex: 1;
+	flex: 2;
 `
 
 const MovieItemContainer = styled.div`
@@ -75,4 +106,18 @@ const MovieBasicInfo = styled.div`
 	flex-direction: row;
 	align-items: center;
 	margin-bottom: 20px;
+`
+const MovieController = styled.div`
+	flex: 1;
+	width: min-content;
+	display: flex;
+	flex-direction: row;
+
+	gap: 10px;
+`
+const ControlButton = styled(SubmitButton)`
+	display: flex;
+	flex-direction: row;
+	justify-content: center;
+	align-items: center;
 `

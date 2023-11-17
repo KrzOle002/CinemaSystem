@@ -12,9 +12,10 @@ import { toast } from 'react-toastify'
 interface MovieDialogType {
 	isOpen: boolean
 	close: () => void
+	movieId?: number
 }
 
-const AdditionMovieDialog = ({ isOpen, close }: MovieDialogType) => {
+const AdditionMovieDialog = ({ isOpen, close, movieId }: MovieDialogType) => {
 	const { axiosAuth } = useAuthHook()
 	const {
 		register,
@@ -22,6 +23,30 @@ const AdditionMovieDialog = ({ isOpen, close }: MovieDialogType) => {
 		formState: { errors },
 	} = useForm<MovieModelSend>()
 	const api = import.meta.env.VITE_API_BASE_URL
+	const onEdit = async (data: MovieModelSend) => {
+		const formData = new FormData()
+		formData.append('cover', data.cover[0])
+		formData.append('title', data.title)
+		formData.append('description', data.description)
+		formData.append('director', data.director)
+		formData.append('genre', JSON.stringify(data.genre))
+		formData.append('casts', JSON.stringify(data.casts))
+		formData.append('productionCountry', data.productionCountry)
+		formData.append('screeningLength', data.screeningLength)
+		formData.append('ageRestrictions', data.ageRestrictions)
+
+		try {
+			await axiosAuth.put(api + '/api/movie/movies', formData, {
+				headers: {
+					'Content-Type': 'multipart/form-data',
+				},
+			})
+
+			toast.success('Dodano film')
+		} catch (err) {
+			toast.error('Nie dodać filmu')
+		}
+	}
 	const onSubmit = async (data: MovieModelSend) => {
 		const formData = new FormData()
 		formData.append('cover', data.cover[0])
@@ -48,10 +73,11 @@ const AdditionMovieDialog = ({ isOpen, close }: MovieDialogType) => {
 	}
 	return (
 		<Dialog open={isOpen} onClose={close} fullWidth maxWidth={'md'} sx={{ zIndex: '2000' }}>
-			<DialogTitle sx={{ backgroundColor: theme.colors.primary, color: theme.colors.white }}>Dodaj film</DialogTitle>
-			<ContainerForm onSubmit={handleSubmit(onSubmit)}>
-				<DialogContent
-					sx={{ width: '60%', margin: '0 auto', rowGap: '20px', display: 'flex', flexDirection: 'column' }}>
+			<DialogTitle sx={{ backgroundColor: theme.colors.primary, color: theme.colors.white }}>
+				{movieId ? <span>Edytuj film</span> : <span>Dodaj film</span>}
+			</DialogTitle>
+			<ContainerForm onSubmit={movieId ? handleSubmit(onEdit) : handleSubmit(onSubmit)}>
+				<DialogContent sx={{ width: '60%', margin: '0 auto', rowGap: '20px', display: 'flex', flexDirection: 'column' }}>
 					<InputLabel
 						title={'Tytuł'}
 						inputRef={{
@@ -156,9 +182,15 @@ const AdditionMovieDialog = ({ isOpen, close }: MovieDialogType) => {
 				</DialogContent>
 
 				<DialogActions sx={{ width: '40%', marginLeft: 'auto' }}>
-					<SubmitButton fullWidth type={'submit'} className='success'>
-						Dodaj
-					</SubmitButton>
+					{movieId ? (
+						<SubmitButton fullWidth type={'submit'} className='warn'>
+							Edytuj
+						</SubmitButton>
+					) : (
+						<SubmitButton fullWidth type={'submit'} className='success'>
+							Dodaj
+						</SubmitButton>
+					)}
 					<SubmitButton fullWidth onClick={() => close()} type={'button'} className='primary'>
 						Anuluj
 					</SubmitButton>

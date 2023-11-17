@@ -52,12 +52,7 @@ const PurchaseForm = () => {
 						</MovieDetails>
 					</MovieInfo>
 					<TicketForm onSubmit={() => {}}>
-						<TicketInput
-							type='number'
-							value={ticketQuantity}
-							onChange={handleTicketChange}
-							placeholder='Liczba biletów'
-						/>
+						<TicketInput type='number' value={ticketQuantity} onChange={handleTicketChange} placeholder='Liczba biletów' />
 						<SubmitButton className='primary' type='submit'>
 							Zarezerwuj bilety
 						</SubmitButton>
@@ -89,7 +84,7 @@ const DashboardContainer = styled.div`
 const MovieInfo = styled.div`
 	display: flex;
 	align-items: center;
-	margin-bottom: 20px;
+	margin: 40px 0;
 `
 
 const MoviePoster = styled.img`

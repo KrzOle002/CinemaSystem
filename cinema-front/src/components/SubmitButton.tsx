@@ -11,11 +11,7 @@ interface SubmitButtonType {
 
 const SubmitButton = ({ className, children, type, onClick, fullWidth }: SubmitButtonType) => {
 	return (
-		<StyledButton
-			className={className}
-			type={type}
-			onClick={onClick}
-			style={{ width: fullWidth ? '100%' : 'max-content' }}>
+		<StyledButton className={className} type={type} onClick={onClick} style={{ width: fullWidth ? '100%' : 'max-content' }}>
 			{children}
 		</StyledButton>
 	)
@@ -55,6 +51,22 @@ const StyledButton = styled.button`
 		color: white;
 		&:hover {
 			background-color: ${({ theme }) => theme.colors.success};
+		}
+	}
+
+	&.important {
+		background-color: ${({ theme }) => theme.colors.error};
+		color: white;
+		&:hover {
+			background-color: ${({ theme }) => theme.colors.secondary};
+		}
+	}
+
+	&.warn {
+		background-color: ${({ theme }) => theme.colors.warning};
+		color: white;
+		&:hover {
+			background-color: ${({ theme }) => theme.colors.secondary};
 		}
 	}
 
