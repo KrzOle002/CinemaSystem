@@ -40,7 +40,7 @@ const Login = () => {
 			signIn({
 				token: res.data.token,
 				tokenType: 'Bearer',
-				expiresIn: 360,
+				expiresIn: 300,
 				authState: { email: data.email },
 			})
 

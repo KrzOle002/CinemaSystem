@@ -6,7 +6,7 @@ const MenuBar = () => {
 	const { isMenuBarOpen, toggleMenuBar } = useMenuBarContext()
 	const navigate = useNavigate()
 	return (
-		<Drawer open={isMenuBarOpen} onClose={() => toggleMenuBar()}>
+		<Drawer open={isMenuBarOpen} onClose={() => toggleMenuBar()} sx={{ zIndex: 100 }}>
 			<div style={{ height: '66px' }} />
 			<List sx={{ width: '150px', height: '100%' }}>
 				<ListItemButton onClick={() => navigate('/schedule')}>
