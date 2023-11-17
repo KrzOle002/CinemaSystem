@@ -16,11 +16,11 @@ const PaypalCheckoutButton = (props: { product: ProductType }) => {
 	}
 
 	if (paidFor) {
-		toast.success('dupa')
+		toast.success('Płatność zaakceptowana')
 	}
 
 	if (error) {
-		toast.error('Błąd')
+		toast.error('Błąd Płatności')
 	}
 	return (
 		<PayPalButtons
@@ -48,13 +48,13 @@ const PaypalCheckoutButton = (props: { product: ProductType }) => {
 				console.error(err)
 			}}
 			onCancel={() => {
-				toast.warning('Cancel płatność')
+				toast.warning('Anulowano płatność')
 			}}
 			onClick={(data, actions) => {
 				const hasAlreadyBoughtCourse = false
 
 				if (hasAlreadyBoughtCourse) {
-					setError('You already bought it')
+					toast.warning('Właśnie zostało za to zapłacone')
 
 					return actions.reject()
 				} else {
