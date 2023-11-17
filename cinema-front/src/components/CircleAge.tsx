@@ -10,6 +10,7 @@ const CircleAge = ({ children }: CircleAgeType) => {
 		<Tooltip title={children ? `Ograniczenie wiekowe ${children} lat` : 'Dostępne dla każdego'} arrow>
 			<Fab
 				style={{
+					zIndex: 5,
 					width: '30px',
 					height: '30px',
 					minHeight: '10px',

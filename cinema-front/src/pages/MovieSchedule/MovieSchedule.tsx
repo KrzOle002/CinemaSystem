@@ -35,9 +35,7 @@ const MovieSchedule = () => {
 	const checkFilters = () => {
 		if (movieList != null) {
 			const keys: (keyof MovieModel)[] = ['title']
-			const newMovieList = movieList.filter(movie =>
-				keys.some(key => movie[key]?.toString().toLowerCase().includes(filters.search.toLowerCase()))
-			)
+			const newMovieList = movieList.filter(movie => keys.some(key => movie[key]?.toString().toLowerCase().includes(filters.search.toLowerCase())))
 
 			setFilteredList(newMovieList)
 		}

@@ -5,10 +5,11 @@ import SubmitButton from '../../components/SubmitButton'
 import { useForm } from 'react-hook-form'
 import { MovieModelSend } from '../../types/MovieModelType'
 import InputLabel from '../../components/InputLabel'
-
 import useAuthHook from '../../utils/auth/useAuth'
 import { toast } from 'react-toastify'
-
+import { LocalizationProvider, MobileDatePicker } from '@mui/x-date-pickers'
+import dayjs from 'dayjs'
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
 interface MovieDialogType {
 	isOpen: boolean
 	close: () => void
@@ -24,28 +25,26 @@ const AdditionMovieDialog = ({ isOpen, close, movieId }: MovieDialogType) => {
 	} = useForm<MovieModelSend>()
 	const api = import.meta.env.VITE_API_BASE_URL
 	const onEdit = async (data: MovieModelSend) => {
-		const formData = new FormData()
-		formData.append('cover', data.cover[0])
-		formData.append('title', data.title)
-		formData.append('description', data.description)
-		formData.append('director', data.director)
-		formData.append('genre', JSON.stringify(data.genre))
-		formData.append('casts', JSON.stringify(data.casts))
-		formData.append('productionCountry', data.productionCountry)
-		formData.append('screeningLength', data.screeningLength)
-		formData.append('ageRestrictions', data.ageRestrictions)
-
-		try {
-			await axiosAuth.put(api + '/api/movie/movies', formData, {
-				headers: {
-					'Content-Type': 'multipart/form-data',
-				},
-			})
-
-			toast.success('Dodano film')
-		} catch (err) {
-			toast.error('Nie dodać filmu')
-		}
+		// const formData = new FormData()
+		// formData.append('cover', data.cover[0])
+		// formData.append('title', data.title)
+		// formData.append('description', data.description)
+		// formData.append('director', data.director)
+		// formData.append('genre', JSON.stringify(data.genre))
+		// formData.append('casts', JSON.stringify(data.casts))
+		// formData.append('productionCountry', data.productionCountry)
+		// formData.append('screeningLength', data.screeningLength)
+		// formData.append('ageRestrictions', data.ageRestrictions)
+		// try {
+		// 	await axiosAuth.put(api + '/api/movie/movies', formData, {
+		// 		headers: {
+		// 			'Content-Type': 'multipart/form-data',
+		// 		},
+		// 	})
+		// 	toast.success('Dodano film')
+		// } catch (err) {
+		// 	toast.error('Nie dodać filmu')
+		// }
 	}
 	const onSubmit = async (data: MovieModelSend) => {
 		const formData = new FormData()
@@ -72,7 +71,7 @@ const AdditionMovieDialog = ({ isOpen, close, movieId }: MovieDialogType) => {
 		}
 	}
 	return (
-		<Dialog open={isOpen} onClose={close} fullWidth maxWidth={'md'} sx={{ zIndex: '2000' }}>
+		<Dialog open={isOpen} onClose={close} fullWidth maxWidth={'md'} sx={{ zIndex: '500' }}>
 			<DialogTitle sx={{ backgroundColor: theme.colors.primary, color: theme.colors.white }}>
 				{movieId ? <span>Edytuj film</span> : <span>Dodaj film</span>}
 			</DialogTitle>
@@ -179,6 +178,9 @@ const AdditionMovieDialog = ({ isOpen, close, movieId }: MovieDialogType) => {
 						className={errors.title && 'error'}
 						validation={errors.title?.message}
 					/>
+					<LocalizationProvider dateAdapter={AdapterDayjs}>
+						<MobileDatePicker defaultValue={dayjs('2022-04-17')} />
+					</LocalizationProvider>
 				</DialogContent>
 
 				<DialogActions sx={{ width: '40%', marginLeft: 'auto' }}>

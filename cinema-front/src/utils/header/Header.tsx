@@ -48,16 +48,10 @@ const Header = () => {
 	}, [])
 
 	return (
-		<Box sx={{ flexGrow: 1, position: scrolledPixels > 80 ? 'fixed' : 'relative', zIndex: 1500, width: '100%' }}>
+		<Box sx={{ flexGrow: 1, position: scrolledPixels > 80 ? 'fixed' : 'relative', zIndex: 100, width: '100%' }}>
 			<AppBar sx={{ zIndex: theme => theme.zIndex.drawer + 1, backgroundColor: '#D0153F ', position: 'relative' }}>
 				<Toolbar>
-					<IconButton
-						size='large'
-						edge='start'
-						color='inherit'
-						aria-label='menu'
-						sx={{ mr: 2 }}
-						onClick={() => toggleMenuBar()}>
+					<IconButton size='large' edge='start' color='inherit' aria-label='menu' sx={{ mr: 2 }} onClick={() => toggleMenuBar()}>
 						<MenuIcon />
 					</IconButton>
 					<Typography variant='h6' component='div' sx={{ flexGrow: 1, alignItems: 'left', justifyContent: 'left' }}>
