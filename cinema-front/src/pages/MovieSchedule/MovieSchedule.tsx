@@ -12,39 +12,23 @@ import axios from 'axios'
 import MovieItem from './MovieItem'
 import EmptyState from '../../utils/empty/EmptyState'
 import PageFooter from '../PageFooter'
-interface FilterType {
-	search: string
-}
+import Calendar from '../../components/Calendar'
+
 const MovieSchedule = () => {
 	const { isAdmin, api } = useAuthHook()
 	const { isOpen, open, close } = useDialogHandler()
-	const initialFilterValue = {
-		search: '',
-	}
-
-	const [filters, setFilters] = useState<FilterType>(initialFilterValue)
 
 	const [movieList, setMovieList] = useState<MovieModel[] | null>(null)
-	const [movieFilteredList, setFilteredList] = useState<MovieModel[] | null>(null)
 
 	const handleFilterMovies = (e: ChangeEvent<HTMLInputElement>) => {
-		setFilters({ search: e.target.value })
-		// No need to call checkFilters() here, it will be called in useEffect
+		fetchMovies(e.target.value)
 	}
 
-	const checkFilters = () => {
-		if (movieList != null) {
-			const keys: (keyof MovieModel)[] = ['title']
-			const newMovieList = movieList.filter(movie => keys.some(key => movie[key]?.toString().toLowerCase().includes(filters.search.toLowerCase())))
-
-			setFilteredList(newMovieList)
-		}
-	}
-
-	const fetchMovies = async () => {
+	const fetchMovies = async (title?: string) => {
 		try {
-			const response = await axios.get(api + '/api/movie/movies')
-			setMovieList(response.data) // Set the movieList directly
+			const getter = title ? `/api/movie/movies?title=${title}` : `/api/movie/movies`
+			const response = await axios.get(api + getter)
+			setMovieList(response.data)
 		} catch (error) {
 			setMovieList(null)
 		}
@@ -52,13 +36,14 @@ const MovieSchedule = () => {
 
 	useEffect(() => {
 		fetchMovies()
-		checkFilters() // Call checkFilters here
-	}, [movieList, filters.search])
+	}, [])
+
 	return (
 		<Wrapper>
 			<Slideshow />
 			<Container>
 				<PageDescription>Repertuar Cinema Fordon</PageDescription>
+				<Calendar />
 				<MovieControl>
 					<InputLabel placeholder={'Filtr'} onChange={handleFilterMovies} />
 
@@ -69,9 +54,9 @@ const MovieSchedule = () => {
 					) : null}
 				</MovieControl>
 				<MoviesList>
-					{movieFilteredList?.length == 0 ? <EmptySlot>Brak filmu o takiej nazwie</EmptySlot> : null}
-					{movieFilteredList ? (
-						movieFilteredList.map(movie => {
+					{movieList?.length == 0 ? <EmptySlot>Brak filmu o takiej nazwie</EmptySlot> : null}
+					{movieList ? (
+						movieList.map(movie => {
 							return <MovieItem key={movie._id} movie={movie} />
 						})
 					) : (

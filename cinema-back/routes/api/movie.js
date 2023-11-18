@@ -82,14 +82,15 @@ router.delete('/movies/:id', async (req, res) => {
 })
 
 router.get('/movies', async (req, res) => {
-	try {
-		const movies = await Movie.find()
+	const title = req.query.title
 
-		// Mapowanie zwraca tablicę obiektów Promise, więc możemy użyć Promise.all do oczekiwania na ich zakończenie
+	try {
+		const movies = title ? await Movie.find({ title: new RegExp(title, 'i') }) : await Movie.find()
+
 		const moviesWithScreenings = await Promise.all(
 			movies.map(async movie => {
 				const screenings = await Screening.find({ movieId: movie.id }).populate('roomId').exec()
-				// Zwracamy nowy obiekt zawierający informacje o filmie i ekranizacjach
+
 				return { ...movie.toObject(), screenings }
 			})
 		)

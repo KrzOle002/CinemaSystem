@@ -52,16 +52,18 @@ const MovieItem = ({ movie }: MovieItemType) => {
 						Zarezerwuj
 					</SubmitButton>
 				</MovieInfo>
-				<MovieController>
-					<ControlButton className='warn' type={'button'} onClick={editMovie}>
-						<EditIcon />
-						Edytuj
-					</ControlButton>
-					<ControlButton className='important' type={'button'} onClick={() => deleteMovie(movie._id)}>
-						<DeleteForeverIcon />
-						Usuń
-					</ControlButton>
-				</MovieController>
+				{isAdmin ? (
+					<MovieController>
+						<ControlButton className='warn' type={'button'} onClick={editMovie}>
+							<EditIcon />
+							Edytuj
+						</ControlButton>
+						<ControlButton className='important' type={'button'} onClick={() => deleteMovie(movie._id)}>
+							<DeleteForeverIcon />
+							Usuń
+						</ControlButton>
+					</MovieController>
+				) : null}
 			</MovieItemContainer>
 			<AdditionMovieDialog movieId={movie._id} isOpen={isOpen} close={close} />
 		</Wrapper>

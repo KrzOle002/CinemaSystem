@@ -1,71 +1,70 @@
-import React, { useState } from 'react'
-import { format, addDays, startOfWeek, endOfWeek, eachDayOfInterval } from 'date-fns'
+import { eachDayOfInterval, format } from 'date-fns'
+import { useState } from 'react'
 import styled from 'styled-components'
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos'
 import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos'
 import SubmitButton from './SubmitButton'
-enum PolishMonths {
-	January = 'Styczeń',
-	February = 'Luty',
-	March = 'Marzec',
-	April = 'Kwiecień',
-	May = 'Maj',
-	June = 'Czerwiec',
-	July = 'Lipiec',
-	August = 'Sierpień',
-	September = 'Wrzesień',
-	October = 'Październik',
-	November = 'Listopad',
-	December = 'Grudzień',
-}
 
-const customFormat = (date: Date, formatString: string) => {
-	const monthNames = Object.values(PolishMonths)
-	const monthIndex = date.getMonth()
-	const formattedString = format(date, formatString)
-	return formattedString.replace(/MMMM/, monthNames[monthIndex])
-}
-
-interface WeeklyCalendarProps {
-	startDate: Date
-}
-
-const Calendar: React.FC<WeeklyCalendarProps> = ({ startDate }) => {
-	const [weekStart, setWeekStart] = useState<Date>(startDate)
-
-	const prevWeek = () => {
-		setWeekStart(addDays(weekStart, -7))
-	}
-
-	const nextWeek = () => {
-		setWeekStart(addDays(weekStart, 7))
-	}
-
+const Calendar = () => {
+	const [startDate, setStartDate] = useState(new Date())
+	const [year, setYear] = useState<number>(new Date().getFullYear())
+	const [month, setMonth] = useState<number>(new Date().getMonth())
 	const handleDayClick = (clickedDate: Date) => {
 		console.log('Clicked date:', clickedDate)
 		// Add your logic for handling the clicked date
 	}
 
-	const renderDays = () => {
-		const weekDays = eachDayOfInterval({ start: startOfWeek(weekStart), end: endOfWeek(weekStart) })
+	const PolishMonths = [
+		'Styczeń',
+		'Luty',
+		'Marzec',
+		'Kwiecień',
+		'Maj',
+		'Czerwiec',
+		'Lipiec',
+		'Sierpień',
+		'Wrzesień',
+		'Październik',
+		'Listopad',
+		'Grudzień',
+	]
 
-		return weekDays.map(day => (
-			<div key={day.toString()} className='day' onClick={() => handleDayClick(day)}>
-				<div className='dayNumber'>{format(day, 'd')}</div>
-				<div className='dayOfWeek'>{format(day, 'EEEE')}</div>
-			</div>
-		))
+	const PolishDays = ['Nd', 'Pn', 'Wt', 'Śr', 'Cz', 'Pt', 'Sb']
+
+	const handleNextWeekClick = (next: string) => {
+		const newStartDate = new Date(startDate)
+		newStartDate.setDate(next == 'next' ? newStartDate.getDate() + 7 : newStartDate.getDate() - 7)
+		setStartDate(newStartDate)
+		setYear(newStartDate.getFullYear())
+		setMonth(newStartDate.getMonth())
 	}
+	const renderDays = () => {
+		const endDate = new Date(startDate)
+		endDate.setDate(endDate.getDate() + 6)
+		const week = eachDayOfInterval({ start: startDate, end: endDate })
 
+		return week.map(day => {
+			return (
+				<div key={day.toString()} className='day' onClick={() => handleDayClick(day)}>
+					<div className='dayOfWeek' style={{ fontSize: '20px' }}>
+						{PolishDays[day.getDay()]}
+					</div>
+					<div className='dayOfWeek'>{format(day, 'd')}</div>
+				</div>
+			)
+		})
+	}
 	return (
 		<StyledWeeklyCalendar>
-			<StyledCalendarHeader>{customFormat(weekStart, 'MMMM, yyyy')}</StyledCalendarHeader>
+			<StyledCalendarHeader>
+				{PolishMonths[month]} {year}
+			</StyledCalendarHeader>
 			<StyledCalendarContent>
-				<SubmitButton onClick={prevWeek} type={'button'} className='primary'>
+				<SubmitButton onClick={() => handleNextWeekClick('back')} type={'button'} className='primary'>
 					<ArrowBackIosIcon />
 				</SubmitButton>
 				<StyledCalendarDays>{renderDays()}</StyledCalendarDays>
-				<SubmitButton onClick={nextWeek} type={'button'} className='primary'>
+				<SubmitButton onClick={() => handleNextWeekClick('next')} type={'button'} className='primary'>
 					<ArrowForwardIosIcon />
 				</SubmitButton>
 			</StyledCalendarContent>
@@ -87,19 +86,17 @@ const StyledCalendarContent = styled.div`
 	display: flex;
 	flex-direction: row;
 	margin: 0 auto;
-	width: 80%;
+	width: 100%;
 `
 
 const StyledCalendarDays = styled.div`
-	/* Add your styles for the calendar days container */
 	display: flex;
 	cursor: pointer;
 	flex: 1;
 	.day {
-		/* Add your styles for each day */
 		width: 100%;
-		padding: 50px 10px;
 
+		padding: 10px 10px;
 		border: 1px solid #ddd;
 		border-radius: 5px;
 		display: flex;

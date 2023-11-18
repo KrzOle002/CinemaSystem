@@ -178,9 +178,8 @@ const AdditionMovieDialog = ({ isOpen, close, movieId }: MovieDialogType) => {
 						className={errors.title && 'error'}
 						validation={errors.title?.message}
 					/>
-					<LocalizationProvider dateAdapter={AdapterDayjs}>
-						<MobileDatePicker defaultValue={dayjs('2022-04-17')} />
-					</LocalizationProvider>
+
+					<MobileDatePicker defaultValue={dayjs('2022-04-17')} />
 				</DialogContent>
 
 				<DialogActions sx={{ width: '40%', marginLeft: 'auto' }}>

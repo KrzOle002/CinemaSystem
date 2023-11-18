@@ -22,30 +22,30 @@ const htmlTemplate = `
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>New Movie Alert</title>
+    <title>Nowy film trafił do naszego repertuaru</title>
 </head>
 <body style="background-color: #1C1C27; color: #FFF9FB; font-family: 'Arial', sans-serif; ">
 
     <div style="background-color: #D0153F; padding: 20px; text-align: center; font-size: 32px">
-        <h1>New Movie Alert!</h1>
+        <h1>Nowy film trafił do naszego repertuaru</h1>
     </div>
 
     <div style="padding: 20px; font-size: 20px">
-        <p>Hello {name} {surname},</p>
-        <p>We are excited to inform you about the latest addition to our movie collection!</p>
-        <p>Check out the details and make sure not to miss the new blockbuster.</p>
-
-        <!-- Movie Details (Replace with actual movie details) -->
-        <h2>Movie Title: [Movie Title]</h2>
-        <p>Release Date: [Release Date]</p>
-        <p>Genre: [Genre]</p>
-
-        <p>Enjoy your time at the cinema!</p>
-
-        <div style="margin-top: 20px;">
-            <p>Best regards,</p>
-            <p>Your Cinema Team</p>
-        </div>
+    <p>Cześć Joe Doe,</p>
+    <p>Z radością informujemy Cię o najnowszym dodatku do naszej kolekcji filmowej!</p>
+    <p>Sprawdź szczegóły i upewnij się, że nie przegapisz nowego hitu kinowego.</p>
+    
+    <!-- Szczegóły filmu (Zamień na rzeczywiste dane filmowe) -->
+    <h2>Tytuł filmu: O psie, który jeździł koleją</h2>
+    <p>Data premiery: 10.11.2023</p>
+    <p>Gatunek: Przygodowy</p>
+    
+    <p>Miłego spędzenia czasu w kinie!</p>
+    
+    <div style="margin-top: 20px;">
+        <p>Z pozdrowieniami,</p>
+        <p>Twój Zespół Kina</p>
+    </div>
     </div>
 
 </body>
@@ -55,7 +55,7 @@ const htmlTemplate = `
 const mailOptions = {
 	from: 'noreply@kino-fordon.pl <cinemaFordon12@outlook.com>',
 	to: 'Thekriso@wp.pl',
-	subject: 'New Movie Alert',
+	subject: 'Nowy film trafił do naszego repertuaru',
 	html: htmlTemplate,
 }
 
