@@ -41,12 +41,6 @@ const MovieSchema = new mongoose.Schema({
 	ageRestrictions: {
 		type: Number,
 	},
-	screenings: [
-		{
-			type: mongoose.Schema.Types.ObjectId,
-			ref: 'screening',
-		},
-	],
 })
 
 module.exports = Movie = mongoose.model('movie', MovieSchema)

@@ -36,7 +36,6 @@ const PurchaseForm = () => {
 		fetchMovies()
 	}, [])
 
-	console.log(movie)
 	return (
 		<DashboardContainer>
 			{movie && movie != undefined ? (
@@ -70,8 +69,6 @@ export default PurchaseForm
 const DashboardContainer = styled.div`
 	color: white;
 	padding: 20px 0;
-	border-radius: 10px;
-	box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
 	display: flex;
 	flex-direction: column;
 	justify-content: center;

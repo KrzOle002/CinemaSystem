@@ -9,12 +9,14 @@ import { useNavigate } from 'react-router-dom'
 import { toast } from 'react-toastify'
 import { useDialogHandler } from '../../utils/dialog/useDialogHandler'
 import AdditionMovieDialog from './AdditionMovieDialog'
-
+import { format } from 'date-fns'
+import { utcToZonedTime, zonedTimeToUtc } from 'date-fns-tz'
 interface MovieItemType {
 	movie: MovieModel
+	reservationDate: Date
 }
 
-const MovieItem = ({ movie }: MovieItemType) => {
+const MovieItem = ({ movie, reservationDate }: MovieItemType) => {
 	const { api, axiosAuth, isAdmin } = useAuthHook()
 	const { isOpen, open, close } = useDialogHandler()
 	const navigate = useNavigate()
@@ -35,8 +37,8 @@ const MovieItem = ({ movie }: MovieItemType) => {
 		}
 	}
 
-	const handleReservationClick = () => {
-		navigate(`/purchase/${movie._id}`)
+	const handleReservationClick = (screening: string) => {
+		navigate(`/purchase/${movie._id}?screening=${encodeURIComponent(screening)}&date=${encodeURIComponent(reservationDate.toISOString())}`)
 	}
 	return (
 		<Wrapper>
@@ -48,9 +50,17 @@ const MovieItem = ({ movie }: MovieItemType) => {
 						<CircleAge>{movie.ageRestrictions}</CircleAge>
 						{movie.genre} | {movie.screeningLength} minut
 					</MovieBasicInfo>
-					<SubmitButton type={'button'} className='primary' onClick={handleReservationClick}>
-						Zarezerwuj
-					</SubmitButton>
+					<MovieButtons>
+						{movie.screenings.map(screening => {
+							const dateObject = new Date(screening.date)
+
+							return (
+								<SubmitButton key={screening._id} type={'button'} className='primary' onClick={() => handleReservationClick(screening._id)}>
+									{dateObject.getUTCHours()}:{dateObject.getUTCMinutes().toString().padStart(2, '0')}
+								</SubmitButton>
+							)
+						})}
+					</MovieButtons>
 				</MovieInfo>
 				{isAdmin ? (
 					<MovieController>
@@ -115,6 +125,11 @@ const MovieController = styled.div`
 	display: flex;
 	flex-direction: row;
 
+	gap: 10px;
+`
+const MovieButtons = styled.div`
+	display: flex;
+	flex-direction: row;
 	gap: 10px;
 `
 const ControlButton = styled(SubmitButton)`

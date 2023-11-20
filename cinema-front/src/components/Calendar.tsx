@@ -5,14 +5,15 @@ import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos'
 import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos'
 import SubmitButton from './SubmitButton'
 
-const Calendar = () => {
+interface CalendarType {
+	reservationDate: Date
+	setReservationDate: (date: Date) => void
+}
+
+const Calendar = ({ reservationDate, setReservationDate }: CalendarType) => {
 	const [startDate, setStartDate] = useState(new Date())
 	const [year, setYear] = useState<number>(new Date().getFullYear())
 	const [month, setMonth] = useState<number>(new Date().getMonth())
-	const handleDayClick = (clickedDate: Date) => {
-		console.log('Clicked date:', clickedDate)
-		// Add your logic for handling the clicked date
-	}
 
 	const PolishMonths = [
 		'Styczeń',
@@ -31,6 +32,15 @@ const Calendar = () => {
 
 	const PolishDays = ['Nd', 'Pn', 'Wt', 'Śr', 'Cz', 'Pt', 'Sb']
 
+	const setDateNow = () => {
+		setReservationDate(new Date())
+		setStartDate(new Date())
+	}
+
+	const handleDayClick = (clickedDate: Date) => {
+		setReservationDate(clickedDate)
+	}
+
 	const handleNextWeekClick = (next: string) => {
 		const newStartDate = new Date(startDate)
 		newStartDate.setDate(next == 'next' ? newStartDate.getDate() + 7 : newStartDate.getDate() - 7)
@@ -38,14 +48,16 @@ const Calendar = () => {
 		setYear(newStartDate.getFullYear())
 		setMonth(newStartDate.getMonth())
 	}
+
 	const renderDays = () => {
 		const endDate = new Date(startDate)
 		endDate.setDate(endDate.getDate() + 6)
 		const week = eachDayOfInterval({ start: startDate, end: endDate })
 
 		return week.map(day => {
+			const isActive = format(day, 'yyyy-MM-dd') === format(reservationDate, 'yyyy-MM-dd')
 			return (
-				<div key={day.toString()} className='day' onClick={() => handleDayClick(day)}>
+				<div key={day.toString()} className={`day ${isActive ? 'active' : ''}`} onClick={() => handleDayClick(day)}>
 					<div className='dayOfWeek' style={{ fontSize: '20px' }}>
 						{PolishDays[day.getDay()]}
 					</div>
@@ -57,7 +69,12 @@ const Calendar = () => {
 	return (
 		<StyledWeeklyCalendar>
 			<StyledCalendarHeader>
-				{PolishMonths[month]} {year}
+				<span>
+					{PolishMonths[month]} {year}
+				</span>
+				<DateNowButton type='button' className='primary' onClick={setDateNow}>
+					Dziś
+				</DateNowButton>
 			</StyledCalendarHeader>
 			<StyledCalendarContent>
 				<SubmitButton onClick={() => handleNextWeekClick('back')} type={'button'} className='primary'>
@@ -78,8 +95,15 @@ const StyledWeeklyCalendar = styled.div`
 	width: 100%;
 `
 
+const DateNowButton = styled(SubmitButton)`
+	padding: 5px 20px;
+`
+
 const StyledCalendarHeader = styled.h2`
 	text-align: center;
+	display: flex;
+	justify-content: center;
+	gap: 10px;
 `
 
 const StyledCalendarContent = styled.div`
@@ -108,10 +132,6 @@ const StyledCalendarDays = styled.div`
 			background-color: ${({ theme }) => theme.colors.secondary};
 		}
 
-		&:active {
-			background-color: ${({ theme }) => theme.colors.secondary};
-		}
-
 		.dayNumber {
 			font-size: 18px;
 			font-weight: bold;
@@ -121,5 +141,8 @@ const StyledCalendarDays = styled.div`
 			font-size: 14px;
 			color: #ffffff;
 		}
+	}
+	.active {
+		background-color: ${({ theme }) => theme.colors.secondary};
 	}
 `

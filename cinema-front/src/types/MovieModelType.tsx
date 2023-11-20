@@ -1,8 +1,7 @@
 export interface MovieModelSend {
-	uid?: string
 	title: string
 	description: string
-	cover: Blob[]
+	cover: Blob
 	genre: string[]
 	director: string
 	casts: string[]
@@ -10,6 +9,12 @@ export interface MovieModelSend {
 	screeningLength: string
 	ageRestrictions: string
 	productionYear: string
+	selectedHours: [
+		{
+			hour: number
+			isChecked: boolean
+		}
+	]
 }
 
 export interface MovieModel {
@@ -25,4 +30,12 @@ export interface MovieModel {
 	screeningLength: number
 	ageRestrictions: number
 	productionYear: number
+	screenings: [
+		{
+			_id: string
+			roomId: string
+			movieId: string
+			date: Date
+		}
+	]
 }
