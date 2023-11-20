@@ -1,18 +1,18 @@
 import styled from 'styled-components'
 import InputLabel from '../../components/InputLabel'
-import PageDescription from '../../components/PageDescription'
 import SubmitButton from '../../components/SubmitButton'
 import { useDialogHandler } from '../../utils/dialog/useDialogHandler'
 import { Slideshow } from '../../utils/slider/Slideshow'
 import useAuthHook from './../../utils/auth/useAuth'
-import AdditionMovieDialog from './AdditionMovieDialog'
+import AdditionMovieDialog from './Components/AdditionMovieDialog'
 import { ChangeEvent, useEffect, useState } from 'react'
 import { MovieModel } from '../../types/MovieModelType'
 import axios from 'axios'
-import MovieItem from './MovieItem'
+import MovieItem from './Components/MovieItem'
 import EmptyState from '../../utils/empty/EmptyState'
 import PageFooter from '../PageFooter'
 import Calendar from '../../components/Calendar'
+import SectionHeader from '../../components/SectionHeader'
 
 const MovieSchedule = () => {
 	const { isAdmin, api } = useAuthHook()
@@ -43,7 +43,7 @@ const MovieSchedule = () => {
 		<Wrapper>
 			<Slideshow />
 			<Container>
-				<PageDescription>Repertuar Cinema Fordon</PageDescription>
+				<SectionHeader>Repertuar Cinema Fordon</SectionHeader>
 
 				<Calendar setReservationDate={setReservationDate} reservationDate={reservationDate} />
 				<MovieControl>

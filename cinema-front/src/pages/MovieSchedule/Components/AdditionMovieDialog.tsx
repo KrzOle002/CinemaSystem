@@ -1,13 +1,13 @@
 import { Dialog, DialogActions, DialogContent, DialogTitle } from '@mui/material'
-import { theme } from '../../assets/styles/theme'
+import { theme } from '../../../assets/styles/theme'
 import styled from 'styled-components'
-import SubmitButton from '../../components/SubmitButton'
+import SubmitButton from '../../../components/SubmitButton'
 import { useFieldArray, useForm } from 'react-hook-form'
-import { MovieModelSend } from '../../types/MovieModelType'
-import InputLabel from '../../components/InputLabel'
-import useAuthHook from '../../utils/auth/useAuth'
+import { MovieModelSend } from '../../../types/MovieModelType'
+import InputLabel from '../../../components/InputLabel'
+import useAuthHook from '../../../utils/auth/useAuth'
 import { toast } from 'react-toastify'
-import { screeningHours } from '../../utils/getHours'
+import { screeningHours } from '../../../utils/getHours'
 
 interface MovieDialogType {
 	isOpen: boolean

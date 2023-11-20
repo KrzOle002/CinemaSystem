@@ -12,8 +12,6 @@ interface CalendarType {
 
 const Calendar = ({ reservationDate, setReservationDate }: CalendarType) => {
 	const [startDate, setStartDate] = useState(new Date())
-	const [year, setYear] = useState<number>(new Date().getFullYear())
-	const [month, setMonth] = useState<number>(new Date().getMonth())
 
 	const PolishMonths = [
 		'Styczeń',
@@ -45,8 +43,6 @@ const Calendar = ({ reservationDate, setReservationDate }: CalendarType) => {
 		const newStartDate = new Date(startDate)
 		newStartDate.setDate(next == 'next' ? newStartDate.getDate() + 7 : newStartDate.getDate() - 7)
 		setStartDate(newStartDate)
-		setYear(newStartDate.getFullYear())
-		setMonth(newStartDate.getMonth())
 	}
 
 	const renderDays = () => {
@@ -61,21 +57,12 @@ const Calendar = ({ reservationDate, setReservationDate }: CalendarType) => {
 					<div className='dayOfWeek' style={{ fontSize: '20px' }}>
 						{PolishDays[day.getDay()]}
 					</div>
-					<div className='dayOfWeek'>{format(day, 'd')}</div>
 				</div>
 			)
 		})
 	}
 	return (
 		<StyledWeeklyCalendar>
-			<StyledCalendarHeader>
-				<span>
-					{PolishMonths[month]} {year}
-				</span>
-				<DateNowButton type='button' className='primary' onClick={setDateNow}>
-					Dziś
-				</DateNowButton>
-			</StyledCalendarHeader>
 			<StyledCalendarContent>
 				<SubmitButton onClick={() => handleNextWeekClick('back')} type={'button'} className='primary'>
 					<ArrowBackIosIcon />
@@ -85,6 +72,14 @@ const Calendar = ({ reservationDate, setReservationDate }: CalendarType) => {
 					<ArrowForwardIosIcon />
 				</SubmitButton>
 			</StyledCalendarContent>
+			<StyledCalendarHeader>
+				<span>
+					Repertuar na dzień: {format(reservationDate, 'dd')}/{PolishMonths[reservationDate.getMonth()]}/{reservationDate.getFullYear()}
+				</span>
+				<DateNowButton type='button' className='primary' onClick={setDateNow}>
+					Dziś
+				</DateNowButton>
+			</StyledCalendarHeader>
 		</StyledWeeklyCalendar>
 	)
 }
@@ -102,7 +97,8 @@ const DateNowButton = styled(SubmitButton)`
 const StyledCalendarHeader = styled.h2`
 	text-align: center;
 	display: flex;
-	justify-content: center;
+
+	align-items: center;
 	gap: 10px;
 `
 

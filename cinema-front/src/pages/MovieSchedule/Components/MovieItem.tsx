@@ -1,16 +1,15 @@
 import styled from 'styled-components'
-import { MovieModel } from '../../types/MovieModelType'
-import useAuthHook from '../../utils/auth/useAuth'
-import CircleAge from '../../components/CircleAge'
-import SubmitButton from '../../components/SubmitButton'
+import { MovieModel } from '../../../types/MovieModelType'
+import useAuthHook from '../../../utils/auth/useAuth'
+import CircleAge from '../../../components/CircleAge'
+import SubmitButton from '../../../components/SubmitButton'
 import EditIcon from '@mui/icons-material/Edit'
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever'
 import { useNavigate } from 'react-router-dom'
 import { toast } from 'react-toastify'
-import { useDialogHandler } from '../../utils/dialog/useDialogHandler'
+import { useDialogHandler } from '../../../utils/dialog/useDialogHandler'
 import AdditionMovieDialog from './AdditionMovieDialog'
-import { format } from 'date-fns'
-import { utcToZonedTime, zonedTimeToUtc } from 'date-fns-tz'
+
 interface MovieItemType {
 	movie: MovieModel
 	reservationDate: Date
@@ -38,7 +37,7 @@ const MovieItem = ({ movie, reservationDate }: MovieItemType) => {
 	}
 
 	const handleReservationClick = (screening: string) => {
-		navigate(`/purchase/${movie._id}?screening=${encodeURIComponent(screening)}&date=${encodeURIComponent(reservationDate.toISOString())}`)
+		navigate(`/purchase/${movie._id}?screening=${encodeURIComponent(screening)}&date=${encodeURIComponent(reservationDate.toString())}`)
 	}
 	return (
 		<Wrapper>
