@@ -17,10 +17,9 @@ router.get('/screenings', async (req, res) => {
 	}
 })
 
-// Pobieranie ekranizacji o określonym ID
 router.get('/screenings/:id', async (req, res) => {
 	try {
-		const screening = await Screening.findById(req.params.id)
+		const screening = await Screening.findById(req.params.id).populate('roomId')
 		if (!screening) {
 			return res.status(404).json({ success: false, message: 'Ekranizacja nie znaleziona' })
 		}

@@ -17,7 +17,6 @@ const Payments = () => {
 
 	const [ticketQuantity, setTicketQuantity] = useState<number>()
 
-	const [movie, setMovie] = useState<MovieModel | null>()
 	const handleTicketChange = (event: { target: { value: string } }) => {
 		const newQuantity = parseInt(event.target.value, 10)
 		setTicketQuantity(newQuantity)
@@ -26,38 +25,30 @@ const Payments = () => {
 		const fetchMovies = async () => {
 			try {
 				const response = await axios.get(api + `/api/movie/movies/654d3f83f31963ad2ddcc8f1`)
-
-				setMovie(response.data)
-			} catch (error) {
-				setMovie(null)
-			}
+			} catch (error) {}
 		}
 		fetchMovies()
 	}, [])
 	return (
 		<div>
-			{movie && movie != undefined ? (
-				<>
-					<MovieInfo>
-						<MoviePoster src={api + movie.cover.path} alt={movie.title} />
-						<MovieDetails>
-							<Title>{movie.title}</Title>
-							<MovieLength>Długość: {movie.screeningLength} min</MovieLength>
-						</MovieDetails>
-					</MovieInfo>
-					<TicketForm onSubmit={() => {}}>
-						<TicketInput type='number' value={ticketQuantity} onChange={handleTicketChange} placeholder='Liczba biletów' />
-						<SubmitButton className='primary' type='submit'>
-							Zarezerwuj bilety
-						</SubmitButton>
-						<div className='paypal-button-container'>
-							<PaypalCheckoutButton product={product} />
-						</div>
-					</TicketForm>
-				</>
-			) : (
-				<EmptyState />
-			)}
+			<MovieInfo>
+				<MoviePoster src={api + movie.cover.path} alt={movie.title} />
+				<MovieDetails>
+					<Title>{movie.title}</Title>
+					<MovieLength>Długość: {movie.screeningLength} min</MovieLength>
+				</MovieDetails>
+			</MovieInfo>
+			<TicketForm onSubmit={() => {}}>
+				<TicketInput type='number' value={ticketQuantity} onChange={handleTicketChange} placeholder='Liczba biletów' />
+				<SubmitButton className='primary' type='submit'>
+					Zarezerwuj bilety
+				</SubmitButton>
+				<div className='paypal-button-container'>
+					<PaypalCheckoutButton product={product} />
+				</div>
+			</TicketForm>
+
+			<EmptyState />
 		</div>
 	)
 }
