@@ -73,9 +73,9 @@ export default PurchaseForm
 
 const DashboardContainer = styled.div`
 	color: white;
-	padding: 20px 0;
 	display: flex;
 	flex-direction: row;
+	padding: 70px 0;
 	width: 50%;
 	margin: 0 auto;
 `
@@ -83,6 +83,8 @@ const DashboardContainer = styled.div`
 const Main = styled.div`
 	border-left: 1px solid white;
 	padding: 0 10px;
+	display: flex;
+	justify-content: flex-start;
 `
 const SummaryItems = styled.div`
 	min-width: 95px;
