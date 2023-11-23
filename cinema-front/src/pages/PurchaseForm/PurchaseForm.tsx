@@ -1,6 +1,6 @@
 import styled from 'styled-components'
 import Payments from './Components/Payments'
-import { Reservation, useReservationContext } from '../../context/ReservationContext'
+import { useReservationContext } from '../../context/ReservationContext'
 import { useLocation, useParams } from 'react-router-dom'
 import Tickets from './Components/Tickets'
 import { useEffect, useState } from 'react'
@@ -8,7 +8,6 @@ import { MovieModel } from '../../types/MovieModelType'
 import axios from 'axios'
 import useAuthHook from '../../utils/auth/useAuth'
 import { ScreeningModel } from '../../types/ScreeningModelType'
-import { getFullDate } from '../../utils/getHours'
 import { format } from 'date-fns'
 
 const PurchaseForm = () => {
@@ -59,7 +58,7 @@ const PurchaseForm = () => {
 
 				<MovieInfo>{date ? format(new Date(date), 'dd.MM.yyyy') : null}</MovieInfo>
 				<MovieInfo>Sala numer: {screening?.roomId.roomNumber}</MovieInfo>
-				<MovieInfo>{movie?.ageRestrictions ? `Ograniczenia wiekowe: ${movie.ageRestrictions}` : null}</MovieInfo>
+				<MovieInfo>{movie?.ageRestrictions ? `Od lat: ${movie.ageRestrictions}` : null}</MovieInfo>
 			</SummaryItems>
 			<Main>
 				{step === 'tickets' && <Tickets />}
@@ -81,6 +80,7 @@ const DashboardContainer = styled.div`
 `
 
 const Main = styled.div`
+	width: 100%;
 	border-left: 1px solid white;
 	padding: 0 10px;
 	display: flex;

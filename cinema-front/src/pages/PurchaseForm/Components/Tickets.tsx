@@ -2,13 +2,15 @@ import React from 'react'
 import { useReservationContext } from '../../../context/ReservationContext'
 import styled from 'styled-components'
 import SectionHeader from '../../../components/SectionHeader'
+import SeatMap from '../../../components/SeatMap/SeatMap'
 
 const Tickets = () => {
 	const { reservation } = useReservationContext()
-	console.log(reservation)
+
 	return (
 		<Wrapper>
-			<TicketHeader>Wybierz ilość biletów</TicketHeader>
+			<TicketHeader>Wybierz miejsc biletów</TicketHeader>
+			<SeatMap />
 		</Wrapper>
 	)
 }

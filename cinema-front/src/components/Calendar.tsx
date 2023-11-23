@@ -73,9 +73,7 @@ const Calendar = ({ reservationDate, setReservationDate }: CalendarType) => {
 				</SubmitButton>
 			</StyledCalendarContent>
 			<StyledCalendarHeader>
-				<span>
-					Repertuar na dzień: {format(reservationDate, 'dd')}/{PolishMonths[reservationDate.getMonth()]}/{reservationDate.getFullYear()}
-				</span>
+				<span>Repertuar na dzień: {format(reservationDate, 'dd/MM/yyyy')}</span>
 				<DateNowButton type='button' className='primary' onClick={setDateNow}>
 					Dziś
 				</DateNowButton>
