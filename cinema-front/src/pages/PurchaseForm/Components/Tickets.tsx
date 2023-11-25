@@ -1,16 +1,22 @@
-import React from 'react'
-import { useReservationContext } from '../../../context/ReservationContext'
+import { useState } from 'react'
 import styled from 'styled-components'
-import SectionHeader from '../../../components/SectionHeader'
 import SeatMap from '../../../components/SeatMap/SeatMap'
+import TotalCost from '../../../components/TotalCost'
+import { useReservationContext } from '../../../context/ReservationContext'
+import SubmitButton from '../../../components/SubmitButton'
 
 const Tickets = () => {
 	const { reservation } = useReservationContext()
 
+	const [selected, setSelected] = useState<string[]>([])
 	return (
 		<Wrapper>
-			<TicketHeader>Wybierz miejsc biletów</TicketHeader>
-			<SeatMap />
+			<TicketHeader>Wybierz miejsca</TicketHeader>
+			<SeatMap selected={selected} setSelected={setSelected} />
+			<TotalCost selected={selected} setSelected={setSelected} />
+			<SubmitButton type={'button'} className='success' fullWidth>
+				Zamów
+			</SubmitButton>
 		</Wrapper>
 	)
 }
@@ -19,11 +25,15 @@ export default Tickets
 
 const Wrapper = styled.div`
 	width: 100%;
-
-	:first-child {
-		margin: 0;
-		font-size: 25px;
-		line-height: 25px;
-	}
 `
-const TicketHeader = styled(SectionHeader)``
+const TicketHeader = styled.span`
+	@media screen and (max-width: 640px) {
+		font-size: 24px;
+		text-align: center;
+	}
+	font-size: 36px;
+	font-family: 'Saira Stencil One', sans-serif;
+	text-transform: uppercase;
+	margin: 0;
+	line-height: 36px;
+`

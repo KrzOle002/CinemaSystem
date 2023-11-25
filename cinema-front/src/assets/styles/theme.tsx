@@ -12,6 +12,7 @@ export const theme = {
 		extras: '#584A86',
 		original: '#1C1C27',
 		accept: '#004600',
+		screen: '#444444',
 	},
 	fontSize: {
 		xxl: '34px',
