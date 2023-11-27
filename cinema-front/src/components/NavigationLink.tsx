@@ -3,17 +3,23 @@ import styled from 'styled-components'
 import { Link } from 'react-router-dom'
 interface NavigationLinkType {
 	children?: ReactNode
-	link: string
+	link?: string
 	onClick?: () => void
 	size: string
 }
 
-const NavigationLink = ({ link, children, size }: NavigationLinkType) => {
+const NavigationLink = ({ link, children, size, onClick }: NavigationLinkType) => {
 	return (
 		<Wrapper>
-			<StyledLink to={link} style={{ fontSize: size }}>
-				{children}
-			</StyledLink>
+			{link ? (
+				<StyledLink to={link} style={{ fontSize: size }}>
+					{children}
+				</StyledLink>
+			) : (
+				<StyledDiv onClick={onClick} style={{ fontSize: size }}>
+					{children}
+				</StyledDiv>
+			)}
 		</Wrapper>
 	)
 }
@@ -35,6 +41,14 @@ const StyledLink = styled(Link)`
 		text-decoration: none;
 		color: ${({ theme }) => theme.colors.secondary};
 	}
+	&:hover {
+		text-decoration: underline;
+		color: ${({ theme }) => theme.colors.secondary};
+	}
+`
+const StyledDiv = styled.div`
+	color: ${({ theme }) => theme.colors.white};
+	cursor: pointer;
 	&:hover {
 		text-decoration: underline;
 		color: ${({ theme }) => theme.colors.secondary};

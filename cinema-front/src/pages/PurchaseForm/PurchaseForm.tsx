@@ -9,6 +9,7 @@ import axios from 'axios'
 import useAuthHook from '../../utils/auth/useAuth'
 import { ScreeningModel } from '../../types/ScreeningModelType'
 import { format } from 'date-fns'
+import ChoosePersonal from './Components/ChoosePersonal'
 
 const PurchaseForm = () => {
 	const { reservation, setReservation } = useReservationContext()
@@ -62,6 +63,7 @@ const PurchaseForm = () => {
 			</SummaryItems>
 			<Main>
 				{step === 'tickets' && <Tickets />}
+				{step === 'personal' && <ChoosePersonal />}
 				{step === 'payment' && <Payments />}
 			</Main>
 		</DashboardContainer>
@@ -74,7 +76,7 @@ const DashboardContainer = styled.div`
 	color: white;
 	display: flex;
 	flex-direction: row;
-	padding: 70px 0;
+	padding: 60px 0;
 	width: 50%;
 	margin: 0 auto;
 `

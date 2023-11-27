@@ -7,11 +7,17 @@ interface SubmitButtonType {
 	type: 'button' | 'submit' | 'reset'
 	onClick?: () => void
 	fullWidth?: boolean
+	disabled?: boolean
 }
 
-const SubmitButton = ({ className, children, type, onClick, fullWidth }: SubmitButtonType) => {
+const SubmitButton = ({ className, children, type, onClick, fullWidth, disabled }: SubmitButtonType) => {
 	return (
-		<StyledButton className={className} type={type} onClick={onClick} style={{ width: fullWidth ? '100%' : 'max-content' }}>
+		<StyledButton
+			disabled={disabled}
+			className={disabled ? 'disable' : className}
+			type={type}
+			onClick={onClick}
+			style={{ width: fullWidth ? '100%' : 'max-content' }}>
 			{children}
 		</StyledButton>
 	)
@@ -35,6 +41,12 @@ const StyledButton = styled.button`
 	text-align: center;
 	&:hover {
 		cursor: pointer;
+	}
+	&.disable {
+		background-color: gray;
+		&:hover {
+			cursor: pointer;
+		}
 	}
 
 	&.primary {

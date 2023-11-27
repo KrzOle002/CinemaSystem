@@ -1,20 +1,44 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import styled from 'styled-components'
 import SeatMap from '../../../components/SeatMap/SeatMap'
 import TotalCost from '../../../components/TotalCost'
 import { useReservationContext } from '../../../context/ReservationContext'
 import SubmitButton from '../../../components/SubmitButton'
+import useAuthHook from '../../../utils/auth/useAuth'
 
 const Tickets = () => {
-	const { reservation } = useReservationContext()
+	const { reservation, setReservation, setStep } = useReservationContext()
 
+	const { isAuthenticated } = useAuthHook()
 	const [selected, setSelected] = useState<string[]>([])
+
+	const addReservation = () => {
+		const ticketCost = selected.length * 20 + 2
+
+		if (selected.length > 0) {
+			setReservation({
+				...reservation,
+				cost: ticketCost,
+				seats: selected,
+			})
+			if (isAuthenticated()) {
+				setStep('payment')
+			} else {
+				setStep('personal')
+			}
+		}
+	}
+	console.log(reservation)
+	useEffect(() => {
+		if (reservation?.seats) setSelected(reservation.seats)
+	}, [])
+
 	return (
 		<Wrapper>
 			<TicketHeader>Wybierz miejsca</TicketHeader>
 			<SeatMap selected={selected} setSelected={setSelected} />
 			<TotalCost selected={selected} setSelected={setSelected} />
-			<SubmitButton type={'button'} className='success' fullWidth>
+			<SubmitButton type={'button'} disabled={selected.length < 1} onClick={addReservation} className='success' fullWidth>
 				Zamów
 			</SubmitButton>
 		</Wrapper>

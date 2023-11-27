@@ -1,5 +1,6 @@
 import styled from 'styled-components'
 import { SeatModel } from '../../types/ScreeningModelType'
+import { toast } from 'react-toastify'
 
 interface SeatItemType {
 	seat: SeatModel
@@ -28,7 +29,10 @@ const SeatItem = ({ seat, selected, setSelected }: SeatItemType) => {
 				setSelected((prev: string[]) => {
 					return prev.filter(seatId => seatId !== seat.seatId)
 				})
-		else setSelected([seat.seatId])
+		else {
+			toast.warning('Możesz zarezerwować maksymalnie 10 miejsc')
+			setSelected([seat.seatId])
+		}
 	}
 
 	return (

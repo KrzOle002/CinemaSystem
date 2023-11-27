@@ -1,0 +1,94 @@
+import axios from 'axios'
+import { useSignIn } from 'react-auth-kit'
+import { useForm } from 'react-hook-form'
+import { useNavigate } from 'react-router-dom'
+import { toast } from 'react-toastify'
+import AuthHeader from '../../components/AuthHeader'
+import InputLabel from '../../components/InputLabel'
+import NavigationLink from '../../components/NavigationLink'
+import SubmitButton from '../../components/SubmitButton'
+import { useScreenWidth } from '../../hooks/useScreenWidth'
+import { AuthContainer, Container, HelpSection } from '../../pages/AuthForm/AuthForm.style'
+import useAuthHook from '../../utils/auth/useAuth'
+
+interface LoginDataType {
+	email: string
+	password: string
+}
+interface AuthFormType {
+	setAuthStep: React.Dispatch<React.SetStateAction<string>>
+}
+
+const AuthForm = ({ setAuthStep }: AuthFormType) => {
+	const resolution = useScreenWidth()
+	const signIn = useSignIn()
+	const navigate = useNavigate()
+	const { api } = useAuthHook()
+	const {
+		register,
+		handleSubmit,
+		formState: { errors },
+	} = useForm<LoginDataType>()
+
+	const onSubmit = async (data: LoginDataType) => {
+		data.email = data.email.toLocaleLowerCase()
+		try {
+			const res = await axios.post(api + '/api/auth/login', data)
+
+			signIn({
+				token: res.data.token,
+				tokenType: 'Bearer',
+				expiresIn: 300,
+				authState: { email: data.email },
+			})
+			toast.success('Zalogowano')
+			navigate(-1)
+		} catch (err) {
+			toast.error('Nie udało się zalogować')
+		}
+	}
+
+	return (
+		<AuthContainer>
+			<Container onSubmit={handleSubmit(onSubmit)}>
+				<AuthHeader>Logowanie</AuthHeader>
+				<InputLabel
+					placeholder={'Email'}
+					inputRef={{
+						...register('email', {
+							required: 'To pole jest wymagane',
+							pattern: {
+								value: /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/,
+								message: 'Niepoprawny format adresu email',
+							},
+						}),
+					}}
+					className={errors.email && 'error'}
+					validation={errors.email?.message}
+				/>
+				<InputLabel
+					placeholder={'Hasło'}
+					type={'password'}
+					inputRef={{
+						...register('password', {
+							required: 'To pole jest wymagane',
+							minLength: { value: 6, message: 'Hasło musi być dłuższe niż 6 znaków' },
+						}),
+					}}
+					className={errors.password && 'error'}
+					validation={errors.password?.message}
+				/>
+				<HelpSection>
+					<NavigationLink onClick={() => setAuthStep('register')} size={'15px'}>
+						Nie masz konta?
+					</NavigationLink>
+				</HelpSection>
+				<SubmitButton type={'submit'} className={'primary'} fullWidth>
+					Zaloguj się
+				</SubmitButton>
+			</Container>
+		</AuthContainer>
+	)
+}
+
+export default AuthForm

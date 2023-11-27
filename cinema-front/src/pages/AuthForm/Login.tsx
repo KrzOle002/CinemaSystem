@@ -35,7 +35,7 @@ const Login = () => {
 	const onSubmit = async (data: LoginDataType) => {
 		data.email = data.email.toLocaleLowerCase()
 		try {
-			const res: ResponseType = await axios.post(api + '/api/auth/login', data)
+			const res = await axios.post(api + '/api/auth/login', data)
 
 			signIn({
 				token: res.data.token,
@@ -45,7 +45,7 @@ const Login = () => {
 			})
 
 			toast.success('Zalogowano')
-			navigate('/')
+			navigate(-1)
 		} catch (err) {
 			toast.error('Nie udało się zalogować')
 		}

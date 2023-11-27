@@ -17,7 +17,8 @@ export interface Reservation {
 	cost?: number | null
 	screeningDate?: Date | null
 	discountId?: string | null
-	seats?: [string] | null
+	seats?: string[] | null
+	email?: string | null
 }
 
 const ReservationContext = createContext<ReservationData | null>(null)

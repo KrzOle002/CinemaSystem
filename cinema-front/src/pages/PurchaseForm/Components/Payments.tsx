@@ -31,7 +31,7 @@ const Payments = () => {
 	}, [])
 	return (
 		<div>
-			<MovieInfo>
+			{/* <MovieInfo>
 				<MoviePoster src={api + movie.cover.path} alt={movie.title} />
 				<MovieDetails>
 					<Title>{movie.title}</Title>
@@ -46,7 +46,7 @@ const Payments = () => {
 				<div className='paypal-button-container'>
 					<PaypalCheckoutButton product={product} />
 				</div>
-			</TicketForm>
+			</TicketForm> */}
 
 			<EmptyState />
 		</div>
