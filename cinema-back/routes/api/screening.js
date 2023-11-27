@@ -30,6 +30,27 @@ router.get('/screenings/:id', async (req, res) => {
 	}
 })
 
+router.get('/screenings/:id/movie', async (req, res) => {
+	try {
+		const screening = await Screening.findById(req.params.id).populate('roomId')
+
+		if (!screening) {
+			return res.status(404).json({ success: false, message: 'Ekranizacja nie znaleziona' })
+		}
+		const movie = await Movie.findById(screening.movieId)
+
+		if (!movie) {
+			return res.status(404).json({ success: false, message: 'Film nie znaleziony' })
+		}
+
+		screening.movieId = movie
+
+		res.status(200).json({ success: true, screening })
+	} catch (error) {
+		console.error(error)
+		res.status(500).json({ success: false, message: 'Błąd serwera' })
+	}
+})
 // Dodawanie nowej ekranizacji
 router.post('/screenings', async (req, res) => {
 	try {

@@ -1,6 +1,5 @@
 import axios from 'axios'
 import { useForm } from 'react-hook-form'
-import { useNavigate } from 'react-router-dom'
 import { toast } from 'react-toastify'
 import { AuthContainer, Container, HelpSection } from '../../pages/AuthForm/AuthForm.style'
 import AuthHeader from '../AuthHeader'
@@ -22,7 +21,6 @@ interface GetAuthFormType {
 }
 
 const GetAuthForm = ({ setAuthStep }: GetAuthFormType) => {
-	const navigate = useNavigate()
 	const { api } = useAuthHook()
 	const {
 		register,
@@ -37,9 +35,9 @@ const GetAuthForm = ({ setAuthStep }: GetAuthFormType) => {
 			await axios
 				.post(api + '/api/users/register', data)
 				.then(() => {
-					toast.success('Utworzono konto', {
+					toast.success('Utworzono konto teraz możesz się zalogować', {
 						onClose: () => {
-							navigate('/login')
+							setAuthStep('login')
 						},
 					})
 				})

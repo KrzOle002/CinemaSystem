@@ -9,6 +9,8 @@ interface ReservationData {
 	setStep: (step: string) => void
 	reservation: Reservation | null
 	setReservation: (reservation: Reservation | null) => void
+	customer: CustomerType | null
+	setCustomer: (customer: CustomerType | null) => void
 }
 
 export interface Reservation {
@@ -18,21 +20,31 @@ export interface Reservation {
 	screeningDate?: Date | null
 	discountId?: string | null
 	seats?: string[] | null
-	email?: string | null
+	customer?: CustomerType | null
 }
 
+export interface CustomerType {
+	name: string
+	surname: string
+	email: string
+	phoneNumber?: number
+}
 const ReservationContext = createContext<ReservationData | null>(null)
 
 const ReservationProvider = ({ children }: ReservationProviderProps) => {
-	const [step, setStep] = useState('tickets')
+	const [step, setStep] = useState('payment')
 
 	const [reservation, setReservation] = useState<Reservation | null>(null)
+
+	const [customer, setCustomer] = useState<CustomerType | null>(null)
 
 	const value: ReservationData = {
 		step,
 		setStep,
 		reservation,
 		setReservation,
+		customer,
+		setCustomer,
 	}
 
 	return <ReservationContext.Provider value={value}>{children}</ReservationContext.Provider>

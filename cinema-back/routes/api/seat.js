@@ -2,6 +2,7 @@ const express = require('express')
 const Seat = require('../../models/Seat')
 const ReservedSeat = require('../../models/ReservedSeats')
 const router = express.Router()
+const mongoose = require('mongoose')
 
 router.post('/seats', async (req, res) => {
 	try {
@@ -39,6 +40,28 @@ router.put('/seats/:id', async (req, res) => {
 		res.json(updatedSeat)
 	} catch (error) {
 		res.status(500).json({ message: error.message })
+	}
+})
+
+router.post('/seats/current/', async (req, res) => {
+	try {
+		const seatIds = req.body
+
+		if (!seatIds || !Array.isArray(seatIds) || seatIds.length === 0) {
+			return res.status(400).json({ success: false, message: 'Nieprawidłowe lub puste ID siedzeń' })
+		}
+		const seatObjectIds = seatIds.map(seatId => new mongoose.Types.ObjectId(seatId))
+
+		const seats = await Seat.find({ _id: { $in: seatObjectIds } })
+
+		if (!seats || seats.length === 0) {
+			return res.status(404).json({ success: false, message: 'Nie znaleziono siedzeń dla podanych ID' })
+		}
+
+		res.status(200).json(seats)
+	} catch (error) {
+		console.error(error)
+		res.status(500).json({ success: false, message: 'Błąd serwera' })
 	}
 })
 

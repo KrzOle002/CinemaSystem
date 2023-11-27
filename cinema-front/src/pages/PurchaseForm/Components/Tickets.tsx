@@ -28,7 +28,7 @@ const Tickets = () => {
 			}
 		}
 	}
-	console.log(reservation)
+
 	useEffect(() => {
 		if (reservation?.seats) setSelected(reservation.seats)
 	}, [])

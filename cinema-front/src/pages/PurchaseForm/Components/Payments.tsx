@@ -6,59 +6,104 @@ import EmptyState from '../../../utils/empty/EmptyState'
 import useAuthHook from '../../../utils/auth/useAuth'
 import { MovieModel } from '../../../types/MovieModelType'
 import axios from 'axios'
+import { useReservationContext } from '../../../context/ReservationContext'
 
 const Payments = () => {
 	const product = {
 		description: 'Design+Code',
 		price: 19,
 	}
-
+	const { setStep, customer, reservation } = useReservationContext()
 	const { api, isAuthenticated } = useAuthHook()
-
+	const [movie, setMovie] = useState<any>()
+	const [seats, setSeats] = useState<any>()
 	const [ticketQuantity, setTicketQuantity] = useState<number>()
 
 	const handleTicketChange = (event: { target: { value: string } }) => {
 		const newQuantity = parseInt(event.target.value, 10)
 		setTicketQuantity(newQuantity)
 	}
-	useEffect(() => {
-		const fetchMovies = async () => {
-			try {
-				const response = await axios.get(api + `/api/movie/movies/654d3f83f31963ad2ddcc8f1`)
-			} catch (error) {}
+
+	const fetchData = async () => {
+		try {
+			const movieResponse = await axios.get(api + `/api/screening/screenings/${reservation?.screeningId}/movie`)
+			setMovie(movieResponse.data)
+			const seatsArray = reservation?.seats
+			const seatsResponse = await axios.post(api + `/api/seat/seats/current`, seatsArray)
+			setSeats(seatsResponse.data)
+		} catch (error) {
+			setMovie({})
+			setSeats({})
 		}
-		fetchMovies()
+	}
+	console.log(seats)
+	console.log(reservation)
+	useEffect(() => {
+		fetchData()
+		console.log(movie)
 	}, [])
 	return (
-		<div>
-			{/* <MovieInfo>
-				<MoviePoster src={api + movie.cover.path} alt={movie.title} />
-				<MovieDetails>
-					<Title>{movie.title}</Title>
-					<MovieLength>Długość: {movie.screeningLength} min</MovieLength>
-				</MovieDetails>
-			</MovieInfo>
-			<TicketForm onSubmit={() => {}}>
-				<TicketInput type='number' value={ticketQuantity} onChange={handleTicketChange} placeholder='Liczba biletów' />
-				<SubmitButton className='primary' type='submit'>
-					Zarezerwuj bilety
-				</SubmitButton>
-				<div className='paypal-button-container'>
-					<PaypalCheckoutButton product={product} />
-				</div>
-			</TicketForm> */}
+		<Wrapper>
+			<button onClick={() => setStep('tickets')}>Star over</button>
+			{movie ? (
+				<>
+					<MovieInfo>
+						{/* <Title>{movie.title}</Title>
 
-			<EmptyState />
-		</div>
+						<MoviePoster src={api + movie.cover.path} alt={movie.title} /> */}
+					</MovieInfo>
+
+					<CostTable>
+						<div>
+							<table>
+								<thead>
+									<tr>
+										<th>Category</th>
+										<th>Price</th>
+									</tr>
+								</thead>
+								<tbody>200</tbody>
+							</table>
+
+							<div>
+								<label>Login Discount:</label>
+								<input type='number' />
+								<button>Apply</button>
+							</div>
+
+							<div>
+								<label>Discount Code:</label>
+								<input type='text' />
+								<button>Apply</button>
+							</div>
+						</div>
+					</CostTable>
+					<TicketForm onSubmit={() => {}}>
+						<div className='paypal-button-container'>
+							<PaypalCheckoutButton product={product} />
+						</div>
+					</TicketForm>
+				</>
+			) : (
+				<EmptyState />
+			)}
+		</Wrapper>
 	)
 }
 
 export default Payments
 
+const Wrapper = styled.div`
+	width: 100%;
+`
+
 const MovieInfo = styled.div`
 	display: flex;
 	align-items: center;
-	margin: 40px 0;
+	margin: 40px auto;
+	flex-direction: column;
+	gap: 20px;
+	width: 100%;
 `
 
 const MoviePoster = styled.img`
@@ -67,19 +112,9 @@ const MoviePoster = styled.img`
 	margin-right: 20px;
 `
 
-const MovieDetails = styled.div`
-	display: flex;
-	flex-direction: column;
-`
-
 const Title = styled.h2`
 	font-size: 24px;
 	margin: 0;
-`
-
-const MovieLength = styled.p`
-	font-size: 16px;
-	margin: 10px 0;
 `
 
 const TicketForm = styled.form`
@@ -88,25 +123,6 @@ const TicketForm = styled.form`
 	align-items: center;
 `
 
-const TicketInput = styled.input`
-	padding: 10px;
-	border: 1px solid #ccc;
-	border-radius: 5px;
-	margin-bottom: 10px;
-	width: 200px;
-`
-
-const TicketButton = styled.button`
-	background-color: #ff5722;
-	color: white;
-	border: none;
-	padding: 10px 20px;
-	border-radius: 5px;
-	cursor: pointer;
-	font-size: 18px;
-	transition: background-color 0.3s;
-
-	&:hover {
-		background-color: #ff4500;
-	}
+const CostTable = styled.div`
+	width: 100%;
 `

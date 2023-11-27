@@ -25,6 +25,10 @@ const ReservationSchema = new mongoose.Schema({
 		type: mongoose.Schema.Types.ObjectId,
 		ref: 'discount',
 	},
+	email: {
+		type: String,
+		require: true,
+	},
 	seats: [
 		{
 			type: mongoose.Schema.Types.ObjectId,

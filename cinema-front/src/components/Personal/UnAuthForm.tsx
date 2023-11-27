@@ -1,13 +1,9 @@
-import axios from 'axios'
 import { useForm } from 'react-hook-form'
-import { useNavigate } from 'react-router-dom'
-import { toast } from 'react-toastify'
-import { AuthContainer, Container, HelpSection } from '../../pages/AuthForm/AuthForm.style'
+import { useReservationContext } from '../../context/ReservationContext'
+import { AuthContainer, Container } from '../../pages/AuthForm/AuthForm.style'
 import AuthHeader from '../AuthHeader'
-import NavigationLink from '../NavigationLink'
-import SubmitButton from '../SubmitButton'
 import InputLabel from '../InputLabel'
-import useAuthHook from '../../utils/auth/useAuth'
+import SubmitButton from '../SubmitButton'
 
 interface UnAuthDataType {
 	email: string
@@ -17,8 +13,7 @@ interface UnAuthDataType {
 	phone?: number
 }
 const UnAuthForm = () => {
-	const navigate = useNavigate()
-	const { api } = useAuthHook()
+	const { setStep, setCustomer } = useReservationContext()
 	const {
 		register,
 		handleSubmit,
@@ -29,7 +24,16 @@ const UnAuthForm = () => {
 	const onSubmit = async (data: UnAuthDataType) => {
 		if (data.email == data.reEmail) {
 			data.email = data.email.toLocaleLowerCase()
-			console.log(data)
+
+			const newCustomer = {
+				email: data.email,
+				name: data.name,
+				surname: data.surname,
+				phone: data.phone,
+			}
+			setCustomer(newCustomer)
+
+			setStep('payment')
 		}
 	}
 	return (

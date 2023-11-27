@@ -1,15 +1,14 @@
 import axios from 'axios'
 import { useSignIn } from 'react-auth-kit'
 import { useForm } from 'react-hook-form'
-import { useNavigate } from 'react-router-dom'
 import { toast } from 'react-toastify'
 import AuthHeader from '../../components/AuthHeader'
 import InputLabel from '../../components/InputLabel'
 import NavigationLink from '../../components/NavigationLink'
 import SubmitButton from '../../components/SubmitButton'
-import { useScreenWidth } from '../../hooks/useScreenWidth'
 import { AuthContainer, Container, HelpSection } from '../../pages/AuthForm/AuthForm.style'
 import useAuthHook from '../../utils/auth/useAuth'
+import { useReservationContext } from '../../context/ReservationContext'
 
 interface LoginDataType {
 	email: string
@@ -20,10 +19,9 @@ interface AuthFormType {
 }
 
 const AuthForm = ({ setAuthStep }: AuthFormType) => {
-	const resolution = useScreenWidth()
 	const signIn = useSignIn()
-	const navigate = useNavigate()
 	const { api } = useAuthHook()
+	const { setStep } = useReservationContext()
 	const {
 		register,
 		handleSubmit,
@@ -42,7 +40,7 @@ const AuthForm = ({ setAuthStep }: AuthFormType) => {
 				authState: { email: data.email },
 			})
 			toast.success('Zalogowano')
-			navigate(-1)
+			setStep('payment')
 		} catch (err) {
 			toast.error('Nie udało się zalogować')
 		}
