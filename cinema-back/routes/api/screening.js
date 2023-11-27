@@ -45,7 +45,7 @@ router.get('/screenings/:id/movie', async (req, res) => {
 
 		screening.movieId = movie
 
-		res.status(200).json({ success: true, screening })
+		res.status(200).json(screening)
 	} catch (error) {
 		console.error(error)
 		res.status(500).json({ success: false, message: 'Błąd serwera' })

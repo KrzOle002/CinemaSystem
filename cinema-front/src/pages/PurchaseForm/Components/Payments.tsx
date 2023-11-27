@@ -38,6 +38,7 @@ const Payments = () => {
 	}
 	console.log(seats)
 	console.log(reservation)
+	console.log(movie)
 	useEffect(() => {
 		fetchData()
 		console.log(movie)
@@ -45,39 +46,15 @@ const Payments = () => {
 	return (
 		<Wrapper>
 			<button onClick={() => setStep('tickets')}>Star over</button>
-			{movie ? (
+			{movie?.length > 0 ? (
 				<>
 					<MovieInfo>
-						{/* <Title>{movie.title}</Title>
+						<Title>{movie.movieId.title}</Title>
 
-						<MoviePoster src={api + movie.cover.path} alt={movie.title} /> */}
+						<MoviePoster src={api + movie.movieId.cover.path} alt={'Plakat filmu'} />
 					</MovieInfo>
 
-					<CostTable>
-						<div>
-							<table>
-								<thead>
-									<tr>
-										<th>Category</th>
-										<th>Price</th>
-									</tr>
-								</thead>
-								<tbody>200</tbody>
-							</table>
-
-							<div>
-								<label>Login Discount:</label>
-								<input type='number' />
-								<button>Apply</button>
-							</div>
-
-							<div>
-								<label>Discount Code:</label>
-								<input type='text' />
-								<button>Apply</button>
-							</div>
-						</div>
-					</CostTable>
+					<CostTable></CostTable>
 					<TicketForm onSubmit={() => {}}>
 						<div className='paypal-button-container'>
 							<PaypalCheckoutButton product={product} />
@@ -109,7 +86,6 @@ const MovieInfo = styled.div`
 const MoviePoster = styled.img`
 	max-width: 150px;
 	border-radius: 10px;
-	margin-right: 20px;
 `
 
 const Title = styled.h2`
