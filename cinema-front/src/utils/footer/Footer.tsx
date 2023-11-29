@@ -93,7 +93,7 @@ const Footer = () => {
 				icon={<BallotOutlinedIcon />}
 			/>
 			<BottomNavigationAction
-				onClick={() => navigate('/')}
+				onClick={() => navigate('/contact')}
 				label='Kontakt'
 				sx={{
 					color: '#f5f5f5',
@@ -127,11 +127,7 @@ const Footer = () => {
 				}}
 				label={isAuthenticated() ? `${userData?.email}` : 'Konto'}
 				icon={
-					isAuthenticated() ? (
-						<img style={{ width: 'auto', height: '24px', borderRadius: '20px' }} src={avatarUrl} />
-					) : (
-						<AccountCircleOutlinedIcon />
-					)
+					isAuthenticated() ? <img style={{ width: 'auto', height: '24px', borderRadius: '20px' }} src={avatarUrl} /> : <AccountCircleOutlinedIcon />
 				}
 			/>
 		</BottomNavigation>

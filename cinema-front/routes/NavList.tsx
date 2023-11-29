@@ -8,6 +8,10 @@ import PurchaseForm from '../src/pages/PurchaseForm/PurchaseForm'
 import Dashboard from '../src/pages/Dashboard/Dashboard'
 import EmptyState from '../src/utils/empty/EmptyState'
 import { ReservationProvider } from '../src/context/ReservationContext'
+import Contact from '../src/pages/Contact/Contact'
+import News from '../src/pages/News/News'
+import Offer from '../src/pages/Offer/Offer'
+import About from '../src/pages/About/About'
 
 const NavList = () => {
 	return (
@@ -20,6 +24,10 @@ const NavList = () => {
 					</ReservationProvider>
 				}
 			/>
+			<Route path='contact' element={<Contact />} />
+			<Route path='offer' element={<Offer />} />
+			<Route path='news' element={<News />} />
+			<Route path='about' element={<About />} />
 			<Route path='login' element={<Login />} />
 			<Route path='register' element={<Register />} />
 			<Route path='account' element={<Account />} />
