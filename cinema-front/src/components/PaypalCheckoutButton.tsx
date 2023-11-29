@@ -1,29 +1,63 @@
-import { PayPalButtons } from '@paypal/react-paypal-js'
+import { PayPalButtons, FUNDING } from '@paypal/react-paypal-js'
 import { useState } from 'react'
 import { toast } from 'react-toastify'
+import styled from 'styled-components'
+import useAuthHook from '../utils/auth/useAuth'
+import axios from 'axios'
+import { useNavigate } from 'react-router-dom'
+import { useReservationContext } from '../context/ReservationContext'
 interface ProductType {
 	description: string
 	price: number
 }
 
-const PaypalCheckoutButton = (props: { product: ProductType }) => {
-	const { product } = props
-
+interface PaypalType {
+	product: ProductType
+}
+const PaypalCheckoutButton = ({ product }: PaypalType) => {
+	const { api } = useAuthHook()
+	const { reservation } = useReservationContext()
 	const [paidFor, setPaidFor] = useState<boolean>(false)
 	const [error, setError] = useState<string | null>(null)
+	const navigate = useNavigate()
+	const makeReservation = async () => {
+		if (reservation) {
+			const data = {
+				active: true,
+				screeningId: reservation?.screeningId,
+				cost: reservation?.cost,
+				screeningDate: reservation?.screeningDate,
+				discountId: reservation?.discount,
+				email: reservation?.customer?.email,
+				seats: reservation?.seats,
+			}
+
+			await axios
+				.post(api + '/api/reservation', data)
+				.then(() => {
+					toast.success('Zarezerwowano')
+				})
+				.catch(() => toast.error('Nie udało się zarezerwować'))
+		}
+	}
+
 	const handleApprove = (orderId: string) => {
 		setPaidFor(true)
-	}
-
-	if (paidFor) {
 		toast.success('Płatność zaakceptowana')
+		makeReservation()
+		navigate('/')
 	}
-
 	if (error) {
 		toast.error('Błąd Płatności')
 	}
 	return (
 		<PayPalButtons
+			style={{
+				layout: 'vertical',
+				color: 'gold',
+				shape: 'rect',
+				label: 'paypal',
+			}}
 			createOrder={(data, actions) => {
 				return actions.order.create({
 					purchase_units: [
@@ -45,12 +79,12 @@ const PaypalCheckoutButton = (props: { product: ProductType }) => {
 			}}
 			onError={err => {
 				setError(err as any)
-				console.error(err)
 			}}
 			onCancel={() => {
 				toast.warning('Anulowano płatność')
 			}}
 			onClick={(data, actions) => {
+				console.log(data)
 				const hasAlreadyBoughtCourse = false
 
 				if (hasAlreadyBoughtCourse) {

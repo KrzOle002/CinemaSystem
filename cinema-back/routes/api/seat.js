@@ -97,7 +97,7 @@ router.get('/seats/:roomId/schedule/:screeningId', async (req, res) => {
 		const isReserved = seat => {
 			return reservedSeats.some(reservedSeat => reservedSeat.seatId.equals(seat.id))
 		}
-		const seatsList = seats.map(seat => {
+		const seatsList = seats.sort(compareSeats).map(seat => {
 			return {
 				seatId: seat.id,
 				row: seat.row,
@@ -125,4 +125,13 @@ router.post('/seats/reservation', async (req, res) => {
 		res.status(500).json({ success: false, message: 'Błąd serwera' })
 	}
 })
+
+function compareSeats(a, b) {
+	if (a.row === b.row) {
+		// Jeśli "row" jest taki sam, porównaj według "number"
+		return a.number - b.number
+	}
+	// W przeciwnym razie porównaj według "row"
+	return a.row - b.row
+}
 module.exports = router

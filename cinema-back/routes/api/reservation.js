@@ -1,13 +1,27 @@
 const express = require('express')
 const Reservation = require('../../models/Reservation')
 const router = express.Router()
-
+const ReservedSeat = require('../../models/ReservedSeats')
+const Seat = require('../../models/Seat')
 // Endpoint do dodawania nowej rezerwacji
 router.post('/', async (req, res) => {
 	try {
-		const reservation = req.body
-		await reservation.save()
-		res.status(200).json(reservation)
+		const reservation = new Reservation(req.body)
+		const createdReservation = await reservation.save()
+		const screeningId = reservation.screeningId
+		reservation.seats.map(async seat => {
+			const data = {
+				seatId: seat,
+				screeningId: screeningId,
+				reservationId: createdReservation._id,
+			}
+
+			const reservationSeat = new ReservedSeat(data)
+
+			await reservationSeat.save()
+		})
+
+		res.status(200).json('Succesfully added')
 	} catch (error) {
 		res.status(500).json({ message: error.message })
 	}
@@ -53,9 +67,13 @@ router.put('/reservations/:id', async (req, res) => {
 router.delete('/reservations/:id', async (req, res) => {
 	try {
 		const deletedReservation = await Reservation.findByIdAndRemove(req.params.id)
+
 		if (!deletedReservation) {
 			return res.status(404).json({ message: 'Reservation not found' })
 		}
+
+		await ReservedSeat.deleteMany({ reservationId: deletedReservation._id })
+
 		res.json({ message: 'Reservation deleted' })
 	} catch (error) {
 		res.status(500).json({ message: error.message })

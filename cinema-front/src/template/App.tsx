@@ -8,13 +8,19 @@ import { MenuBarProvider } from '../context/MenuBarContext'
 import Footer from '../utils/footer/Footer'
 import { useScreenWidth } from '../hooks/useScreenWidth'
 import { AuthProvider } from 'react-auth-kit'
-import { PayPalScriptProvider } from '@paypal/react-paypal-js'
+import { FUNDING, PayPalScriptProvider } from '@paypal/react-paypal-js'
 import { LocalizationProvider } from '@mui/x-date-pickers'
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
 const App = () => {
 	const resolution = useScreenWidth()
 	return (
-		<PayPalScriptProvider options={{ clientId: import.meta.env.VITE_PAYPAL_KEY, currency: 'PLN' }}>
+		<PayPalScriptProvider
+			options={{
+				clientId: import.meta.env.VITE_PAYPAL_KEY,
+				currency: 'PLN',
+				enableFunding: [FUNDING.P24, FUNDING.PAYU, FUNDING.BLIK],
+				components: ['buttons', 'payment-fields', 'marks', 'funding-eligibility'],
+			}}>
 			<LocalizationProvider dateAdapter={AdapterDayjs}>
 				<MenuBarProvider>
 					<Wrapper>

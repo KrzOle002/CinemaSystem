@@ -13,18 +13,7 @@ interface InputLabelType {
 	placeholder?: string
 	validation?: string
 }
-const InputLabel = ({
-	type,
-	title,
-	value,
-	inputRef,
-	required,
-	className,
-	disabled,
-	onChange,
-	placeholder,
-	validation,
-}: InputLabelType) => {
+const InputLabel = ({ type, title, value, inputRef, required, className, disabled, onChange, placeholder, validation }: InputLabelType) => {
 	return (
 		<Wrapper>
 			{title ? (
@@ -35,7 +24,7 @@ const InputLabel = ({
 			) : null}
 			<StyledInput
 				placeholder={placeholder}
-				disabled={disabled ? true : false}
+				disabled={!!disabled}
 				className={className}
 				onChange={onChange}
 				type={type}

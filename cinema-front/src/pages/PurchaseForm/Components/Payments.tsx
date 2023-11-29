@@ -7,21 +7,52 @@ import useAuthHook from '../../../utils/auth/useAuth'
 import { MovieModel } from '../../../types/MovieModelType'
 import axios from 'axios'
 import { useReservationContext } from '../../../context/ReservationContext'
+import PaymentItem from '../../../components/PaymentItem'
+import { CurrentSeat } from '../../../types/ScreeningModelType'
+import SectionHeader from '../../../components/SectionHeader'
+import PaymentDiscount from '../../../components/PaymentDiscount'
+
+interface ScreeningMovie {
+	_id: string
+	roomId: {
+		_id: string
+		roomNumber: 1
+		places: 200
+		description: string
+	}
+	movieId: {
+		cover: {
+			path: string
+		}
+		_id: string
+		title: string
+		description: string
+		genre: string[]
+		director: string
+		casts: string[]
+		productionCountry: string
+		screeningLength: number
+		ageRestrictions: number
+	}
+	date: Date
+}
 
 const Payments = () => {
-	const product = {
-		description: 'Design+Code',
-		price: 19,
-	}
-	const { setStep, customer, reservation } = useReservationContext()
+	const { reservation } = useReservationContext()
 	const { api, isAuthenticated } = useAuthHook()
-	const [movie, setMovie] = useState<any>()
-	const [seats, setSeats] = useState<any>()
-	const [ticketQuantity, setTicketQuantity] = useState<number>()
+	const [movie, setMovie] = useState<ScreeningMovie>()
+	const [seats, setSeats] = useState<CurrentSeat[]>()
+	const [discount, setDiscount] = useState<number>()
 
-	const handleTicketChange = (event: { target: { value: string } }) => {
-		const newQuantity = parseInt(event.target.value, 10)
-		setTicketQuantity(newQuantity)
+	const sumCosts = () => {
+		const mainCost = reservation?.cost ? reservation.cost : 0
+		const discountCost = discount ?? 0
+		return mainCost - discountCost
+	}
+
+	const product = {
+		description: 'Rezerwacja miejsc Cinema Fordon',
+		price: sumCosts(),
 	}
 
 	const fetchData = async () => {
@@ -32,34 +63,35 @@ const Payments = () => {
 			const seatsResponse = await axios.post(api + `/api/seat/seats/current`, seatsArray)
 			setSeats(seatsResponse.data)
 		} catch (error) {
-			setMovie({})
-			setSeats({})
+			setSeats([])
 		}
 	}
-	console.log(seats)
-	console.log(reservation)
-	console.log(movie)
+
 	useEffect(() => {
 		fetchData()
-		console.log(movie)
 	}, [])
 	return (
 		<Wrapper>
-			<button onClick={() => setStep('tickets')}>Star over</button>
-			{movie?.length > 0 ? (
+			{movie ? (
 				<>
-					<MovieInfo>
-						<Title>{movie.movieId.title}</Title>
-
-						<MoviePoster src={api + movie.movieId.cover.path} alt={'Plakat filmu'} />
-					</MovieInfo>
-
-					<CostTable></CostTable>
-					<TicketForm onSubmit={() => {}}>
-						<div className='paypal-button-container'>
-							<PaypalCheckoutButton product={product} />
-						</div>
-					</TicketForm>
+					<SectionHeader>Podsumowanie</SectionHeader>
+					<Container>
+						<CostTable>
+							{seats?.map(seat => {
+								return <PaymentItem key={seat._id} seat={seat} />
+							})}
+							<PaymentService>
+								Opłata serwisowa: <span>2 PLN</span>
+							</PaymentService>
+							<PaymentDiscount discount={discount} setDiscount={setDiscount} />
+						</CostTable>
+						<TicketPayment>
+							<CostSum>Zapłać: {sumCosts()} PLN</CostSum>
+							<div className='paypal-button-container'>
+								<PaypalCheckoutButton product={product} />
+							</div>
+						</TicketPayment>
+					</Container>
 				</>
 			) : (
 				<EmptyState />
@@ -74,31 +106,41 @@ const Wrapper = styled.div`
 	width: 100%;
 `
 
-const MovieInfo = styled.div`
-	display: flex;
-	align-items: center;
-	margin: 40px auto;
-	flex-direction: column;
-	gap: 20px;
-	width: 100%;
+const CostSum = styled.p`
+	font-size: 20px;
+	font-weight: 700;
 `
-
-const MoviePoster = styled.img`
-	max-width: 150px;
+const TicketPayment = styled.div`
+	padding: 10px 10px;
+	display: flex;
+	color: ${({ theme }) => theme.colors.black};
+	flex-direction: column;
+	align-items: center;
+	background-color: ${({ theme }) => theme.colors.white};
+	height: max-content;
 	border-radius: 10px;
 `
 
-const Title = styled.h2`
-	font-size: 24px;
-	margin: 0;
-`
-
-const TicketForm = styled.form`
+const CostTable = styled.div`
+	width: 60%;
+	padding: 20px 30px;
+	border-radius: 15px;
+	margin: 0 auto;
 	display: flex;
 	flex-direction: column;
-	align-items: center;
+	row-gap: 30px;
+`
+const Container = styled.div`
+	display: flex;
+	flex-direction: row;
+	column-gap: 20px;
 `
 
-const CostTable = styled.div`
-	width: 100%;
+const PaymentService = styled.p`
+	margin: 0;
+	padding: 0;
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	justify-content: space-between;
 `

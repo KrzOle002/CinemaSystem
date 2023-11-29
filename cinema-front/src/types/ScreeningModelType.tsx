@@ -18,3 +18,10 @@ export interface SeatModel {
 	roomId: string
 	empty: boolean
 }
+
+export interface CurrentSeat {
+	_id: string
+	row: number
+	number: number
+	roomId: string
+}

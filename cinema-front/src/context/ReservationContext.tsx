@@ -18,7 +18,7 @@ export interface Reservation {
 	screeningId?: string | null
 	cost?: number | null
 	screeningDate?: Date | null
-	discountId?: string | null
+	discount?: number | null
 	seats?: string[] | null
 	customer?: CustomerType | null
 }
@@ -32,7 +32,7 @@ export interface CustomerType {
 const ReservationContext = createContext<ReservationData | null>(null)
 
 const ReservationProvider = ({ children }: ReservationProviderProps) => {
-	const [step, setStep] = useState('payment')
+	const [step, setStep] = useState('tickets')
 
 	const [reservation, setReservation] = useState<Reservation | null>(null)
 

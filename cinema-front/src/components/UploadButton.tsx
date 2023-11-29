@@ -27,7 +27,7 @@ const UploadButton = ({ inputRef, disabled, placeholder, validation }: InputLabe
 
 	return (
 		<Wrapper>
-			<HiddenInput disabled={disabled ? true : false} type='file' id='file' onChange={handleFileChange} {...inputRef} />
+			<HiddenInput disabled={!!disabled} type='file' id='file' onChange={handleFileChange} {...inputRef} />
 			{validation ? (
 				<ValidationInfo>
 					<RequiredDot>*</RequiredDot>
