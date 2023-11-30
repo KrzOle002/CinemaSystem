@@ -1,5 +1,9 @@
 const nodemailer = require('nodemailer')
 const express = require('express')
+const Reservation = require('../../models/Reservation')
+const Movie = require('../../models/Movie')
+const Room = require('../../models/Room')
+const Seat = require('../../models/Seat')
 const router = express.Router()
 const transporter = nodemailer.createTransport({
 	host: 'smtp-mail.outlook.com',
@@ -57,6 +61,7 @@ router.get('/send-email', (req, res) => {
 		subject: 'Nowy film trafił do naszego repertuaru',
 		html: htmlTemplate,
 	}
+
 	transporter.sendMail(mailOptions, function (err, info) {
 		if (err) {
 			console.log(err)
@@ -68,27 +73,145 @@ router.get('/send-email', (req, res) => {
 	})
 })
 
-router.post('/reservation-mail', (req, res) => {
+router.post('/reservation-mail', async (req, res) => {
 	const mailInfo = req.body
-	console.log(mailInfo)
-	const htmlTemplate = ``
+
+	const reservationInfo = await Reservation.findById(mailInfo.reservationId)
+		.populate('screeningId')
+		.populate({
+			path: 'seats',
+			model: Seat,
+		})
+		.exec()
+
+	const movieInfo = await Movie.findById(reservationInfo.screeningId.movieId)
+	const roomInfo = await Room.findById(reservationInfo.screeningId.roomId)
+
+	console.log(reservationInfo)
+	console.log(movieInfo)
+	console.log(roomInfo)
+	const ticketsHtml = reservationInfo.seats
+		.map(
+			seat => `
+	<div class="ticket">
+		<div class="movie-title">Tytuł filmu: ${movieInfo.title}</div>
+		<div class="details">Data seansu: ${reservationInfo.screeningId.date.toUTCTimeString}, godzina ${reservationInfo.screeningId.date.toUTCTimeString}</div>
+		<div class="details">Miejsce: Sala ${roomInfo.roomNumber}, Rząd ${seat.row}</div>
+		<div class="seat-number">Numer miejsca: ${seat.number}</div>
+		<div class="barcode">2137</div>
+	</div>
+`
+		)
+		.join('')
+
+	const htmlTemplate = `<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Potwierdzenie rezerwacji biletów</title>
+	<style>
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #fff;
+            text-align: center;
+        }
+
+        .ticket {
+			color:black;
+            width: 300px;
+            margin: 50px auto;
+            padding: 20px;
+            border: 2px solid #333;
+            background-color: #f8f8f8;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .movie-title {
+            font-size: 18px;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        .details {
+            font-size: 14px;
+            margin-bottom: 10px;
+        }
+
+        .seat-number {
+            font-size: 16px;
+            margin-bottom: 20px;
+        }
+
+        .barcode {
+            width: 100%;
+            height: 50px;
+            background-color: #333;
+            color: #fff;
+            line-height: 50px;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body style="background-color: #1C1C27; color: #FFF9FB; font-family: 'Arial', sans-serif; ">
+
+    <div style="background-color: #D0153F; padding: 20px; text-align: center; font-size: 32px">
+        <h1>Potwierdzenie rezerwacji biletów</h1>
+    </div>
+
+    <div style="padding: 20px; font-size: 20px">
+        <p>Cześć ${mailInfo.user.name} ${mailInfo.user.surname},</p>
+        <p>Dziękujemy za zarezerwowanie biletów w naszym kinie!</p>
+        <p>Poniżej znajdziesz szczegóły Twojej rezerwacji:</p>
+        
+        <!-- Szczegóły rezerwacji (Zamień na rzeczywiste dane) -->
+        <h2>Film: O psie, który jeździł koleją</h2>
+        <p>Data premiery: 10.11.2023</p>
+        <p>Data seansu: 15.12.2023, godzina 18:00</p>
+        <p>Ilość biletów: 2</p>
+        
+        <div style="background-color: #D0153F; padding: 20px; text-align: center; font-size: 32px">
+            <h1>Potwierdzenie rezerwacji biletów</h1>
+        </div>
+
+        <div style="padding: 20px; font-size: 20px">
+            <p>Cześć ${mailInfo.user.name} ${mailInfo.user.surname},</p>
+            <p>Dziękujemy za zarezerwowanie biletów w naszym kinie!</p>
+            <p>Poniżej znajdziesz szczegóły Twojej rezerwacji:</p>
+            
+            ${ticketsHtml}
+            
+            <p>Życzymy udanego seansu!</p>
+            
+            <div style="margin-top: 20px;">
+                <p>Z pozdrowieniami,</p>
+                <p>Twój Zespół Kina</p>
+            </div>
+        </div>
+    </div>
+
+</body>
+</html>`
 
 	const mailOptions = {
 		from: 'noreply@kino-fordon.pl <cinemaFordon12@outlook.com>',
-		to: `${mailInfo.email}`,
-		subject: `Nowa Rezerwacja nr `,
+		to: mailInfo.user.email,
+		subject: `Nowa Rezerwacja nr ${mailInfo.reservationId}`,
 		html: htmlTemplate,
 	}
 
-	// transporter.sendMail(mailOptions, function (err, info) {
-	// 	if (err) {
-	// 		console.log(err)
-	// 		res.status(500).json({ error: 'Error sending email' })
-	// 		return
-	// 	}
-	// 	console.log('Sent: ' + info.response)
-	// 	res.json({ message: 'Email sent successfully' })
-	// })
+	transporter.sendMail(mailOptions, function (err, info) {
+		if (err) {
+			console.log(err)
+			res.status(500).json({ error: 'Error sending email' })
+			return
+		}
+		console.log('Sent: ' + info.response)
+		res.json({ message: 'Email sent successfully' })
+	})
 	res.json({ message: 'Email sent successfully' })
 })
 module.exports = router

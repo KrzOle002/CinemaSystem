@@ -9,7 +9,7 @@ import useAuthHook from '../../../utils/auth/useAuth'
 const Tickets = () => {
 	const { reservation, setReservation, setStep } = useReservationContext()
 
-	const { isAuthenticated } = useAuthHook()
+	const { isAuthenticated, userData } = useAuthHook()
 	const [selected, setSelected] = useState<string[]>([])
 
 	const addReservation = () => {
@@ -20,6 +20,11 @@ const Tickets = () => {
 				...reservation,
 				cost: ticketCost,
 				seats: selected,
+				customer: {
+					name: userData?.name ?? '',
+					surname: userData?.surname ?? '',
+					email: userData?.email ?? '',
+				},
 			})
 			if (isAuthenticated()) {
 				setStep('payment')

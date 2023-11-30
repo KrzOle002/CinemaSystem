@@ -13,7 +13,8 @@ interface UnAuthDataType {
 	phone?: number
 }
 const UnAuthForm = () => {
-	const { setStep, setCustomer } = useReservationContext()
+	const { setStep, setCustomer, setReservation, reservation } = useReservationContext()
+
 	const {
 		register,
 		handleSubmit,
@@ -32,7 +33,10 @@ const UnAuthForm = () => {
 				phone: data.phone,
 			}
 			setCustomer(newCustomer)
-
+			setReservation({
+				...reservation,
+				customer: newCustomer,
+			})
 			setStep('payment')
 		}
 	}

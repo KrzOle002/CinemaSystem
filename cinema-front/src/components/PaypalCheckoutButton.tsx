@@ -34,14 +34,19 @@ const PaypalCheckoutButton = ({ product }: PaypalType) => {
 
 			await axios
 				.post(api + '/api/reservation', data)
-				.then(() => {
+				.then(res => {
 					toast.success('Zarezerwowano')
-					axios.post(api + '/api/mail/reservation-mail', { reservation, userData })
+					const reservationEmailData = {
+						reservationId: res.data,
+						user: reservation.customer,
+					}
+
+					axios.post(api + '/api/mail/reservation-mail', reservationEmailData)
 				})
 				.catch(() => toast.error('Nie udało się zarezerwować'))
 		}
 	}
-	console.log(userData)
+
 	const handleApprove = (orderId: string) => {
 		setPaidFor(true)
 		toast.success('Płatność zaakceptowana')

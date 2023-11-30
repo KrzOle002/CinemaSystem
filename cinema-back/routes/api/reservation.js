@@ -21,7 +21,7 @@ router.post('/', async (req, res) => {
 			await reservationSeat.save()
 		})
 
-		res.status(200).json('Succesfully added')
+		res.status(200).json(createdReservation._id)
 	} catch (error) {
 		res.status(500).json({ message: error.message })
 	}

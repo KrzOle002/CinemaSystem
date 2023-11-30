@@ -17,10 +17,6 @@ const ReservationSchema = new mongoose.Schema({
 		type: Date,
 		default: Date.now,
 	},
-	screeningDate: {
-		type: Date,
-		require: true,
-	},
 	discountId: {
 		type: mongoose.Schema.Types.ObjectId,
 		ref: 'discount',
