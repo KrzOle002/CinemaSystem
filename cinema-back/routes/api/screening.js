@@ -5,7 +5,7 @@ const Room = require('../../models/Room')
 const Movie = require('../../models/Movie')
 const Screening = require('../../models/Screening')
 const auth = require('../../middleware/auth')
-
+const moment = require('moment')
 // Pobieranie wszystkich ekranizacji
 router.get('/screenings', async (req, res) => {
 	try {
@@ -46,17 +46,6 @@ router.get('/screenings/:id/movie', async (req, res) => {
 		screening.movieId = movie
 
 		res.status(200).json(screening)
-	} catch (error) {
-		console.error(error)
-		res.status(500).json({ success: false, message: 'Błąd serwera' })
-	}
-})
-// Dodawanie nowej ekranizacji
-router.post('/screenings', async (req, res) => {
-	try {
-		const newScreening = new Screening(req.body)
-		await newScreening.save()
-		res.status(201).json({ success: true, message: 'Dodano nową ekranizację' })
 	} catch (error) {
 		console.error(error)
 		res.status(500).json({ success: false, message: 'Błąd serwera' })
@@ -117,6 +106,39 @@ router.get('/schedule', async (req, res) => {
 		})
 
 		res.status(200).json(freeSchedule)
+	} catch (error) {
+		console.error(error)
+		res.status(500).json({ success: false, message: 'Błąd serwera' })
+	}
+})
+
+router.post('/screenings', async (req, res) => {
+	try {
+		const screening = req.body
+		const hour = screening.hour + 1
+		const dateRange = []
+
+		let currentDate = moment(screening.dateFrom)
+
+		while (currentDate <= moment(screening.dateTo)) {
+			currentDate.set({ hour, minute: 0, second: 0, millisecond: 0 })
+			dateRange.push(currentDate.format('YYYY-MM-DDTHH:mm:ss'))
+			currentDate.add(1, 'days')
+		}
+
+		await Promise.all(
+			dateRange.map(async date => {
+				const newScreening = new Screening({
+					roomId: screening.roomId,
+					movieId: screening.movieId,
+					date: date,
+				})
+
+				await newScreening.save()
+			})
+		)
+
+		res.status(201).json({ success: true, message: 'Utworzono ekranizacje' })
 	} catch (error) {
 		console.error(error)
 		res.status(500).json({ success: false, message: 'Błąd serwera' })

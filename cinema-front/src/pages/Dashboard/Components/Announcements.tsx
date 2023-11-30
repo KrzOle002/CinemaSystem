@@ -7,9 +7,9 @@ const Announcements = () => {
 		<Wrapper>
 			<SectionHeader>Zapowiedzi</SectionHeader>
 			<Container>
-				<YouTubeVideo link={'https://www.youtube.com/embed/3X9u2bNG2aY?si=xmbbUE3m4z8MbFuk'} />
-				<YouTubeVideo link={'https://www.youtube.com/embed/3X9u2bNG2aY?si=xmbbUE3m4z8MbFuk'} />
-				<YouTubeVideo link={'https://www.youtube.com/embed/3X9u2bNG2aY?si=xmbbUE3m4z8MbFuk'} />
+				<YouTubeVideo link={'https://www.youtube.com/embed/jM0cs0GLR4o?si=8lxy4HjiSQlqQ88g'} />
+				<YouTubeVideo link={'https://www.youtube.com/embed/Z8tCizuEXVc?si=uY6oEsuF-V7OumPC'} />
+				<YouTubeVideo link={'https://www.youtube.com/embed/OG_82yCmqHw?si=wiBzvLuCaiC3wiRm'} />
 			</Container>
 		</Wrapper>
 	)
