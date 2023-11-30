@@ -87,6 +87,9 @@ const Wrapper = styled.div`
 `
 
 const MovieImage = styled.img`
+	@media screen and (max-width: 640px) {
+		margin: 0;
+	}
 	max-width: 150px;
 	margin-right: 20px;
 	border-radius: 10px;
@@ -97,10 +100,19 @@ const MovieImage = styled.img`
 `
 
 const MovieInfo = styled.div`
+	@media screen and (max-width: 1100px) {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+	}
 	flex: 2;
 `
 
 const MovieItemContainer = styled.div`
+	@media screen and (max-width: 1100px) {
+		flex-direction: column;
+		justify-content: center;
+	}
 	display: flex;
 	flex-direction: row;
 	align-items: center;
@@ -108,10 +120,16 @@ const MovieItemContainer = styled.div`
 `
 
 const MovieTitle = styled.h3`
+	@media screen and (max-width: 640px) {
+		font-size: small;
+	}
 	text-transform: uppercase;
 `
 
 const MovieBasicInfo = styled.div`
+	@media screen and (max-width: 640px) {
+		font-size: smaller;
+	}
 	text-transform: capitalize;
 	display: flex;
 	flex-direction: row;
@@ -119,6 +137,11 @@ const MovieBasicInfo = styled.div`
 	margin-bottom: 20px;
 `
 const MovieController = styled.div`
+	@media screen and (max-width: 1100px) {
+		padding: 20px 0;
+		width: 100%;
+		justify-content: center;
+	}
 	flex: 1;
 	width: min-content;
 	display: flex;

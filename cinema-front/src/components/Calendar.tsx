@@ -112,6 +112,10 @@ const StyledCalendarDays = styled.div`
 	cursor: pointer;
 	flex: 1;
 	.day {
+		@media screen and (max-width: 800px) {
+			width: 100%;
+			padding: 0;
+		}
 		width: 100%;
 
 		padding: 10px 10px;
@@ -127,11 +131,20 @@ const StyledCalendarDays = styled.div`
 		}
 
 		.dayNumber {
+			@media screen and (max-width: 800px) {
+				font-size: 10px;
+				font-weight: bold;
+			}
 			font-size: 18px;
 			font-weight: bold;
 		}
 
 		.dayOfWeek {
+			@media screen and (max-width: 800px) {
+				font-size: 8px;
+				color: #ffffff;
+			}
+
 			font-size: 14px;
 			color: #ffffff;
 		}

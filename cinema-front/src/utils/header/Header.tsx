@@ -1,4 +1,5 @@
 import MenuIcon from '@mui/icons-material/Menu'
+import AccountCircleOutlinedIcon from '@mui/icons-material/AccountCircleOutlined'
 import { AppBar, Box, IconButton, Toolbar, Typography } from '@mui/material'
 import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
@@ -26,26 +27,7 @@ const Header = () => {
 			window.removeEventListener('scroll', handleScroll)
 		}
 	}, [])
-	const { isAuthenticated, axiosAuth } = useAuthHook()
-	const [avatarUrl, setAvatarUrl] = useState('')
-
-	const api = import.meta.env.VITE_API_BASE_URL
-
-	useEffect(() => {
-		const fetchAvatar = async () => {
-			if (isAuthenticated()) {
-				try {
-					const response = await axiosAuth.get(api + '/api/users/avatar', {})
-
-					setAvatarUrl(response.data.avatar)
-				} catch (error) {
-					setAvatarUrl('')
-				}
-			}
-		}
-
-		fetchAvatar()
-	}, [])
+	const { isAuthenticated, userData } = useAuthHook()
 
 	return (
 		<Box sx={{ position: scrolledPixels > 0 ? 'fixed' : 'relative', zIndex: 101, width: '100%' }}>
@@ -62,7 +44,10 @@ const Header = () => {
 					</Typography>
 					{isAuthenticated() ? (
 						<NavigationLink size='15px' link={'/account'}>
-							<img style={{ height: '50px', borderRadius: '50px' }} src={avatarUrl} />
+							<div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+								<AccountCircleOutlinedIcon fontSize='large' sx={{ width: '30px' }} />
+								{userData?.email}
+							</div>
 						</NavigationLink>
 					) : (
 						<NavigationLink size='15px' link={'/login'}>

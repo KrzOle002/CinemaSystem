@@ -39,9 +39,7 @@ const PurchaseForm = () => {
 			setMovie(null)
 		}
 	}
-	console.log(reservation)
-	console.log(screening)
-	console.log(movie)
+
 	useEffect(() => {
 		fetchMovies()
 		fetchScreening()

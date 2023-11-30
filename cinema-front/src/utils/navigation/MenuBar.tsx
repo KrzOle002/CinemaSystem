@@ -13,15 +13,15 @@ const MenuBar = () => {
 					<ListItemText primary='Repertuar' />
 				</ListItemButton>
 
-				<ListItemButton onClick={() => navigate('/empty')}>
+				<ListItemButton onClick={() => navigate('/offer')}>
 					<ListItemText primary='Oferta' />
 				</ListItemButton>
 
-				<ListItemButton onClick={() => navigate('/')}>
+				<ListItemButton onClick={() => navigate('/news')}>
 					<ListItemText primary='Aktualności' />
 				</ListItemButton>
 
-				<ListItemButton onClick={() => navigate('/')}>
+				<ListItemButton onClick={() => navigate('/about')}>
 					<ListItemText primary='Kino' />
 				</ListItemButton>
 

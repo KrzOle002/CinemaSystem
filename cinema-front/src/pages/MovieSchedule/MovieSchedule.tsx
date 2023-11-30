@@ -80,6 +80,9 @@ const Wrapper = styled.div`
 	height: 100vh;
 `
 const Container = styled.div`
+	@media screen and (max-width: 640px) {
+		width: 80%;
+	}
 	width: 50%;
 	margin: 0 auto;
 `

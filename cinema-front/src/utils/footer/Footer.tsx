@@ -4,13 +4,12 @@ import HomeIcon from '@mui/icons-material/Home'
 import PermPhoneMsgOutlinedIcon from '@mui/icons-material/PermPhoneMsgOutlined'
 import VideocamIcon from '@mui/icons-material/Videocam'
 import { BottomNavigation, BottomNavigationAction } from '@mui/material'
-import { useEffect, useState } from 'react'
+
 import { useNavigate } from 'react-router-dom'
 import useAuthHook from '../auth/useAuth'
 const Footer = () => {
 	const navigate = useNavigate()
-	const { isAuthenticated, axiosAuth, userData } = useAuthHook()
-	const [avatarUrl, setAvatarUrl] = useState('')
+	const { isAuthenticated, userData } = useAuthHook()
 
 	return (
 		<BottomNavigation
