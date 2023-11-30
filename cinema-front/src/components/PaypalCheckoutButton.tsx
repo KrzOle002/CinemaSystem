@@ -15,7 +15,7 @@ interface PaypalType {
 	product: ProductType
 }
 const PaypalCheckoutButton = ({ product }: PaypalType) => {
-	const { api } = useAuthHook()
+	const { api, isAuthenticated, userData } = useAuthHook()
 	const { reservation } = useReservationContext()
 	const [paidFor, setPaidFor] = useState<boolean>(false)
 	const [error, setError] = useState<string | null>(null)
@@ -28,7 +28,7 @@ const PaypalCheckoutButton = ({ product }: PaypalType) => {
 				cost: reservation?.cost,
 				screeningDate: reservation?.screeningDate,
 				discountId: reservation?.discount,
-				email: reservation?.customer?.email,
+				email: isAuthenticated() ? userData?.email : reservation?.customer?.email,
 				seats: reservation?.seats,
 			}
 
@@ -36,11 +36,12 @@ const PaypalCheckoutButton = ({ product }: PaypalType) => {
 				.post(api + '/api/reservation', data)
 				.then(() => {
 					toast.success('Zarezerwowano')
+					axios.post(api + '/api/mail/reservation-mail', { reservation, userData })
 				})
 				.catch(() => toast.error('Nie udało się zarezerwować'))
 		}
 	}
-
+	console.log(userData)
 	const handleApprove = (orderId: string) => {
 		setPaidFor(true)
 		toast.success('Płatność zaakceptowana')

@@ -11,11 +11,10 @@ const transporter = nodemailer.createTransport({
 	},
 })
 
-const name = 'John'
-const surname = 'Doe'
-
 // Treść HTML maila
-const htmlTemplate = `
+
+router.get('/send-email', (req, res) => {
+	const htmlTemplate = `
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -52,14 +51,12 @@ const htmlTemplate = `
 </html>
 `
 
-const mailOptions = {
-	from: 'noreply@kino-fordon.pl <cinemaFordon12@outlook.com>',
-	to: 'Thekriso@wp.pl',
-	subject: 'Nowy film trafił do naszego repertuaru',
-	html: htmlTemplate,
-}
-
-router.get('/send-email', (req, res) => {
+	const mailOptions = {
+		from: 'noreply@kino-fordon.pl <cinemaFordon12@outlook.com>',
+		to: 'Thekriso@wp.pl',
+		subject: 'Nowy film trafił do naszego repertuaru',
+		html: htmlTemplate,
+	}
 	transporter.sendMail(mailOptions, function (err, info) {
 		if (err) {
 			console.log(err)
@@ -71,4 +68,27 @@ router.get('/send-email', (req, res) => {
 	})
 })
 
+router.post('/reservation-mail', (req, res) => {
+	const mailInfo = req.body
+	console.log(mailInfo)
+	const htmlTemplate = ``
+
+	const mailOptions = {
+		from: 'noreply@kino-fordon.pl <cinemaFordon12@outlook.com>',
+		to: `${mailInfo.email}`,
+		subject: `Nowa Rezerwacja nr `,
+		html: htmlTemplate,
+	}
+
+	// transporter.sendMail(mailOptions, function (err, info) {
+	// 	if (err) {
+	// 		console.log(err)
+	// 		res.status(500).json({ error: 'Error sending email' })
+	// 		return
+	// 	}
+	// 	console.log('Sent: ' + info.response)
+	// 	res.json({ message: 'Email sent successfully' })
+	// })
+	res.json({ message: 'Email sent successfully' })
+})
 module.exports = router

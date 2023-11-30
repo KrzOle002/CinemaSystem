@@ -28,7 +28,7 @@ const PaymentDiscount = ({ discount, setDiscount }: PaymentDiscountType) => {
 			})
 		}
 	}
-	console.log(reservation)
+
 	return (
 		<Wrapper>
 			<DiscountPlace>

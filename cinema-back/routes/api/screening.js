@@ -91,4 +91,35 @@ router.delete('/screenings/:id', async (req, res) => {
 	}
 })
 
+router.get('/schedule', async (req, res) => {
+	const screeningHours = [9, 11, 13, 15, 17, 19, 21]
+	try {
+		const screenings = await Screening.find()
+
+		const rooms = await Room.find()
+
+		const freeSchedule = rooms.map(room => {
+			const roomSchedule = screeningHours.map(hour => {
+				const isHourOccupied = screenings.some(screening => {
+					return screening.roomId.equals(room._id) && screening.date.getUTCHours() == hour
+				})
+
+				return {
+					hour,
+					occupied: isHourOccupied,
+				}
+			})
+
+			return {
+				roomId: room._id,
+				schedule: roomSchedule,
+			}
+		})
+
+		res.status(200).json(freeSchedule)
+	} catch (error) {
+		console.error(error)
+		res.status(500).json({ success: false, message: 'Błąd serwera' })
+	}
+})
 module.exports = router

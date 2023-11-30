@@ -8,7 +8,7 @@ import SubmitButton from '../../../components/SubmitButton'
 import { useState } from 'react'
 
 const ChoosePersonal = () => {
-	const { reservation, setReservation, setStep } = useReservationContext()
+	const { setStep } = useReservationContext()
 
 	const [authStep, setAuthStep] = useState<string>('login')
 	return (

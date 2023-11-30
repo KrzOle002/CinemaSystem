@@ -8,6 +8,7 @@ import InputLabel from '../../../components/InputLabel'
 import useAuthHook from '../../../utils/auth/useAuth'
 import { toast } from 'react-toastify'
 import { screeningHours } from '../../../utils/getHours'
+import { useEffect, useState } from 'react'
 
 interface MovieDialogType {
 	isOpen: boolean
@@ -15,13 +16,17 @@ interface MovieDialogType {
 	movieId?: number
 }
 
+interface ScheduleType {
+	roomId: string
+	schedule: [{ hour: number; occupied: boolean }]
+}
+
 const AdditionMovieDialog = ({ isOpen, close, movieId }: MovieDialogType) => {
 	const { axiosAuth, api } = useAuthHook()
-
+	const [schedules, setSchedules] = useState<ScheduleType[]>()
 	const {
 		register,
 		handleSubmit,
-		control,
 		formState: { errors },
 		setValue,
 	} = useForm<MovieModelSend>()
@@ -72,6 +77,16 @@ const AdditionMovieDialog = ({ isOpen, close, movieId }: MovieDialogType) => {
 			toast.error('Nie dodać filmu')
 		}
 	}
+
+	const fetchSchedule = async () => {
+		const res = await axiosAuth.get(api + '/api/screening/schedule')
+		setSchedules(res.data)
+	}
+
+	useEffect(() => {
+		fetchSchedule()
+	}, [])
+
 	return (
 		<Dialog open={isOpen} onClose={close} fullWidth maxWidth={'md'} sx={{ zIndex: '500' }}>
 			<DialogTitle sx={{ backgroundColor: theme.colors.primary, color: theme.colors.white }}>
@@ -79,7 +94,7 @@ const AdditionMovieDialog = ({ isOpen, close, movieId }: MovieDialogType) => {
 			</DialogTitle>
 			<ContainerForm onSubmit={movieId ? handleSubmit(onEdit) : handleSubmit(onSubmit)}>
 				<DialogContent sx={{ width: '60%', margin: '0 auto', rowGap: '20px', display: 'flex', flexDirection: 'column' }}>
-					{/* <InputLabel
+					<InputLabel
 						title={'Tytuł'}
 						inputRef={{
 							...register('title', {
@@ -179,7 +194,36 @@ const AdditionMovieDialog = ({ isOpen, close, movieId }: MovieDialogType) => {
 						}}
 						className={errors.title && 'error'}
 						validation={errors.title?.message}
-					/> */}
+					/>
+
+					<InputLabel
+						title={'Data transmisji'}
+						type={'date'}
+						inputRef={{
+							...register('dateFrom', {
+								required: true,
+							}),
+						}}
+						required
+						className={errors.dateFrom && 'error'}
+					/>
+					<InputLabel
+						title={'Data zakończenia'}
+						type={'date'}
+						inputRef={{
+							...register('dateTo', {
+								required: true,
+							}),
+						}}
+						required
+						className={errors.dateTo && 'error'}
+					/>
+					{schedules?.map(scheduleObject => {
+						scheduleObject.schedule.map(scheduleState => {
+							scheduleState.hour
+						})
+						return <div></div>
+					})}
 				</DialogContent>
 
 				<DialogActions sx={{ width: '40%', marginLeft: 'auto' }}>

@@ -15,6 +15,8 @@ export interface MovieModelSend {
 			isChecked: boolean
 		}
 	]
+	dateFrom: Date
+	dateTo: Date
 }
 
 export interface MovieModel {
