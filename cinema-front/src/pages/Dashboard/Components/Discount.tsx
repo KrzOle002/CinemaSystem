@@ -25,7 +25,7 @@ export default Discount
 
 const Wrapper = styled.div`
 	padding: 40px 0;
-	width: 60%;
+	width: 50%;
 	margin: 0 auto;
 `
 const Container = styled.div`
@@ -57,7 +57,7 @@ const Photo = styled.img`
 	@media screen and (max-width: 640px) {
 		width: 100%;
 	}
-	width: 18vw;
+	width: 100%;
 	height: auto;
 `
 const DiscountDescription = styled.span`

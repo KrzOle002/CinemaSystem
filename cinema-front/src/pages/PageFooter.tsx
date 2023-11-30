@@ -38,6 +38,7 @@ const PageFooter = () => {
 						LinkedIn
 					</CategoryContent>
 				</Category>
+				<div style={{ height: '1px' }} />
 			</Container>
 		</Wrapper>
 	)

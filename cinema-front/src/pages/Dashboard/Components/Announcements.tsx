@@ -19,7 +19,7 @@ export default Announcements
 
 const Wrapper = styled.div`
 	padding: 40px 0;
-	width: 60%;
+	width: 50%;
 	margin: 0 auto;
 	display: flex;
 	flex-direction: column;

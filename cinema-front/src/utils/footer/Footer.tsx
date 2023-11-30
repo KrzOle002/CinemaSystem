@@ -12,32 +12,15 @@ const Footer = () => {
 	const { isAuthenticated, axiosAuth, userData } = useAuthHook()
 	const [avatarUrl, setAvatarUrl] = useState('')
 
-	const api = import.meta.env.VITE_API_BASE_URL
-
-	useEffect(() => {
-		const fetchAvatar = async () => {
-			if (isAuthenticated()) {
-				try {
-					const response = await axiosAuth.get(api + '/api/users/avatar', {})
-
-					setAvatarUrl(response.data.avatar)
-				} catch (error) {
-					setAvatarUrl('')
-				}
-			}
-		}
-		fetchAvatar()
-	}, [])
-
 	return (
 		<BottomNavigation
 			showLabels
 			sx={{
-				backgroundColor: '#D0153F ',
-				position: 'sticky',
-				bottom: '0',
-				minWidth: '0',
-				width: '100%',
+				backgroundColor: '#D0153F',
+				position: 'fixed',
+				bottom: 0,
+				left: 0, // Ensure it's fixed to the left
+				right: 0, // Ensure it's fixed to the right
 				zIndex: 100,
 				fontSize: '9px',
 			}}>
@@ -126,9 +109,7 @@ const Footer = () => {
 					},
 				}}
 				label={isAuthenticated() ? `${userData?.email}` : 'Konto'}
-				icon={
-					isAuthenticated() ? <img style={{ width: 'auto', height: '24px', borderRadius: '20px' }} src={avatarUrl} /> : <AccountCircleOutlinedIcon />
-				}
+				icon={<AccountCircleOutlinedIcon />}
 			/>
 		</BottomNavigation>
 	)

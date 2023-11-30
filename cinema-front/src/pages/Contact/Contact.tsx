@@ -3,6 +3,7 @@ import MapView from './MapView'
 import styled from 'styled-components'
 import SubmitButton from '../../components/SubmitButton'
 import InputLabel from '../../components/InputLabel'
+import PageFooter from '../PageFooter'
 
 const Contact = () => {
 	return (
@@ -53,6 +54,7 @@ const Contact = () => {
 					Z poważaniem, Zespół Cinema Fordon
 				</p>
 			</Container>
+			<PageFooter />
 		</div>
 	)
 }
@@ -60,7 +62,7 @@ const Contact = () => {
 export default Contact
 
 const Container = styled.div`
-	width: 60%;
+	width: 50%;
 	margin: 0 auto;
 	color: white;
 

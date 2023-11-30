@@ -23,7 +23,7 @@ export default Actualshow
 
 const Wrapper = styled.div`
 	color: ${({ theme }) => theme.colors.white};
-	width: 60%;
+	width: 50%;
 
 	margin: 0 auto;
 	padding: 40px 0;
