@@ -8,16 +8,16 @@ const PageFooter = () => {
 			<Container>
 				<Category>
 					<CategoryHeader>Odwiedź sekcje</CategoryHeader>
-					<NavigationLink link={''} size={''}>
+					<NavigationLink link={'/schedule'} size={''}>
 						Repertuar
 					</NavigationLink>
-					<NavigationLink link={''} size={''}>
+					<NavigationLink link={'/offer'} size={''}>
 						Oferta
 					</NavigationLink>
-					<NavigationLink link={''} size={''}>
-						Aktualności
+					<NavigationLink link={'/contact'} size={''}>
+						Kontakt
 					</NavigationLink>
-					<NavigationLink link={''} size={''}>
+					<NavigationLink link={'/about'} size={''}>
 						Kino
 					</NavigationLink>
 				</Category>
