@@ -1,7 +1,7 @@
 export interface MovieModelSend {
 	title: string
 	description: string
-	cover: Blob
+	cover: Blob[]
 	genre: string[]
 	director: string
 	casts: string[]

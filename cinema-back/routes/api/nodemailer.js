@@ -74,26 +74,27 @@ router.get('/send-email', (req, res) => {
 })
 
 router.post('/reservation-mail', async (req, res) => {
-	const mailInfo = req.body
+	try {
+		const mailInfo = req.body
 
-	const reservationInfo = await Reservation.findById(mailInfo.reservationId)
-		.populate('screeningId')
-		.populate({
-			path: 'seats',
-			model: Seat,
-		})
-		.exec()
+		const reservationInfo = await Reservation.findById(mailInfo.reservationId)
+			.populate('screeningId')
+			.populate({
+				path: 'seats',
+				model: Seat,
+			})
+			.exec()
 
-	const movieInfo = await Movie.findById(reservationInfo.screeningId.movieId)
-	const roomInfo = await Room.findById(reservationInfo.screeningId.roomId)
+		const movieInfo = await Movie.findById(reservationInfo.screeningId.movieId)
+		const roomInfo = await Room.findById(reservationInfo.screeningId.roomId)
 
-	console.log(reservationInfo)
-	console.log(movieInfo)
-	console.log(roomInfo)
+		console.log(reservationInfo)
+		console.log(movieInfo)
+		console.log(roomInfo)
 
-	const ticketsHtml = reservationInfo.seats
-		.map(
-			seat => `
+		const ticketsHtml = reservationInfo.seats
+			.map(
+				seat => `
 	<div class="ticket">
 		<div class="movie-title">Tytuł filmu: ${movieInfo.title}</div>
 		<div class="details">Data seansu: ${reservationInfo.screeningId.date.toLocaleDateString()}, godzina ${reservationInfo.screeningId.date.getUTCHours()}:00</div>
@@ -102,10 +103,10 @@ router.post('/reservation-mail', async (req, res) => {
 		<div class="barcode">${generateRandomNumber()}</div>
 	</div>
 `
-		)
-		.join('')
+			)
+			.join('')
 
-	const htmlTemplate = `<!DOCTYPE html>
+		const htmlTemplate = `<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -183,23 +184,25 @@ router.post('/reservation-mail', async (req, res) => {
 </body>
 </html>`
 
-	const mailOptions = {
-		from: 'noreply@kino-fordon.pl <cinemaFordon12@outlook.com>',
-		to: mailInfo.user.email,
-		subject: `Nowa Rezerwacja nr ${mailInfo.reservationId}`,
-		html: htmlTemplate,
-	}
-
-	transporter.sendMail(mailOptions, function (err, info) {
-		if (err) {
-			console.log(err)
-			res.status(500).json({ error: 'Error sending email' })
-			return
+		const mailOptions = {
+			from: 'noreply@kino-fordon.pl <cinemaFordon12@outlook.com>',
+			to: mailInfo.user.email,
+			subject: `Nowa Rezerwacja nr ${mailInfo.reservationId}`,
+			html: htmlTemplate,
 		}
-		console.log('Sent: ' + info.response)
+
+		transporter.sendMail(mailOptions, function (err, info) {
+			if (err) {
+				console.log(err)
+				res.status(500).json({ error: 'Error sending email' })
+				return
+			}
+		})
 		res.json({ message: 'Email sent successfully' })
-	})
-	res.json({ message: 'Email sent successfully' })
+	} catch (err) {
+		console.error(err.message)
+		res.status(500).send('Server Error')
+	}
 })
 module.exports = router
 

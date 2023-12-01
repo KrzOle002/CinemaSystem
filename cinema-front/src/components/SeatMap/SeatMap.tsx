@@ -65,7 +65,7 @@ const SeatMap = ({ selected, setSelected }: SeatMapType) => {
 export default SeatMap
 
 const Wrapper = styled.div`
-	padding: 40px 0;
+	padding: 30px 0;
 	width: 100%;
 	margin: 0 auto;
 `

@@ -58,7 +58,7 @@ const MovieTitle = styled.span`
 	text-align: center;
 	font-size: 1.2vw;
 	font-family: 'Saira', sans-serif;
-	text-transform: capitalize;
+	text-transform: uppercase;
 
 	z-index: 2;
 `

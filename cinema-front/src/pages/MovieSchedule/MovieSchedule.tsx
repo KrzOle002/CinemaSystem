@@ -37,7 +37,7 @@ const MovieSchedule = () => {
 
 	useEffect(() => {
 		fetchMovies()
-	}, [reservationDate])
+	}, [])
 
 	return (
 		<Wrapper>
@@ -59,7 +59,7 @@ const MovieSchedule = () => {
 					{movieList?.length == 0 ? <EmptySlot>Brak filmu o takiej nazwie</EmptySlot> : null}
 					{movieList ? (
 						movieList.map(movie => {
-							return <MovieItem key={movie._id} movie={movie} reservationDate={reservationDate} />
+							return <MovieItem key={movie._id} movie={movie} movieList={movieList} setMovieList={setMovieList} reservationDate={reservationDate} />
 						})
 					) : (
 						<EmptyState />

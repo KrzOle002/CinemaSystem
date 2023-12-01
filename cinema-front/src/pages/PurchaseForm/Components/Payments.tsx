@@ -38,7 +38,7 @@ interface ScreeningMovie {
 }
 
 const Payments = () => {
-	const { reservation } = useReservationContext()
+	const { reservation, setStep } = useReservationContext()
 	const { api, isAuthenticated } = useAuthHook()
 	const [movie, setMovie] = useState<ScreeningMovie>()
 	const [seats, setSeats] = useState<CurrentSeat[]>()
@@ -75,6 +75,14 @@ const Payments = () => {
 			{movie ? (
 				<>
 					<SectionHeader>Podsumowanie</SectionHeader>
+					<SubmitButton
+						className='primary'
+						onClick={() => {
+							setStep('tickets')
+						}}
+						type={'button'}>
+						{'Powrót'}
+					</SubmitButton>
 					<Container>
 						<CostTable>
 							{seats?.map(seat => {

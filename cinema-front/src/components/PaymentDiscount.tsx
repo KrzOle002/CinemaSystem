@@ -13,12 +13,12 @@ const PaymentDiscount = ({ discount, setDiscount }: PaymentDiscountType) => {
 
 	const handleDiscount = (e: ChangeEvent<HTMLInputElement>) => {
 		const discountWord = e.target.value
-		if (discountWord == 'ABC') {
-			setDiscount(50)
+		if (discountWord == 'KOCIO') {
+			setDiscount(10)
 
 			setReservation({
 				...reservation,
-				discount: 50,
+				discount: 10,
 			})
 		} else {
 			setDiscount(undefined)
