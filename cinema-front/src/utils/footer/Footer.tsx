@@ -130,6 +130,7 @@ const Footer = () => {
 				icon={<AccountCircleOutlinedIcon />}
 			/>
 			<Popover
+				disableScrollLock={true}
 				open={Boolean(anchorEl)}
 				anchorEl={anchorEl}
 				onClose={handleClosePopover}
