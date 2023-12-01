@@ -1,6 +1,6 @@
 import MenuIcon from '@mui/icons-material/Menu'
 import AccountCircleOutlinedIcon from '@mui/icons-material/AccountCircleOutlined'
-import { AppBar, Box, IconButton, Toolbar, Typography } from '@mui/material'
+import { AppBar, Box, IconButton, Popover, Toolbar, Typography } from '@mui/material'
 import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import styled from 'styled-components'
@@ -10,16 +10,31 @@ import { useMenuBarContext } from '../../context/MenuBarContext'
 import MenuBar from '../navigation/MenuBar'
 import useAuthHook from './../auth/useAuth'
 
+import SubmitButton from '../../components/SubmitButton'
+import { toast } from 'react-toastify'
+import { useSignOut } from 'react-auth-kit'
+
 const Header = () => {
 	const { toggleMenuBar } = useMenuBarContext()
 	const navigate = useNavigate()
 
 	const [scrolledPixels, setScrolledPixels] = useState(0)
 
+	const [anchorEl, setAnchorEl] = useState<HTMLElement | null>(null)
+
+	const handleClick = (event: React.MouseEvent<HTMLElement>) => {
+		setAnchorEl(event.currentTarget)
+	}
+
+	const handleClose = () => {
+		setAnchorEl(null)
+	}
 	const handleScroll = () => {
 		setScrolledPixels(window.scrollY)
 	}
 
+	const open = Boolean(anchorEl)
+	const id = open ? 'simple-popover' : undefined
 	useEffect(() => {
 		window.addEventListener('scroll', handleScroll)
 
@@ -28,6 +43,8 @@ const Header = () => {
 		}
 	}, [])
 	const { isAuthenticated, userData } = useAuthHook()
+
+	const signOut = useSignOut()
 
 	return (
 		<Box sx={{ position: scrolledPixels > 100 ? 'fixed' : 'relative', zIndex: 101, width: '100%' }}>
@@ -43,12 +60,36 @@ const Header = () => {
 						</StyledLogo>
 					</Typography>
 					{isAuthenticated() ? (
-						<NavigationLink size='15px' link={'/account'}>
-							<div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+						<>
+							<div onClick={handleClick} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
 								<AccountCircleOutlinedIcon fontSize='large' sx={{ width: '30px' }} />
 								{userData?.email}
 							</div>
-						</NavigationLink>
+							<Popover
+								disableScrollLock={true}
+								id={id}
+								open={open}
+								anchorEl={anchorEl}
+								onClose={handleClose}
+								anchorOrigin={{
+									vertical: 'bottom',
+									horizontal: 'left',
+								}}>
+								<Typography sx={{ p: 2, backgroundColor: '#D0153F' }}>
+									<SubmitButton
+										type='button'
+										className='important'
+										fullWidth
+										onClick={() => {
+											signOut()
+											toast.success('Wylogowano')
+											navigate('/')
+										}}>
+										Wyloguj
+									</SubmitButton>
+								</Typography>
+							</Popover>
+						</>
 					) : (
 						<NavigationLink size='15px' link={'/login'}>
 							ZALOGUJ SIĘ
