@@ -128,10 +128,8 @@ router.post('/seats/reservation', async (req, res) => {
 
 function compareSeats(a, b) {
 	if (a.row === b.row) {
-		// Jeśli "row" jest taki sam, porównaj według "number"
 		return a.number - b.number
 	}
-	// W przeciwnym razie porównaj według "row"
 	return a.row - b.row
 }
 module.exports = router

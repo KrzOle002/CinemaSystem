@@ -68,14 +68,12 @@ const MovieItem = ({ movie, movieList, setMovieList, reservationDate }: MovieIte
 						<CircleAge>{movie.ageRestrictions}</CircleAge>
 						{movie.genre} | {movie.screeningLength} minut
 					</MovieBasicInfo>
-					<MovieRating />
+					<MovieRating movie={movie._id} />
 					<MovieButtons>
 						{movie.screenings
 							.filter(screening => {
 								const screeningDateObject = new Date(screening.date)
 								const reservationDateObject = reservationDate
-								console.log(reservationDateObject.getMonth())
-								console.log(screeningDateObject.getMonth())
 								return (
 									screeningDateObject.getFullYear() === reservationDateObject.getFullYear() &&
 									screeningDateObject.getMonth() === reservationDateObject.getMonth() &&

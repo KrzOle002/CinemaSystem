@@ -1,7 +1,7 @@
 const mongoose = require('mongoose')
 
 const RatingSchema = new mongoose.Schema({
-	user: {
+	userId: {
 		type: mongoose.Schema.Types.ObjectId,
 		ref: 'user',
 	},
@@ -9,7 +9,7 @@ const RatingSchema = new mongoose.Schema({
 		type: Number,
 		required: true,
 	},
-	movie: {
+	movieId: {
 		type: mongoose.Schema.Types.ObjectId,
 		ref: 'movie',
 	},
