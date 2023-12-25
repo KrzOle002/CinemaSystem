@@ -29,6 +29,7 @@ app.use('/api/room', require('./routes/api/room'))
 app.use('/api/screening', require('./routes/api/screening'))
 app.use('/api/reservation', require('./routes/api/reservation'))
 app.use('/api/mail', require('./routes/api/nodemailer'))
+app.use('/api/rating', require('./routes/api/rating'))
 
 const PORT = process.env.PORT || 5000
 

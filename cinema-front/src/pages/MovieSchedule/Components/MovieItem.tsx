@@ -1,16 +1,26 @@
-import styled from 'styled-components'
-import { MovieModel } from '../../../types/MovieModelType'
-import useAuthHook from '../../../utils/auth/useAuth'
 import CircleAge from '../../../components/CircleAge'
 import SubmitButton from '../../../components/SubmitButton'
+import { MovieModel } from '../../../types/MovieModelType'
+import useAuthHook from '../../../utils/auth/useAuth'
 
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever'
+import { Dispatch, SetStateAction, useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { toast } from 'react-toastify'
 import { useDialogHandler } from '../../../utils/dialog/useDialogHandler'
 import AdditionMovieDialog from './AdditionMovieDialog'
-import { Dispatch, SetStateAction, useEffect, useState } from 'react'
-import Rating from '@mui/material/Rating'
+import {
+	ControlButton,
+	MovieBasicInfo,
+	MovieButtons,
+	MovieController,
+	MovieImage,
+	MovieInfo,
+	MovieItemContainer,
+	MovieTitle,
+	Wrapper,
+} from './MovieItem.style'
+import MovieRating from './MovieRating'
 
 interface MovieItemType {
 	movie: MovieModel
@@ -20,9 +30,9 @@ interface MovieItemType {
 }
 
 const MovieItem = ({ movie, movieList, setMovieList, reservationDate }: MovieItemType) => {
-	const { api, axiosAuth, isAdmin, isAuthenticated } = useAuthHook()
+	const { api, axiosAuth, isAdmin } = useAuthHook()
 	const { isOpen, close } = useDialogHandler()
-	const [rating, setRaiting] = useState<number>(((movie.screeningLength - movie.ageRestrictions) % 5) + 1)
+
 	const navigate = useNavigate()
 
 	const deleteMovie = async (id: number) => {
@@ -39,14 +49,6 @@ const MovieItem = ({ movie, movieList, setMovieList, reservationDate }: MovieIte
 
 	const handleReservationClick = (screening: string) => {
 		navigate(`/purchase/${movie._id}?screening=${encodeURIComponent(screening)}&date=${encodeURIComponent(reservationDate.toString())}`)
-	}
-
-	const changeRaiting = (event: any, newValue: any) => {
-		if (isAuthenticated()) {
-			setRaiting((rating + (newValue ?? 0)) / 2)
-		} else {
-			toast.warning('Tylko zalogowani użytkownicy mogą oceniać filmy')
-		}
 	}
 
 	useEffect(() => {}, [reservationDate])
@@ -66,7 +68,7 @@ const MovieItem = ({ movie, movieList, setMovieList, reservationDate }: MovieIte
 						<CircleAge>{movie.ageRestrictions}</CircleAge>
 						{movie.genre} | {movie.screeningLength} minut
 					</MovieBasicInfo>
-					<Rating value={rating} onChange={changeRaiting} />
+					<MovieRating />
 					<MovieButtons>
 						{movie.screenings
 							.filter(screening => {
@@ -106,83 +108,3 @@ const MovieItem = ({ movie, movieList, setMovieList, reservationDate }: MovieIte
 }
 
 export default MovieItem
-
-const Wrapper = styled.div`
-	color: ${({ theme }) => theme.colors.white};
-	width: 100%;
-`
-
-const MovieImage = styled.img`
-	@media screen and (max-width: 640px) {
-		margin: 0;
-	}
-	max-width: 150px;
-	margin-right: 20px;
-	border-radius: 10px;
-	&:hover {
-		filter: brightness(0.7);
-		cursor: pointer;
-	}
-`
-
-const MovieInfo = styled.div`
-	@media screen and (max-width: 1100px) {
-		display: flex;
-		flex-direction: column;
-		align-items: center;
-	}
-	flex: 2;
-`
-
-const MovieItemContainer = styled.div`
-	@media screen and (max-width: 1100px) {
-		flex-direction: column;
-		justify-content: center;
-	}
-	display: flex;
-	flex-direction: row;
-	align-items: center;
-	margin: 10px;
-`
-
-const MovieTitle = styled.h3`
-	@media screen and (max-width: 640px) {
-		font-size: small;
-	}
-	text-transform: uppercase;
-`
-
-const MovieBasicInfo = styled.div`
-	@media screen and (max-width: 640px) {
-		font-size: smaller;
-	}
-	text-transform: capitalize;
-	display: flex;
-	flex-direction: row;
-	align-items: center;
-	margin-bottom: 20px;
-`
-const MovieController = styled.div`
-	@media screen and (max-width: 1100px) {
-		padding: 20px 0;
-		width: 100%;
-		justify-content: center;
-	}
-	flex: 1;
-	width: min-content;
-	display: flex;
-	flex-direction: row;
-
-	gap: 10px;
-`
-const MovieButtons = styled.div`
-	display: flex;
-	flex-direction: row;
-	gap: 10px;
-`
-const ControlButton = styled(SubmitButton)`
-	display: flex;
-	flex-direction: row;
-	justify-content: center;
-	align-items: center;
-`
