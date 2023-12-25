@@ -97,7 +97,11 @@ router.post('/reservation-mail', async (req, res) => {
 				seat => `
 	<div class="ticket">
 		<div class="movie-title">Tytuł filmu: ${movieInfo.title}</div>
-		<div class="details">Data seansu: ${reservationInfo.screeningId.date.toLocaleDateString()}, godzina ${reservationInfo.screeningId.date.getUTCHours()}:00</div>
+		<div class="details">Data seansu: ${reservationInfo.screeningId.date.toLocaleDateString('pl-PL', {
+			day: '2-digit',
+			month: '2-digit',
+			year: 'numeric',
+		})}, godzina ${reservationInfo.screeningId.date.getUTCHours()}:00</div>
 		<div class="details">Miejsce: Sala ${roomInfo.roomNumber}, Rząd ${seat.row}</div>
 		<div class="seat-number">Numer miejsca: ${seat.number}</div>
 		<div class="barcode">${generateRandomNumber()}</div>
