@@ -9,7 +9,6 @@ const useAuthHook = () => {
 		name: string
 		surname: string
 		email: string
-		avatar: string
 		type: string
 	}
 	const isAuthenticated = useIsAuthenticated()

@@ -20,9 +20,6 @@ const UserSchema = new mongoose.Schema({
 		type: String,
 		require: true,
 	},
-	avatar: {
-		type: String,
-	},
 	type: {
 		type: String,
 		enum: typeEnum,
