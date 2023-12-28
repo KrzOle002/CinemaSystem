@@ -15,21 +15,6 @@ const Footer = () => {
 	const navigate = useNavigate()
 	const { isAuthenticated, userData } = useAuthHook()
 
-	const [anchorEl, setAnchorEl] = useState<HTMLElement | null>(null)
-
-	const handleOpenPopover = (event: React.MouseEvent<HTMLElement>) => {
-		setAnchorEl(event.currentTarget)
-	}
-
-	const handleClosePopover = () => {
-		setAnchorEl(null)
-	}
-
-	const handleNavigate = () => {
-		navigate('/login')
-	}
-
-	const signOut = useSignOut()
 	return (
 		<BottomNavigation
 			showLabels
@@ -111,7 +96,7 @@ const Footer = () => {
 				icon={<PermPhoneMsgOutlinedIcon />}
 			/>
 			<BottomNavigationAction
-				onClick={isAuthenticated() ? handleOpenPopover : handleNavigate}
+				onClick={() => navigate(isAuthenticated() ? '/account' : '/login')}
 				sx={{
 					color: '#f5f5f5',
 					fontSize: '9px',
@@ -129,33 +114,6 @@ const Footer = () => {
 				label={isAuthenticated() ? `${userData?.email}` : 'Konto'}
 				icon={<AccountCircleOutlinedIcon />}
 			/>
-			<Popover
-				disableScrollLock={true}
-				open={Boolean(anchorEl)}
-				anchorEl={anchorEl}
-				onClose={handleClosePopover}
-				anchorOrigin={{
-					vertical: 'bottom',
-					horizontal: 'left',
-				}}
-				transformOrigin={{
-					vertical: 'top',
-					horizontal: 'left',
-				}}>
-				<Typography sx={{ p: 2, backgroundColor: '#D0153F' }}>
-					<SubmitButton
-						type='button'
-						className='important'
-						fullWidth
-						onClick={() => {
-							signOut()
-							toast.success('Wylogowano')
-							navigate('/')
-						}}>
-						Wyloguj
-					</SubmitButton>
-				</Typography>
-			</Popover>
 		</BottomNavigation>
 	)
 }

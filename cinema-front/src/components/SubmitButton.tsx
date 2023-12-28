@@ -8,16 +8,17 @@ interface SubmitButtonType {
 	onClick?: () => void
 	fullWidth?: boolean
 	disabled?: boolean
+	color?: string
 }
 
-const SubmitButton = ({ className, children, type, onClick, fullWidth, disabled }: SubmitButtonType) => {
+const SubmitButton = ({ className, children, type, onClick, fullWidth, disabled, color }: SubmitButtonType) => {
 	return (
 		<StyledButton
 			disabled={disabled}
 			className={disabled ? 'disable' : className}
 			type={type}
 			onClick={onClick}
-			style={{ width: fullWidth ? '100%' : 'max-content' }}>
+			style={{ width: fullWidth ? '100%' : 'max-content', color: color || '' }}>
 			{children}
 		</StyledButton>
 	)
@@ -55,6 +56,15 @@ const StyledButton = styled.button`
 		&:hover {
 			cursor: pointer;
 			background-color: ${({ theme }) => theme.colors.secondary};
+		}
+	}
+
+	&.secondary {
+		background-color: ${({ theme }) => theme.colors.secondary};
+		color: white;
+		&:hover {
+			cursor: pointer;
+			background-color: ${({ theme }) => theme.colors.whiterMid};
 		}
 	}
 
