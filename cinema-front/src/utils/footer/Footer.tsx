@@ -3,14 +3,10 @@ import BallotOutlinedIcon from '@mui/icons-material/BallotOutlined'
 import HomeIcon from '@mui/icons-material/Home'
 import PermPhoneMsgOutlinedIcon from '@mui/icons-material/PermPhoneMsgOutlined'
 import VideocamIcon from '@mui/icons-material/Videocam'
-import { BottomNavigation, BottomNavigationAction, Popover, Typography } from '@mui/material'
+import { BottomNavigation, BottomNavigationAction } from '@mui/material'
 
 import { useNavigate } from 'react-router-dom'
 import useAuthHook from '../auth/useAuth'
-import SubmitButton from '../../components/SubmitButton'
-import { toast } from 'react-toastify'
-import { useSignOut } from 'react-auth-kit'
-import { useState } from 'react'
 const Footer = () => {
 	const navigate = useNavigate()
 	const { isAuthenticated, userData } = useAuthHook()
@@ -22,8 +18,8 @@ const Footer = () => {
 				backgroundColor: '#D0153F',
 				position: 'fixed',
 				bottom: 0,
-				left: 0, // Ensure it's fixed to the left
-				right: 0, // Ensure it's fixed to the right
+				left: 0,
+				right: 0,
 				zIndex: 100,
 				fontSize: '9px',
 			}}>

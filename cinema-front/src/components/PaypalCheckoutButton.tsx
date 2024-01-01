@@ -1,7 +1,6 @@
-import { PayPalButtons, FUNDING } from '@paypal/react-paypal-js'
+import { PayPalButtons } from '@paypal/react-paypal-js'
 import { useState } from 'react'
 import { toast } from 'react-toastify'
-import styled from 'styled-components'
 import useAuthHook from '../utils/auth/useAuth'
 import axios from 'axios'
 import { useNavigate } from 'react-router-dom'
@@ -15,7 +14,7 @@ interface PaypalType {
 	product: ProductType
 }
 const PaypalCheckoutButton = ({ product }: PaypalType) => {
-	const { api, isAuthenticated, userData } = useAuthHook()
+	const { api, isAuthenticated, userName } = useAuthHook()
 	const { reservation } = useReservationContext()
 	const [paidFor, setPaidFor] = useState<boolean>(false)
 	const [error, setError] = useState<string | null>(null)
@@ -28,7 +27,7 @@ const PaypalCheckoutButton = ({ product }: PaypalType) => {
 				cost: reservation?.cost,
 				screeningDate: reservation?.screeningDate,
 				discountId: reservation?.discount,
-				email: isAuthenticated() ? userData?.email : reservation?.customer?.email,
+				email: isAuthenticated() ? userName : reservation?.customer?.email,
 				seats: reservation?.seats,
 			}
 
@@ -43,15 +42,14 @@ const PaypalCheckoutButton = ({ product }: PaypalType) => {
 
 					axios.post(api + '/api/mail/reservation-mail', reservationEmailData)
 				})
+				.then(() => navigate('/'))
 				.catch(() => toast.error('Nie udało się zarezerwować'))
 		}
 	}
 
 	const handleApprove = (orderId: string) => {
 		setPaidFor(true)
-		toast.success('Płatność zaakceptowana')
 		makeReservation()
-		navigate('/')
 	}
 	if (error) {
 		toast.error('Błąd Płatności')
@@ -79,7 +77,6 @@ const PaypalCheckoutButton = ({ product }: PaypalType) => {
 			}}
 			onApprove={async (data, actions) => {
 				const order = await actions.order?.capture()
-				console.log(order)
 
 				handleApprove(data.orderID)
 			}}
@@ -90,7 +87,6 @@ const PaypalCheckoutButton = ({ product }: PaypalType) => {
 				toast.warning('Anulowano płatność')
 			}}
 			onClick={(data, actions) => {
-				console.log(data)
 				const hasAlreadyBoughtCourse = false
 
 				if (hasAlreadyBoughtCourse) {

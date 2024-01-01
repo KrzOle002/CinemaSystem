@@ -12,6 +12,7 @@ import News from '../src/pages/News/News'
 import Offer from '../src/pages/Offer/Offer'
 import About from '../src/pages/About/About'
 import MovieDetails from '../src/pages/MovieDetails/MovieDetails'
+import Reservations from '../src/pages/Reservations/Reservations'
 
 const NavList = () => {
 	return (
@@ -33,6 +34,14 @@ const NavList = () => {
 			<Route path='account' element={<Account />} />
 			<Route path='schedule' element={<MovieSchedule />} />
 			<Route path='details/:movieId' element={<MovieDetails />} />
+			<Route
+				path='reservations'
+				element={
+					<RequireAuth loginPath='/login'>
+						<Reservations />
+					</RequireAuth>
+				}
+			/>
 			<Route path='/' element={<Dashboard />} />
 		</Routes>
 	)

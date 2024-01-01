@@ -88,10 +88,6 @@ router.post('/reservation-mail', async (req, res) => {
 		const movieInfo = await Movie.findById(reservationInfo.screeningId.movieId)
 		const roomInfo = await Room.findById(reservationInfo.screeningId.roomId)
 
-		console.log(reservationInfo)
-		console.log(movieInfo)
-		console.log(roomInfo)
-
 		const ticketsHtml = reservationInfo.seats
 			.map(
 				seat => `

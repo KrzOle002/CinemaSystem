@@ -71,7 +71,6 @@ const AdditionMovieDialog = ({ isOpen, close, movieId }: MovieDialogType) => {
 					movieId: selectedSchedule.movieId,
 					roomId: selectedSchedule.roomId,
 				}
-				console.log(screeningData)
 				await axios.post(api + '/api/screening/screenings', screeningData)
 			}
 			toast.success('Dodano film')

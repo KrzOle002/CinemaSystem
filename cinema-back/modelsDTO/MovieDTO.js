@@ -7,7 +7,7 @@ class MovieDTO {
 		this.director = director || ''
 		this.casts = casts || []
 		this.productionCountry = productionCountry || ''
-		this.productionYear = productionYear || 0
+		this.productionYear = productionYear || ''
 		this.screeningLength = screeningLength || 0
 		this.ageRestrictions = ageRestrictions || 0
 	}

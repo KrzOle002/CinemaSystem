@@ -46,9 +46,7 @@ const AccountButton = () => {
 						className='secondary'
 						fullWidth
 						onClick={() => {
-							signOut()
-							toast.success('Wylogowano')
-							navigate('/')
+							navigate('/reservations')
 						}}>
 						Moje zamówienia
 					</SubmitButton>

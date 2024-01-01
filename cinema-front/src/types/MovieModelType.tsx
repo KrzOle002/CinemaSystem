@@ -31,7 +31,7 @@ export interface MovieModel {
 	productionCountry: string
 	screeningLength: number
 	ageRestrictions: number
-	productionYear: number
+	productionYear: string
 	screenings: [
 		{
 			_id: string
