@@ -1,4 +1,4 @@
-import { Route, Routes } from 'react-router-dom'
+import { Navigate, Route, Routes } from 'react-router-dom'
 import { RequireAuth } from 'react-auth-kit'
 import Login from '../src/pages/AuthForm/Login'
 import Register from '../src/pages/AuthForm/Register'
@@ -13,8 +13,12 @@ import Offer from '../src/pages/Offer/Offer'
 import About from '../src/pages/About/About'
 import MovieDetails from '../src/pages/MovieDetails/MovieDetails'
 import Reservations from '../src/pages/Reservations/Reservations'
+import AdminPanel from '../src/pages/AdminPanel/AdminPanel'
+import useAuthHook from '../src/utils/auth/useAuth'
 
 const NavList = () => {
+	const { isAdmin } = useAuthHook()
+	console.log(isAdmin)
 	return (
 		<Routes>
 			<Route
@@ -34,6 +38,9 @@ const NavList = () => {
 			<Route path='account' element={<Account />} />
 			<Route path='schedule' element={<MovieSchedule />} />
 			<Route path='details/:movieId' element={<MovieDetails />} />
+
+			<Route path='admin-panel' element={<RequireAuth loginPath='/login'>{isAdmin ? <AdminPanel /> : <Dashboard />}</RequireAuth>} />
+
 			<Route
 				path='reservations'
 				element={
@@ -43,6 +50,7 @@ const NavList = () => {
 				}
 			/>
 			<Route path='/' element={<Dashboard />} />
+			<Route path='*' element={<Navigate to='/' />} />
 		</Routes>
 	)
 }

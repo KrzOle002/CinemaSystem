@@ -36,6 +36,7 @@ router.post('/movies', upload.single('cover'), async (req, res) => {
 		director: req.body.director,
 		genre: req.body.genre,
 		casts: req.body.casts,
+		productionYear: req.body.productionYear,
 		productionCountry: req.body.productionCountry,
 		screeningLength: req.body.screeningLength,
 		ageRestrictions: req.body.ageRestrictions,

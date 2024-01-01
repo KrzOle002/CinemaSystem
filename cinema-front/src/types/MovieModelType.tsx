@@ -9,14 +9,6 @@ export interface MovieModelSend {
 	screeningLength: string
 	ageRestrictions: string
 	productionYear: string
-	selectedHours: [
-		{
-			hour: number
-			isChecked: boolean
-		}
-	]
-	dateFrom: Date
-	dateTo: Date
 }
 
 export interface MovieModel {

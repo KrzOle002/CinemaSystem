@@ -3,49 +3,24 @@ import SubmitButton from '../../../components/SubmitButton'
 import { MovieModel } from '../../../types/MovieModelType'
 import useAuthHook from '../../../utils/auth/useAuth'
 
-import DeleteForeverIcon from '@mui/icons-material/DeleteForever'
-import { Dispatch, SetStateAction, useEffect, useState } from 'react'
+import { Dispatch, SetStateAction, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { toast } from 'react-toastify'
 import { useDialogHandler } from '../../../utils/dialog/useDialogHandler'
-import AdditionMovieDialog from './AdditionMovieDialog'
-import {
-	ControlButton,
-	MovieBasicInfo,
-	MovieButtons,
-	MovieController,
-	MovieImage,
-	MovieInfo,
-	MovieItemContainer,
-	MovieTitle,
-	Wrapper,
-} from './MovieItem.style'
+import AdditionMovieDialog from '../../AdminPanel/components/AdditionMovieDialog'
+import { MovieBasicInfo, MovieButtons, MovieImage, MovieInfo, MovieItemContainer, MovieTitle, Wrapper } from './MovieItem.style'
 import MovieRating from './MovieRating'
 
 interface MovieItemType {
 	movie: MovieModel
 	reservationDate: Date
-	movieList: MovieModel[]
-	setMovieList: Dispatch<SetStateAction<MovieModel[] | null>>
 }
 
-const MovieItem = ({ movie, movieList, setMovieList, reservationDate }: MovieItemType) => {
-	const { api, axiosAuth, isAdmin } = useAuthHook()
+const MovieItem = ({ movie, reservationDate }: MovieItemType) => {
+	const { api } = useAuthHook()
 	const { isOpen, close } = useDialogHandler()
 
 	const navigate = useNavigate()
-
-	const deleteMovie = async (id: number) => {
-		if (isAdmin) {
-			try {
-				await axiosAuth.delete(api + `/api/movie/movies/${id}`)
-				setMovieList(movieList.filter(movieItem => movieItem._id != movie._id))
-				toast.success('Usunięto film')
-			} catch (err) {
-				toast.error('Nie można usunąć filmu')
-			}
-		}
-	}
 
 	const handleReservationClick = (screening: string) => {
 		navigate(`/purchase/${movie._id}?screening=${encodeURIComponent(screening)}&date=${encodeURIComponent(reservationDate.toString())}`)
@@ -92,14 +67,6 @@ const MovieItem = ({ movie, movieList, setMovieList, reservationDate }: MovieIte
 							})}
 					</MovieButtons>
 				</MovieInfo>
-				{isAdmin ? (
-					<MovieController>
-						<ControlButton className='important' type={'button'} onClick={() => deleteMovie(movie._id)}>
-							<DeleteForeverIcon />
-							Usuń
-						</ControlButton>
-					</MovieController>
-				) : null}
 			</MovieItemContainer>
 			<AdditionMovieDialog movieId={movie._id} isOpen={isOpen} close={close} />
 		</Wrapper>

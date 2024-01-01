@@ -45,34 +45,17 @@ const AdditionMovieDialog = ({ isOpen, close, movieId }: MovieDialogType) => {
 		formData.append('director', data.director)
 		formData.append('genre', JSON.stringify(data.genre))
 		formData.append('casts', JSON.stringify(data.casts))
+		formData.append('productionYear', data.productionYear)
 		formData.append('productionCountry', data.productionCountry)
 		formData.append('screeningLength', data.screeningLength)
 		formData.append('ageRestrictions', data.ageRestrictions)
 
 		try {
-			await axiosAuth
-				.post(api + '/api/movie/movies', formData, {
-					headers: {
-						'Content-Type': 'multipart/form-data',
-					},
-				})
-				.then(res => {
-					setSelectedSchedule({
-						...selectedSchedule,
-						movieId: res.data._id,
-					})
-				})
-
-			if (selectedSchedule) {
-				const screeningData = {
-					dateFrom: data.dateFrom,
-					dateTo: data.dateTo,
-					hour: selectedSchedule.hour,
-					movieId: selectedSchedule.movieId,
-					roomId: selectedSchedule.roomId,
-				}
-				await axios.post(api + '/api/screening/screenings', screeningData)
-			}
+			await axiosAuth.post(api + '/api/movie/movies', formData, {
+				headers: {
+					'Content-Type': 'multipart/form-data',
+				},
+			})
 			toast.success('Dodano film')
 		} catch (err) {
 			toast.error('Nie dodać filmu')
@@ -196,56 +179,6 @@ const AdditionMovieDialog = ({ isOpen, close, movieId }: MovieDialogType) => {
 						className={errors.title && 'error'}
 						validation={errors.title?.message}
 					/>
-
-					<InputLabel
-						title={'Data transmisji'}
-						type={'date'}
-						inputRef={{
-							...register('dateFrom', {
-								required: true,
-							}),
-						}}
-						required
-						className={errors.dateFrom && 'error'}
-					/>
-					<InputLabel
-						title={'Data zakończenia'}
-						type={'date'}
-						inputRef={{
-							...register('dateTo', {
-								required: true,
-							}),
-						}}
-						required
-						className={errors.dateTo && 'error'}
-					/>
-					<div>
-						Wybór godziny
-						{schedules?.map((option, index) => {
-							return (
-								<div key={index} style={{ display: 'flex', flexDirection: 'row', gap: '10px', alignItems: 'center', padding: '10px 0' }}>
-									Sala nr {index + 1}:
-									{option.schedule.map((schedule, index) => {
-										return (
-											<SubmitButton
-												key={index}
-												className={selectedSchedule?.hour == schedule.hour && selectedSchedule.roomId == option.roomId ? 'warn' : 'primary'}
-												disabled={schedule.occupied}
-												type={'button'}
-												onClick={() => {
-													setSelectedSchedule({
-														roomId: option.roomId,
-														hour: schedule.hour,
-													})
-												}}>
-												{schedule.hour}
-											</SubmitButton>
-										)
-									})}
-								</div>
-							)
-						})}
-					</div>
 				</DialogContent>
 
 				<DialogActions sx={{ width: '40%', marginLeft: 'auto' }}>

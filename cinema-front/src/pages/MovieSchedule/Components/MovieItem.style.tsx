@@ -56,19 +56,6 @@ export const MovieBasicInfo = styled.div`
 	align-items: center;
 	margin-bottom: 5px;
 `
-export const MovieController = styled.div`
-	@media screen and (max-width: 1100px) {
-		padding: 20px 0;
-		width: 100%;
-		justify-content: center;
-	}
-	flex: 1;
-	width: min-content;
-	display: flex;
-	flex-direction: row;
-
-	gap: 10px;
-`
 export const MovieButtons = styled.div`
 	display: flex;
 	flex-direction: row;

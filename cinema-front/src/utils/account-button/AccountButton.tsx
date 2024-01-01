@@ -21,7 +21,7 @@ const AccountButton = () => {
 	const open = Boolean(anchorEl)
 	const id = open ? 'simple-popover' : undefined
 
-	const { userData } = useAuthHook()
+	const { userData, isAdmin } = useAuthHook()
 	const navigate = useNavigate()
 	const signOut = useSignOut()
 	return (
@@ -50,28 +50,18 @@ const AccountButton = () => {
 						}}>
 						Moje zamówienia
 					</SubmitButton>
-					<SubmitButton
-						type='button'
-						className='secondary'
-						fullWidth
-						onClick={() => {
-							signOut()
-							toast.success('Wylogowano')
-							navigate('/')
-						}}>
-						Moje oceny
-					</SubmitButton>
-					<SubmitButton
-						type='button'
-						className='secondary'
-						fullWidth
-						onClick={() => {
-							signOut()
-							toast.success('Wylogowano')
-							navigate('/')
-						}}>
-						Ustawienia konta
-					</SubmitButton>
+
+					{isAdmin ? (
+						<SubmitButton
+							type='button'
+							className='secondary'
+							fullWidth
+							onClick={() => {
+								isAdmin ? navigate('/admin-panel') : navigate('/')
+							}}>
+							Panel administracyjny
+						</SubmitButton>
+					) : null}
 					<SubmitButton
 						type='button'
 						className='secondary'
