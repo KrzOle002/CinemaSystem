@@ -27,8 +27,6 @@ const ReservationsItem = ({ reservation }: ReservationItemType) => {
 	const screeningEnd = new Date(dateParts[0], dateParts[1] - 1, dateParts[2], dateParts[3], dateParts[4] + reservationData.movieLength, dateParts[5])
 	const currentDate = new Date()
 
-	console.log(screeningEnd)
-
 	const isAfterReservationDate = currentDate > screeningEnd
 
 	const rows = reservation.seats.reduce((acc: SeatsByRow, seat) => {

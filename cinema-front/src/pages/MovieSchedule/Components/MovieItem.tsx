@@ -85,7 +85,8 @@ const MovieItem = ({ movie, movieList, setMovieList, reservationDate }: MovieIte
 
 								return (
 									<SubmitButton key={screening._id} type={'button'} className='primary' onClick={() => handleReservationClick(screening._id)}>
-										{dateObject.getUTCHours()}:{dateObject.getUTCMinutes().toString().padStart(2, '0')}
+										{dateObject.getUTCHours() > 9 ? dateObject.getUTCHours() : '0' + dateObject.getUTCHours()}:
+										{dateObject.getUTCMinutes().toString().padStart(2, '0')}
 									</SubmitButton>
 								)
 							})}

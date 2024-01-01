@@ -54,7 +54,7 @@ export const MovieBasicInfo = styled.div`
 	display: flex;
 	flex-direction: row;
 	align-items: center;
-	margin-bottom: 20px;
+	margin-bottom: 5px;
 `
 export const MovieController = styled.div`
 	@media screen and (max-width: 1100px) {
@@ -73,6 +73,7 @@ export const MovieButtons = styled.div`
 	display: flex;
 	flex-direction: row;
 	gap: 10px;
+	margin: 5px;
 `
 export const ControlButton = styled(SubmitButton)`
 	display: flex;

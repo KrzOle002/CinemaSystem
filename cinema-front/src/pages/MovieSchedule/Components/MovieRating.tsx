@@ -3,6 +3,7 @@ import { useEffect, useState } from 'react'
 import useAuthHook from '../../../utils/auth/useAuth'
 import { toast } from 'react-toastify'
 import axios from 'axios'
+import { Wrapper } from './MovieItem.style'
 
 interface MovieRatingType {
 	movie: number
