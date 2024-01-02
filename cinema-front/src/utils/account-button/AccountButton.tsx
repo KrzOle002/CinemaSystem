@@ -7,6 +7,8 @@ import useAuthHook from '../auth/useAuth'
 import { useSignOut } from 'react-auth-kit'
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
+import { useUserAuthContext } from '../../context/UserAuthContext'
+
 const AccountButton = () => {
 	const [anchorEl, setAnchorEl] = useState<HTMLElement | null>(null)
 
@@ -21,7 +23,7 @@ const AccountButton = () => {
 	const open = Boolean(anchorEl)
 	const id = open ? 'simple-popover' : undefined
 
-	const { userData, isAdmin } = useAuthHook()
+	const { isAdmin, userData } = useUserAuthContext()
 	const navigate = useNavigate()
 	const signOut = useSignOut()
 	return (

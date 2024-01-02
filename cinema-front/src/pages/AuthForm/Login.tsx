@@ -10,6 +10,7 @@ import axios from 'axios'
 import { useSignIn } from 'react-auth-kit'
 import { toast } from 'react-toastify'
 import { useNavigate } from 'react-router-dom'
+import { useUserAuthContext } from '../../context/UserAuthContext'
 
 interface LoginDataType {
 	email: string
@@ -26,6 +27,7 @@ const Login = () => {
 	const signIn = useSignIn()
 	const api = import.meta.env.VITE_API_BASE_URL
 	const navigate = useNavigate()
+	const { fetchData } = useUserAuthContext()
 	const {
 		register,
 		handleSubmit,
@@ -45,6 +47,8 @@ const Login = () => {
 			})
 
 			toast.success('Zalogowano')
+			await fetchData()
+
 			navigate(-1)
 		} catch (err) {
 			toast.error('Nie udało się zalogować')

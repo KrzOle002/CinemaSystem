@@ -10,6 +10,7 @@ const RoomDTO = require('../../modelsDTO/RoomDTO')
 const ReservedSeat = require('../../models/ReservedSeats')
 const Seat = require('../../models/Seat')
 const Screening = require('../../models/Screening')
+
 router.post('/', async (req, res) => {
 	try {
 		const reservation = new Reservation(req.body)

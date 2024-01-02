@@ -11,6 +11,8 @@ import { AuthProvider } from 'react-auth-kit'
 import { FUNDING, PayPalScriptProvider } from '@paypal/react-paypal-js'
 import { LocalizationProvider } from '@mui/x-date-pickers'
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
+import { UserAuthProvider } from '../context/UserAuthContext'
+
 const App = () => {
 	const resolution = useScreenWidth()
 	return (
@@ -29,11 +31,13 @@ const App = () => {
 							authName={'_auth'}
 							cookieDomain={window.location.hostname}
 							cookieSecure={window.location.protocol === 'https:'}>
-							<BrowserRouter>
-								<Nav />
-								<MainPage />
-								{resolution < 600 ? <Footer /> : null}
-							</BrowserRouter>
+							<UserAuthProvider>
+								<BrowserRouter>
+									<Nav />
+									<MainPage />
+									{resolution < 600 ? <Footer /> : null}
+								</BrowserRouter>
+							</UserAuthProvider>
 						</AuthProvider>
 						<ToastContainer autoClose={750} />
 					</Wrapper>

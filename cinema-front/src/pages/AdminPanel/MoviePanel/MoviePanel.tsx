@@ -12,9 +12,11 @@ import { Divider } from '@mui/material'
 import AdditionMovieDialog from '../components/AdditionMovieDialog'
 import { useDialogHandler } from '../../../utils/dialog/useDialogHandler'
 import EditIcon from '@mui/icons-material/Edit'
-const MoviePanel = () => {
-	const { isAdmin, axiosAuth, api } = useAuthHook()
+import { useUserAuthContext } from '../../../context/UserAuthContext'
 
+const MoviePanel = () => {
+	const { axiosAuth, api } = useAuthHook()
+	const { isAdmin } = useUserAuthContext()
 	const [movieList, setMovieList] = useState<MovieModel[] | null>(null)
 
 	const { isOpen, open, close } = useDialogHandler()

@@ -67,7 +67,7 @@ export default MovieSchedule
 const Wrapper = styled.div`
 	color: ${({ theme }) => theme.colors.white};
 	width: 100%;
-	height: 100vh;
+	min-height: 100vh;
 `
 const Container = styled.div`
 	@media screen and (max-width: 640px) {

@@ -16,9 +16,11 @@ import Reservations from '../src/pages/Reservations/Reservations'
 import AdminPanel from '../src/pages/AdminPanel/AdminPanel'
 import useAuthHook from '../src/utils/auth/useAuth'
 
+import React from 'react'
+import { useUserAuthContext } from '../src/context/UserAuthContext'
+
 const NavList = () => {
-	const { isAdmin } = useAuthHook()
-	console.log(isAdmin)
+	const { isAdmin } = useUserAuthContext()
 	return (
 		<Routes>
 			<Route
