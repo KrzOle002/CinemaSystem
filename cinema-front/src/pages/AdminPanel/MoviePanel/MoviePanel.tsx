@@ -13,6 +13,7 @@ import AdditionMovieDialog from '../components/AdditionMovieDialog'
 import { useDialogHandler } from '../../../utils/dialog/useDialogHandler'
 import EditIcon from '@mui/icons-material/Edit'
 import { useUserAuthContext } from '../../../context/UserAuthContext'
+import EditMovieDialog from '../components/EditMovieDialog'
 
 const MoviePanel = () => {
 	const { axiosAuth, api } = useAuthHook()
@@ -20,10 +21,13 @@ const MoviePanel = () => {
 	const [movieList, setMovieList] = useState<MovieModel[] | null>(null)
 
 	const { isOpen, open, close } = useDialogHandler()
+	const { isOpen: isOpenEdit, open: openEdit, close: closeEdit } = useDialogHandler()
+	const [selectedMovieId, setSelectedMovieId] = useState<number | null>(null)
 
 	const editMovie = async (id: number) => {
 		if (isAdmin) {
-			open()
+			setSelectedMovieId(id)
+			openEdit()
 		}
 	}
 
@@ -59,7 +63,14 @@ const MoviePanel = () => {
 
 	return (
 		<Wrapper>
-			<SubmitButton fullWidth type={'button'} onClick={() => open()} className={'primary'}>
+			<SubmitButton
+				fullWidth
+				type={'button'}
+				onClick={() => {
+					setSelectedMovieId(null)
+					open()
+				}}
+				className={'primary'}>
 				Dodaj film
 			</SubmitButton>
 			<Divider sx={{ padding: '10px 0' }} />
@@ -96,6 +107,7 @@ const MoviePanel = () => {
 				)}
 			</MovieList>
 			<AdditionMovieDialog isOpen={isOpen} close={close} />
+			<EditMovieDialog isOpen={isOpenEdit} close={closeEdit} movieId={selectedMovieId} />
 		</Wrapper>
 	)
 }
@@ -109,7 +121,7 @@ const Wrapper = styled.div`
 
 const MovieList = styled.div`
 	padding: 20px 0;
-	height: 300px;
+	height: 400px;
 	overflow-y: scroll;
 	display: flex;
 	flex-direction: column;

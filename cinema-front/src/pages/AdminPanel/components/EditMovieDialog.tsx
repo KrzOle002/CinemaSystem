@@ -16,18 +16,20 @@ interface MovieDialogType {
 	movieId?: number | null
 }
 
-const AdditionMovieDialog = ({ isOpen, close, movieId }: MovieDialogType) => {
+const EditMovieDialog = ({ isOpen, close, movieId }: MovieDialogType) => {
 	const { axiosAuth, api } = useAuthHook()
 
 	const {
 		register,
 		handleSubmit,
+		setValue,
+		reset,
 		formState: { errors },
 	} = useForm<MovieModelSend>()
 
 	const onSubmit = async (data: MovieModelSend) => {
+		console.log('dziala')
 		const formData = new FormData()
-		formData.append('cover', data.cover[0])
 		formData.append('title', data.title)
 		formData.append('description', data.description)
 		formData.append('director', data.director)
@@ -39,21 +41,34 @@ const AdditionMovieDialog = ({ isOpen, close, movieId }: MovieDialogType) => {
 		formData.append('ageRestrictions', data.ageRestrictions)
 
 		try {
-			await axiosAuth.post(api + '/api/movie/movies', formData, {
-				headers: {
-					'Content-Type': 'multipart/form-data',
-				},
-			})
+			await axiosAuth.put(api + `/api/movie/movies/${movieId}`, formData)
 			toast.success('Dodano film')
 		} catch (err) {
 			toast.error('Nie dodać filmu')
 		}
 	}
+	const fetchMovie = async () => {
+		const res = await axiosAuth.get(api + `/api/movie/movies/${movieId}`)
+
+		setValue('title', res.data.title)
+		setValue('description', res.data.description)
+		setValue('director', res.data.director)
+		setValue('genre', res.data.genre.join(', ')) // Assuming 'genre' is an array
+		setValue('casts', res.data.casts.join(', ')) // Assuming 'casts' is an array
+		setValue('productionCountry', res.data.productionCountry)
+		setValue('productionYear', res.data.productionYear) // Ensure it's a string
+		setValue('screeningLength', res.data.screeningLength) // Ensure it's a string
+		setValue('ageRestrictions', res.data.ageRestrictions)
+	}
+
+	useEffect(() => {
+		movieId ? fetchMovie() : reset()
+	}, [movieId])
 
 	return (
 		<Dialog open={isOpen} onClose={close} fullWidth maxWidth={'md'} sx={{ zIndex: '500' }}>
 			<DialogTitle sx={{ backgroundColor: theme.colors.primary, color: theme.colors.white }}>
-				<span>Dodaj film</span>
+				<span>Edytuj film</span>
 			</DialogTitle>
 			<ContainerForm onSubmit={handleSubmit(onSubmit)}>
 				<DialogContent sx={{ width: '60%', margin: '0 auto', rowGap: '20px', display: 'flex', flexDirection: 'column' }}>
@@ -64,8 +79,6 @@ const AdditionMovieDialog = ({ isOpen, close, movieId }: MovieDialogType) => {
 								required: 'To pole jest wymagane',
 							}),
 						}}
-						className={errors.title && 'error'}
-						validation={errors.title?.message}
 					/>
 					<InputLabel
 						title={'Opis'}
@@ -74,20 +87,6 @@ const AdditionMovieDialog = ({ isOpen, close, movieId }: MovieDialogType) => {
 								required: 'To pole jest wymagane',
 							}),
 						}}
-						className={errors.title && 'error'}
-						validation={errors.title?.message}
-					/>
-
-					<InputLabel
-						type='file'
-						title='Wybierz plakat:'
-						inputRef={{
-							...register('cover', {
-								required: 'To pole jest wymagane',
-							}),
-						}}
-						className={errors.title && 'error'}
-						validation={errors.title?.message}
 					/>
 
 					<InputLabel
@@ -97,8 +96,6 @@ const AdditionMovieDialog = ({ isOpen, close, movieId }: MovieDialogType) => {
 								required: 'To pole jest wymagane',
 							}),
 						}}
-						className={errors.title && 'error'}
-						validation={errors.title?.message}
 					/>
 					<InputLabel
 						title={'Gatunek'}
@@ -107,8 +104,6 @@ const AdditionMovieDialog = ({ isOpen, close, movieId }: MovieDialogType) => {
 								required: 'To pole jest wymagane',
 							}),
 						}}
-						className={errors.title && 'error'}
-						validation={errors.title?.message}
 					/>
 					<InputLabel
 						title={'Obsada'}
@@ -117,8 +112,6 @@ const AdditionMovieDialog = ({ isOpen, close, movieId }: MovieDialogType) => {
 								required: 'To pole jest wymagane',
 							}),
 						}}
-						className={errors.title && 'error'}
-						validation={errors.title?.message}
 					/>
 					<InputLabel
 						title={'Kraj produkcji'}
@@ -127,8 +120,6 @@ const AdditionMovieDialog = ({ isOpen, close, movieId }: MovieDialogType) => {
 								required: 'To pole jest wymagane',
 							}),
 						}}
-						className={errors.title && 'error'}
-						validation={errors.title?.message}
 					/>
 					<InputLabel
 						title={'Rok produkcji'}
@@ -137,8 +128,6 @@ const AdditionMovieDialog = ({ isOpen, close, movieId }: MovieDialogType) => {
 								required: 'To pole jest wymagane',
 							}),
 						}}
-						className={errors.title && 'error'}
-						validation={errors.title?.message}
 					/>
 					<InputLabel
 						title={'Długość'}
@@ -147,22 +136,18 @@ const AdditionMovieDialog = ({ isOpen, close, movieId }: MovieDialogType) => {
 								required: 'To pole jest wymagane',
 							}),
 						}}
-						className={errors.title && 'error'}
-						validation={errors.title?.message}
 					/>
 					<InputLabel
 						title={'Wiek'}
 						inputRef={{
 							...register('ageRestrictions'),
 						}}
-						className={errors.title && 'error'}
-						validation={errors.title?.message}
 					/>
 				</DialogContent>
 
 				<DialogActions sx={{ width: '40%', marginLeft: 'auto' }}>
-					<SubmitButton fullWidth type={'submit'} className='success'>
-						Dodaj
+					<SubmitButton fullWidth type={'submit'} className='warn'>
+						Edytuj
 					</SubmitButton>
 
 					<SubmitButton fullWidth onClick={() => close()} type={'button'} className='primary'>
@@ -174,7 +159,7 @@ const AdditionMovieDialog = ({ isOpen, close, movieId }: MovieDialogType) => {
 	)
 }
 
-export default AdditionMovieDialog
+export default EditMovieDialog
 
 const ContainerForm = styled.form`
 	width: 100%;

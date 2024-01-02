@@ -54,15 +54,12 @@ router.post('/movies', upload.single('cover'), async (req, res) => {
 
 router.put('/movies/:id', async (req, res) => {
 	try {
-		// Attempt to update the existing movie
 		const updatedMovie = await Movie.findByIdAndUpdate(req.params.id, req.body, { new: true })
 
-		// If the movie doesn't exist, return a 404 response
 		if (!updatedMovie) {
 			return res.status(404).json({ message: 'Film not found' })
 		}
 
-		// If the movie is successfully updated, return it as a response
 		res.status(200).json(updatedMovie)
 	} catch (error) {
 		// Handle any errors that occur during the update process

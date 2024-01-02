@@ -68,7 +68,7 @@ export const UserAuthProvider = ({ children }: UserAuthProviderType) => {
 		if (isAuthenticated()) {
 			fetchData()
 		}
-	}, [isAuthenticated])
+	}, [])
 
 	const isAdmin = userData?.type === 'admin'
 
