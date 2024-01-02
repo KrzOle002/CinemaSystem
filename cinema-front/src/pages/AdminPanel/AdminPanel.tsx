@@ -1,7 +1,4 @@
 import styled from 'styled-components'
-import SubmitButton from '../../components/SubmitButton'
-import { useDialogHandler } from '../../utils/dialog/useDialogHandler'
-import AdditionMovieDialog from './components/AdditionMovieDialog'
 import MoviePanel from './MoviePanel/MoviePanel'
 import SchedulePanel from './SchedulePanel/SchedulePanel'
 const AdminPanel = () => {
@@ -20,7 +17,7 @@ export default AdminPanel
 const Wrapper = styled.div`
 	color: ${({ theme }) => theme.colors.white};
 	width: 100%;
-	padding: 150px 0;
+	height: 100%;
 `
 const Container = styled.div`
 	@media screen and (max-width: 640px) {
