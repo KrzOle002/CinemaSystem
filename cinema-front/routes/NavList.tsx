@@ -14,9 +14,7 @@ import About from '../src/pages/About/About'
 import MovieDetails from '../src/pages/MovieDetails/MovieDetails'
 import Reservations from '../src/pages/Reservations/Reservations'
 import AdminPanel from '../src/pages/AdminPanel/AdminPanel'
-import useAuthHook from '../src/utils/auth/useAuth'
 
-import React from 'react'
 import { useUserAuthContext } from '../src/context/UserAuthContext'
 
 const NavList = () => {

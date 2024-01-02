@@ -13,6 +13,7 @@ export default MainPage
 
 export const Wrapper = styled.div`
 	width: 100%;
+	height: 100%;
 	background: ${({ theme }) => theme.colors.original};
 	background-attachment: fixed;
 	display: flex;
