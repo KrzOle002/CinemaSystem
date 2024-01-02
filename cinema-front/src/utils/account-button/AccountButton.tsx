@@ -33,6 +33,7 @@ const AccountButton = () => {
 				{userData?.email}
 			</LogoButton>
 			<Popover
+				closeAfterTransition
 				disableScrollLock={true}
 				id={id}
 				open={open}
