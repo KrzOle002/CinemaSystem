@@ -1,5 +1,6 @@
 import SubmitButton from '../../../components/SubmitButton'
 import styled from 'styled-components'
+import CinemaSchedule from './CinemaSchedule'
 
 const SchedulePanel = () => {
 	// contorlny
@@ -57,6 +58,7 @@ const SchedulePanel = () => {
 			<SubmitButton fullWidth type={'button'} className='primary'>
 				Zaplanuj repertuar
 			</SubmitButton>
+			<CinemaSchedule />
 		</Wrapper>
 	)
 }

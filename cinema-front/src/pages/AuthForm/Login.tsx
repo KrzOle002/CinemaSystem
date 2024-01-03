@@ -11,6 +11,8 @@ import { useSignIn } from 'react-auth-kit'
 import { toast } from 'react-toastify'
 import { useNavigate } from 'react-router-dom'
 import { useUserAuthContext } from '../../context/UserAuthContext'
+import useAuthHook from '../../utils/auth/useAuth'
+import { useEffect } from 'react'
 
 interface LoginDataType {
 	email: string
@@ -25,30 +27,34 @@ interface ResponseType {
 const Login = () => {
 	const resolution = useScreenWidth()
 	const signIn = useSignIn()
-	const api = import.meta.env.VITE_API_BASE_URL
 	const navigate = useNavigate()
-	const { fetchData } = useUserAuthContext()
+
 	const {
 		register,
 		handleSubmit,
 		formState: { errors },
 	} = useForm<LoginDataType>()
 
+	const { isAuthenticated, getData, api } = useAuthHook()
+
+	useEffect(() => {
+		if (isAuthenticated()) {
+			getData()
+		}
+	}, [isAuthenticated, getData])
+
 	const onSubmit = async (data: LoginDataType) => {
 		data.email = data.email.toLocaleLowerCase()
 		try {
-			const res = await axios.post(api + '/api/auth/login', data)
-
-			signIn({
-				token: res.data.token,
+			const response = await axios.post(api + '/api/auth/login', data)
+			await signIn({
+				token: response.data.token,
 				tokenType: 'Bearer',
 				expiresIn: 300,
 				authState: { email: data.email },
 			})
 
 			toast.success('Zalogowano')
-			await fetchData()
-
 			navigate(-1)
 		} catch (err) {
 			toast.error('Nie udało się zalogować')

@@ -13,14 +13,14 @@ interface UserDataType {
 // Definicja typów dla kontekstu
 interface UserAuthContextType {
 	isAdmin: boolean
-	fetchData: () => void
 	userData: UserDataType | null
+	setUserData: (arg: UserDataType | null) => void
 }
 
 // Utworzenie kontekstu z domyślnymi wartościami
 const UserAuthContext = createContext<UserAuthContextType>({
+	setUserData: () => {},
 	isAdmin: false,
-	fetchData: () => {},
 	userData: {
 		_id: '0',
 		name: 'unknown',
@@ -72,5 +72,5 @@ export const UserAuthProvider = ({ children }: UserAuthProviderType) => {
 
 	const isAdmin = userData?.type === 'admin'
 
-	return <UserAuthContext.Provider value={{ userData, isAdmin, fetchData }}>{children}</UserAuthContext.Provider>
+	return <UserAuthContext.Provider value={{ userData, isAdmin, setUserData }}>{children}</UserAuthContext.Provider>
 }
