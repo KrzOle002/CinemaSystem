@@ -70,7 +70,7 @@ const AuthForm = ({ setAuthStep }: AuthFormType) => {
 					inputRef={{
 						...register('password', {
 							required: 'To pole jest wymagane',
-							minLength: { value: 6, message: 'Hasło musi być dłuższe niż 6 znaków' },
+							minLength: { value: 12, message: 'Hasło musi być dłuższe niż 12 znaków' },
 						}),
 					}}
 					className={errors.password && 'error'}

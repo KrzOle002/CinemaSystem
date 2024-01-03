@@ -17,17 +17,25 @@ const AdminPanel = () => {
 	return (
 		<Wrapper>
 			<Container>
-				<StyledAccordion expanded={expanded === 'panel1'} onChange={handleChange('panel1')}>
-					<AccordionSummary expandIcon={<ExpandMoreIcon />} aria-controls='panel1bh-content' id='panel1bh-header'>
-						<Typography sx={{ width: '100%', textAlign: 'center' }}>Zarządzanie filmami</Typography>
+				<StyledAccordion expanded={expanded === 'panel1'} onChange={handleChange('panel1')} sx={{ backgroundColor: '#1c1c1e', color: 'white' }}>
+					<AccordionSummary
+						expandIcon={<ExpandMoreIcon sx={{ color: 'white' }} />}
+						aria-controls='panel1bh-content'
+						id='panel1bh-header'
+						sx={{ '&:hover': { backgroundColor: ' #D0153F' } }}>
+						<Typography sx={{ width: '100%', textAlign: 'center', fontWeight: '900' }}>Zarządzanie filmami</Typography>
 					</AccordionSummary>
 					<AccordionDetails>
 						<MoviePanel />
 					</AccordionDetails>
 				</StyledAccordion>
-				<StyledAccordion expanded={expanded === 'panel2'} onChange={handleChange('panel2')}>
-					<AccordionSummary expandIcon={<ExpandMoreIcon />} aria-controls='panel2bh-content' id='panel2bh-header'>
-						<Typography sx={{ width: '100%', textAlign: 'center' }}>Zarządzanie repertuarem</Typography>
+				<StyledAccordion expanded={expanded === 'panel2'} onChange={handleChange('panel2')} sx={{ backgroundColor: '#1c1c1e', color: 'white' }}>
+					<AccordionSummary
+						expandIcon={<ExpandMoreIcon sx={{ color: 'white' }} />}
+						aria-controls='panel1bh-content'
+						id='panel1bh-header'
+						sx={{ '&:hover': { backgroundColor: ' #D0153F' } }}>
+						<Typography sx={{ width: '100%', textAlign: 'center', fontWeight: '900' }}>Zarządzanie repertuarem</Typography>
 					</AccordionSummary>
 					<AccordionDetails>
 						<Typography>
@@ -49,9 +57,9 @@ const Wrapper = styled.div`
 `
 const Container = styled.div`
 	height: 100%;
-	align-items: center;
+	display: flex;
+	flex-direction: column;
 	justify-content: center;
-
 	margin: 0 auto;
 `
 const StyledAccordion = styled(Accordion)`

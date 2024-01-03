@@ -53,9 +53,17 @@ const CinemaSchedule = () => {
 
 	return (
 		<DragDropContext onDragEnd={handleDragEnd}>
-			<Droppable droppableId='droppable'>
+			<Droppable droppableId='droppable' direction='horizontal'>
 				{provided => (
-					<div {...provided.droppableProps} ref={provided.innerRef}>
+					<div
+						{...provided.droppableProps}
+						ref={provided.innerRef}
+						style={{
+							display: 'flex', // Ustawienie flexboxa do wyświetlania elementów w linii
+							overflow: 'auto', // Dodanie przewijania, jeśli elementy wyjdą poza ekran
+							padding: '8px',
+							alignItems: 'center',
+						}}>
 						{movieSchedule.map((movie, index) => (
 							<Draggable key={movie.id} draggableId={movie.id} index={index}>
 								{provided => (
@@ -65,9 +73,10 @@ const CinemaSchedule = () => {
 										{...provided.dragHandleProps}
 										style={{
 											...provided.draggableProps.style,
-											margin: '0 0 8px 0',
+											margin: '0 8px 0 0', // Odstępy między elementami
 											padding: '16px',
-											background: 'lightgrey',
+											background: '#D0153F',
+											color: 'white',
 											borderRadius: '4px',
 										}}>
 										{movie.title} - {movie.startTime} do {movie.endTime}
