@@ -7,6 +7,7 @@ import AccordionSummary from '@mui/material/AccordionSummary'
 import Typography from '@mui/material/Typography'
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore'
 import { useState } from 'react'
+
 const AdminPanel = () => {
 	const [expanded, setExpanded] = useState<string | false>(false)
 
@@ -22,10 +23,10 @@ const AdminPanel = () => {
 						expandIcon={<ExpandMoreIcon sx={{ color: 'white' }} />}
 						aria-controls='panel1bh-content'
 						id='panel1bh-header'
-						sx={{ '&:hover': { backgroundColor: ' #D0153F' } }}>
+						sx={{ backgroundColor: '#D0153F', '&:hover': { backgroundColor: '#1c1c1e' } }}>
 						<Typography sx={{ width: '100%', textAlign: 'center', fontWeight: '900' }}>Zarządzanie filmami</Typography>
 					</AccordionSummary>
-					<AccordionDetails>
+					<AccordionDetails sx={{ backgroundColor: '#f59191' }}>
 						<MoviePanel />
 					</AccordionDetails>
 				</StyledAccordion>
@@ -34,13 +35,11 @@ const AdminPanel = () => {
 						expandIcon={<ExpandMoreIcon sx={{ color: 'white' }} />}
 						aria-controls='panel1bh-content'
 						id='panel1bh-header'
-						sx={{ '&:hover': { backgroundColor: ' #D0153F' } }}>
+						sx={{ backgroundColor: '#D0153F', '&:hover': { backgroundColor: '#1c1c1e' } }}>
 						<Typography sx={{ width: '100%', textAlign: 'center', fontWeight: '900' }}>Zarządzanie repertuarem</Typography>
 					</AccordionSummary>
-					<AccordionDetails>
-						<Typography>
-							<SchedulePanel />
-						</Typography>
+					<AccordionDetails sx={{ backgroundColor: '#f59191' }}>
+						<SchedulePanel />
 					</AccordionDetails>
 				</StyledAccordion>
 			</Container>
