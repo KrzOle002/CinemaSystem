@@ -1,8 +1,23 @@
 import SubmitButton from '../../../components/SubmitButton'
 import styled from 'styled-components'
 import CinemaSchedule from './CinemaSchedule'
+import ScheduleCalendar from './ScheduleCalendar'
+import { useState } from 'react'
+
+interface ScreeningData {
+	hour: [number]
+	roomId: string
+	movieId: string
+}
+
+export interface PostScreeningType {
+	dateFrom: Date
+	dateTo: Date
+	screeningData: [ScreeningData]
+}
 
 const SchedulePanel = () => {
+	const [postScreening, setPostScreening] = useState<PostScreeningType | null>(null)
 	// contorlny
 	// <InputLabel
 	// 					title={'Data transmisji'}
@@ -55,10 +70,12 @@ const SchedulePanel = () => {
 	// 				</div>
 	return (
 		<Wrapper>
-			<SubmitButton fullWidth type={'button'} className='primary'>
-				Zaplanuj repertuar
-			</SubmitButton>
+			<ScheduleCalendar date={new Date()} setPostScreening={setPostScreening} />
+
 			<CinemaSchedule />
+			<SubmitButton fullWidth type={'button'} className='primary'>
+				Zatwierdź repertuar
+			</SubmitButton>
 		</Wrapper>
 	)
 }

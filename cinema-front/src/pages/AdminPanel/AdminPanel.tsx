@@ -26,7 +26,7 @@ const AdminPanel = () => {
 						sx={{ backgroundColor: '#D0153F', '&:hover': { backgroundColor: '#1c1c1e' } }}>
 						<Typography sx={{ width: '100%', textAlign: 'center', fontWeight: '900' }}>Zarządzanie filmami</Typography>
 					</AccordionSummary>
-					<AccordionDetails sx={{ backgroundColor: '#f59191' }}>
+					<AccordionDetails sx={{ backgroundColor: '#2e2e2e' }}>
 						<MoviePanel />
 					</AccordionDetails>
 				</StyledAccordion>
@@ -38,7 +38,7 @@ const AdminPanel = () => {
 						sx={{ backgroundColor: '#D0153F', '&:hover': { backgroundColor: '#1c1c1e' } }}>
 						<Typography sx={{ width: '100%', textAlign: 'center', fontWeight: '900' }}>Zarządzanie repertuarem</Typography>
 					</AccordionSummary>
-					<AccordionDetails sx={{ backgroundColor: '#f59191' }}>
+					<AccordionDetails sx={{ backgroundColor: '#2e2e2e' }}>
 						<SchedulePanel />
 					</AccordionDetails>
 				</StyledAccordion>
@@ -58,7 +58,7 @@ const Container = styled.div`
 	height: 100%;
 	display: flex;
 	flex-direction: column;
-	justify-content: center;
+
 	margin: 0 auto;
 `
 const StyledAccordion = styled(Accordion)`
