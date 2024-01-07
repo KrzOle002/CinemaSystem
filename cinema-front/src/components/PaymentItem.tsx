@@ -1,4 +1,3 @@
-import React from 'react'
 import { CurrentSeat } from '../types/ScreeningModelType'
 import styled from 'styled-components'
 
