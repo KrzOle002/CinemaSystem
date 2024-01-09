@@ -7,9 +7,11 @@ import { BottomNavigation, BottomNavigationAction } from '@mui/material'
 
 import { useNavigate } from 'react-router-dom'
 import useAuthHook from '../auth/useAuth'
+import { useUserAuthContext } from '../../context/UserAuthContext'
 const Footer = () => {
 	const navigate = useNavigate()
-	const { isAuthenticated, userData } = useAuthHook()
+	const { isAuthenticated } = useAuthHook()
+	const { userData } = useUserAuthContext()
 
 	return (
 		<BottomNavigation

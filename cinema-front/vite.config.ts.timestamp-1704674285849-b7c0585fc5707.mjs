@@ -1,0 +1,33 @@
+// vite.config.ts
+import fs from 'fs'
+import { defineConfig } from 'file:///C:/Users/it/Documents/CinemaSystem/cinema-front/node_modules/vite/dist/node/index.js'
+import react from 'file:///C:/Users/it/Documents/CinemaSystem/cinema-front/node_modules/@vitejs/plugin-react/dist/index.mjs'
+import { VitePWA } from 'file:///C:/Users/it/Documents/CinemaSystem/cinema-front/node_modules/vite-plugin-pwa/dist/index.js'
+let manifestForPlugin = {
+	registerType: 'prompt',
+	includeAssets: ['icon512_maskable.png', 'icon512_rounded.png'],
+	manifest: {
+		short_name: 'CinemaFordon',
+		name: 'Cinema Fordon',
+		description: 'Cinema Fordon App',
+		icons: [
+			{ purpose: 'maskable', sizes: '512x512', src: 'icon512_maskable.png', type: 'image/png' },
+			{ purpose: 'any', sizes: '512x512', src: 'icon512_rounded.png', type: 'image/png' },
+		],
+		start_url: '/',
+		background_color: '#FFFFFF',
+		display: 'standalone',
+		scope: '/',
+		theme_color: '#000000',
+		orientation: 'portrait',
+	},
+}
+let vite_config_default = defineConfig({
+	base: './',
+	plugins: [react(), VitePWA(manifestForPlugin)],
+	server: {
+		host: '0.0.0.0',
+	},
+})
+export { vite_config_default as default }
+//# sourceMappingURL=data:application/json;base64,ewogICJ2ZXJzaW9uIjogMywKICAic291cmNlcyI6IFsidml0ZS5jb25maWcudHMiXSwKICAic291cmNlc0NvbnRlbnQiOiBbImNvbnN0IF9fdml0ZV9pbmplY3RlZF9vcmlnaW5hbF9kaXJuYW1lID0gXCJDOlxcXFxVc2Vyc1xcXFxpdFxcXFxEb2N1bWVudHNcXFxcQ2luZW1hU3lzdGVtXFxcXGNpbmVtYS1mcm9udFwiO2NvbnN0IF9fdml0ZV9pbmplY3RlZF9vcmlnaW5hbF9maWxlbmFtZSA9IFwiQzpcXFxcVXNlcnNcXFxcaXRcXFxcRG9jdW1lbnRzXFxcXENpbmVtYVN5c3RlbVxcXFxjaW5lbWEtZnJvbnRcXFxcdml0ZS5jb25maWcudHNcIjtjb25zdCBfX3ZpdGVfaW5qZWN0ZWRfb3JpZ2luYWxfaW1wb3J0X21ldGFfdXJsID0gXCJmaWxlOi8vL0M6L1VzZXJzL2l0L0RvY3VtZW50cy9DaW5lbWFTeXN0ZW0vY2luZW1hLWZyb250L3ZpdGUuY29uZmlnLnRzXCI7aW1wb3J0IHsgZGVmaW5lQ29uZmlnIH0gZnJvbSAndml0ZSdcclxuaW1wb3J0IHJlYWN0IGZyb20gJ0B2aXRlanMvcGx1Z2luLXJlYWN0J1xyXG5pbXBvcnQgeyBWaXRlUFdBLCBWaXRlUFdBT3B0aW9ucyB9IGZyb20gJ3ZpdGUtcGx1Z2luLXB3YSdcclxuXHJcbmNvbnN0IG1hbmlmZXN0Rm9yUGx1Z2luOiBQYXJ0aWFsPFZpdGVQV0FPcHRpb25zPiA9IHtcclxuXHRyZWdpc3RlclR5cGU6ICdwcm9tcHQnLFxyXG5cdGluY2x1ZGVBc3NldHM6IFsnaWNvbjUxMl9tYXNrYWJsZS5wbmcnLCAnaWNvbjUxMl9yb3VuZGVkLnBuZyddLFxyXG5cdG1hbmlmZXN0OiB7XHJcblx0XHRzaG9ydF9uYW1lOiAnQ2luZW1hRm9yZG9uJyxcclxuXHRcdG5hbWU6ICdDaW5lbWEgRm9yZG9uJyxcclxuXHRcdGRlc2NyaXB0aW9uOiAnQ2luZW1hIEZvcmRvbiBBcHAnLFxyXG5cdFx0aWNvbnM6IFtcclxuXHRcdFx0eyBwdXJwb3NlOiAnbWFza2FibGUnLCBzaXplczogJzUxMng1MTInLCBzcmM6ICdpY29uNTEyX21hc2thYmxlLnBuZycsIHR5cGU6ICdpbWFnZS9wbmcnIH0sXHJcblx0XHRcdHsgcHVycG9zZTogJ2FueScsIHNpemVzOiAnNTEyeDUxMicsIHNyYzogJ2ljb241MTJfcm91bmRlZC5wbmcnLCB0eXBlOiAnaW1hZ2UvcG5nJyB9LFxyXG5cdFx0XSxcclxuXHRcdHN0YXJ0X3VybDogJy8nLFxyXG5cdFx0YmFja2dyb3VuZF9jb2xvcjogJyNGRkZGRkYnLFxyXG5cdFx0ZGlzcGxheTogJ3N0YW5kYWxvbmUnLFxyXG5cdFx0c2NvcGU6ICcvJyxcclxuXHRcdHRoZW1lX2NvbG9yOiAnIzAwMDAwMCcsXHJcblx0XHRvcmllbnRhdGlvbjogJ3BvcnRyYWl0JyxcclxuXHR9LFxyXG59XHJcblxyXG5leHBvcnQgZGVmYXVsdCBkZWZpbmVDb25maWcoe1xyXG5cdGJhc2U6ICcuLycsXHJcblx0cGx1Z2luczogW3JlYWN0KCksIFZpdGVQV0EobWFuaWZlc3RGb3JQbHVnaW4pXSxcclxuXHRzZXJ2ZXI6IHtcclxuXHRcdGhvc3Q6ICcwLjAuMC4wJyxcclxuXHR9LFxyXG59KVxyXG4iXSwKICAibWFwcGluZ3MiOiAiO0FBQTJVLFNBQVMsb0JBQW9CO0FBQ3hXLE9BQU8sV0FBVztBQUNsQixTQUFTLGVBQStCO0FBRXhDLElBQU0sb0JBQTZDO0FBQUEsRUFDbEQsY0FBYztBQUFBLEVBQ2QsZUFBZSxDQUFDLHdCQUF3QixxQkFBcUI7QUFBQSxFQUM3RCxVQUFVO0FBQUEsSUFDVCxZQUFZO0FBQUEsSUFDWixNQUFNO0FBQUEsSUFDTixhQUFhO0FBQUEsSUFDYixPQUFPO0FBQUEsTUFDTixFQUFFLFNBQVMsWUFBWSxPQUFPLFdBQVcsS0FBSyx3QkFBd0IsTUFBTSxZQUFZO0FBQUEsTUFDeEYsRUFBRSxTQUFTLE9BQU8sT0FBTyxXQUFXLEtBQUssdUJBQXVCLE1BQU0sWUFBWTtBQUFBLElBQ25GO0FBQUEsSUFDQSxXQUFXO0FBQUEsSUFDWCxrQkFBa0I7QUFBQSxJQUNsQixTQUFTO0FBQUEsSUFDVCxPQUFPO0FBQUEsSUFDUCxhQUFhO0FBQUEsSUFDYixhQUFhO0FBQUEsRUFDZDtBQUNEO0FBRUEsSUFBTyxzQkFBUSxhQUFhO0FBQUEsRUFDM0IsTUFBTTtBQUFBLEVBQ04sU0FBUyxDQUFDLE1BQU0sR0FBRyxRQUFRLGlCQUFpQixDQUFDO0FBQUEsRUFDN0MsUUFBUTtBQUFBLElBQ1AsTUFBTTtBQUFBLEVBQ1A7QUFDRCxDQUFDOyIsCiAgIm5hbWVzIjogW10KfQo=
