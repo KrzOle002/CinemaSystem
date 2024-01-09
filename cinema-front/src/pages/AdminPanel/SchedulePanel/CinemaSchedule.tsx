@@ -1,95 +1,105 @@
-import React, { useState } from 'react'
-import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd'
+import DeleteForeverIcon from '@mui/icons-material/DeleteForever'
+import axios from 'axios'
+import { useEffect, useState } from 'react'
+import styled from 'styled-components'
+import SubmitButton from '../../../components/SubmitButton'
+import { Room } from '../../../types/ScreeningModelType'
+import useAuthHook from '../../../utils/auth/useAuth'
+import EmptyState from '../../../utils/empty/EmptyState'
+import ScheduleItem from './ScheduleItem'
+import { PostScreeningType, ScreeningData } from './SchedulePanel'
 
-interface Movie {
-	id: string
-	title: string
-	duration: number // Duration in minutes
+interface CinemaScheduleType {
+	postScreening: PostScreeningType | null
+	setPostScreening: (arg: PostScreeningType) => void
 }
 
-const initialMovies: Movie[] = [
-	{ id: 'movie-1', title: 'Film 1', duration: 120 },
-	{ id: 'movie-2', title: 'Film 2', duration: 90 },
-	// Dodaj więcej filmów według potrzeb
-]
-
-const CinemaSchedule = () => {
-	const [movies, setMovies] = useState(initialMovies)
-
-	const handleDragEnd = (result: any) => {
-		if (!result.destination) {
-			return
+const CinemaSchedule = ({ postScreening, setPostScreening }: CinemaScheduleType) => {
+	const [roomList, setRoomList] = useState<Room[]>([])
+	const { api } = useAuthHook()
+	const [newScreening, setNewScreening] = useState<ScreeningData[]>([])
+	const createSchedule = (roomId: string) => {
+		const screeningdata = {
+			roomId,
+			movieId: '',
+			hour: '',
 		}
+		if (!postScreening) return
 
-		const items = Array.from(movies)
-		const [reorderedItem] = items.splice(result.source.index, 1)
-		items.splice(result.destination.index, 0, reorderedItem)
-
-		setMovies(items)
+		const newScreeningData = [...postScreening.screeningData, screeningdata]
+		setPostScreening({ ...postScreening, screeningData: newScreeningData })
 	}
 
-	const calculateSchedule = (movies: Movie[]) => {
-		const schedule = []
-		let currentTime = 9 * 60 // Kino zaczyna działanie o 9:00 (w minutach od północy)
+	const deleteSchedule = (index: number) => {
+		if (!postScreening) return
 
-		for (const movie of movies) {
-			const startTime = formatTime(currentTime)
-			currentTime += movie.duration
-			const endTime = formatTime(currentTime)
+		const newScreeningData = postScreening.screeningData.filter((_, i) => i !== index)
 
-			schedule.push({ ...movie, startTime, endTime })
+		setPostScreening({ ...postScreening, screeningData: newScreeningData })
+	}
+
+	const fetchData = async () => {
+		try {
+			const roomResponse = await axios.get(api + '/api/room/rooms')
+			setRoomList(roomResponse.data)
+		} catch (error) {
+			setRoomList([])
 		}
-
-		return schedule
 	}
 
-	const formatTime = (minutes: number) => {
-		const hours = Math.floor(minutes / 60)
-		const mins = minutes % 60
-		return `${hours}:${mins.toString().padStart(2, '0')}`
-	}
+	useEffect(() => {
+		fetchData()
+	}, [])
 
-	const movieSchedule = calculateSchedule(movies)
-
+	if (roomList === undefined) return <EmptyState />
+	console.log(postScreening)
 	return (
-		<DragDropContext onDragEnd={handleDragEnd}>
-			<Droppable droppableId='droppable' direction='horizontal'>
-				{provided => (
-					<div
-						{...provided.droppableProps}
-						ref={provided.innerRef}
-						style={{
-							display: 'flex', // Ustawienie flexboxa do wyświetlania elementów w linii
-							overflow: 'auto', // Dodanie przewijania, jeśli elementy wyjdą poza ekran
-							padding: '8px',
-							alignItems: 'center',
-						}}>
-						{movieSchedule.map((movie, index) => (
-							<Draggable key={movie.id} draggableId={movie.id} index={index}>
-								{provided => (
-									<div
-										ref={provided.innerRef}
-										{...provided.draggableProps}
-										{...provided.dragHandleProps}
-										style={{
-											...provided.draggableProps.style,
-											margin: '0 8px 0 0', // Odstępy między elementami
-											padding: '16px',
-											background: '#D0153F',
-											color: 'white',
-											borderRadius: '4px',
-										}}>
-										{movie.title} - {movie.startTime} do {movie.endTime}
-									</div>
-								)}
-							</Draggable>
-						))}
-						{provided.placeholder}
-					</div>
-				)}
-			</Droppable>
-		</DragDropContext>
+		<Wrapper>
+			{roomList.map(room => (
+				<Container key={room._id}>
+					<h3>Sala nr {room.roomNumber}</h3>
+					{postScreening?.screeningData.map((screening, index) => {
+						if (screening.roomId == room._id) {
+							return (
+								<ScheduleContainer key={index}>
+									<ScheduleItem setPostScreening={setPostScreening} index={index} postScreening={postScreening} />
+									<DeleteForeverIcon onClick={() => deleteSchedule(index)} sx={{ cursor: 'pointer', '&:hover': { color: 'gray' } }} />
+								</ScheduleContainer>
+							)
+						}
+					})}
+					<SubmitButton type={'button'} className='primary' onClick={() => createSchedule(room._id)}>
+						Dodaj film
+					</SubmitButton>
+				</Container>
+			))}
+		</Wrapper>
 	)
 }
 
 export default CinemaSchedule
+
+const Wrapper = styled.div`
+	@media screen and (max-width: 800px) {
+		flex-direction: column;
+	}
+	display: flex;
+	flex-direction: row;
+	justify-content: center;
+	gap: 200px;
+	padding: 40px 0;
+`
+
+const Container = styled.div`
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+`
+const ScheduleContainer = styled.div`
+	display: flex;
+	flex-direction: row;
+	justify-content: center;
+	align-items: flex-end;
+	padding: 0 0 20px 0;
+`

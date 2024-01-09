@@ -144,4 +144,19 @@ router.post('/screenings', async (req, res) => {
 		res.status(500).json({ success: false, message: 'Błąd serwera' })
 	}
 })
+
+router.get('/last-screening', async (req, res) => {
+	try {
+		const lastScreening = await Screening.findOne().sort({ date: -1 })
+
+		if (lastScreening) {
+			res.status(200).json(lastScreening.date)
+		} else {
+			res.status(404).json({ success: false, message: 'Brak seansów' })
+		}
+	} catch (error) {
+		console.error(error)
+		res.status(500).json({ success: false, message: 'Błąd serwera' })
+	}
+})
 module.exports = router

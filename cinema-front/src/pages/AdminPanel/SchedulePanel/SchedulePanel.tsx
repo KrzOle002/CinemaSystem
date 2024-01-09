@@ -4,8 +4,8 @@ import CinemaSchedule from './CinemaSchedule'
 import ScheduleCalendar from './ScheduleCalendar'
 import { useState } from 'react'
 
-interface ScreeningData {
-	hour: [number]
+export interface ScreeningData {
+	hour: string
 	roomId: string
 	movieId: string
 }
@@ -13,66 +13,17 @@ interface ScreeningData {
 export interface PostScreeningType {
 	dateFrom: Date
 	dateTo: Date
-	screeningData: [ScreeningData]
+	screeningData: ScreeningData[]
 }
 
 const SchedulePanel = () => {
 	const [postScreening, setPostScreening] = useState<PostScreeningType | null>(null)
-	// contorlny
-	// <InputLabel
-	// 					title={'Data transmisji'}
-	// 					type={'date'}
-	// 					inputRef={{
-	// 						...register('dateFrom', {
-	// 							required: true,
-	// 						}),
-	// 					}}
-	// 					required
-	// 					className={errors.dateFrom && 'error'}
-	// 				/>
-	// 				<InputLabel
-	// 					title={'Data zakończenia'}
-	// 					type={'date'}
-	// 					inputRef={{
-	// 						...register('dateTo', {
-	// 							required: true,
-	// 						}),
-	// 					}}
-	// 					required
-	// 					className={errors.dateTo && 'error'}
-	// 				/>
-	// 				<div>
-	// 					Wybór godziny
-	// 					{schedules?.map((option, index) => {
-	// 						return (
-	// 							<div key={index} style={{ display: 'flex', flexDirection: 'row', gap: '10px', alignItems: 'center', padding: '10px 0' }}>
-	// 								Sala nr {index + 1}:
-	// 								{option.schedule.map((schedule, index) => {
-	// 									return (
-	// 										<SubmitButton
-	// 											key={index}
-	// 											className={selectedSchedule?.hour == schedule.hour && selectedSchedule.roomId == option.roomId ? 'warn' : 'primary'}
-	// 											disabled={schedule.occupied}
-	// 											type={'button'}
-	// 											onClick={() => {
-	// 												setSelectedSchedule({
-	// 													roomId: option.roomId,
-	// 													hour: schedule.hour,
-	// 												})
-	// 											}}>
-	// 											{schedule.hour}
-	// 										</SubmitButton>
-	// 									)
-	// 								})}
-	// 							</div>
-	// 						)
-	// 					})}
-	// 				</div>
+
 	return (
 		<Wrapper>
-			<ScheduleCalendar date={new Date()} setPostScreening={setPostScreening} />
+			<ScheduleCalendar setPostScreening={setPostScreening} />
 
-			<CinemaSchedule />
+			<CinemaSchedule postScreening={postScreening} setPostScreening={setPostScreening} />
 			<SubmitButton fullWidth type={'button'} className='primary'>
 				Zatwierdź repertuar
 			</SubmitButton>

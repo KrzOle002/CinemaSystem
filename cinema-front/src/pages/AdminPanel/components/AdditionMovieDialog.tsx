@@ -1,13 +1,11 @@
 import { Dialog, DialogActions, DialogContent, DialogTitle } from '@mui/material'
-import axios from 'axios'
-import { useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { toast } from 'react-toastify'
 import styled from 'styled-components'
 import { theme } from '../../../assets/styles/theme'
 import InputLabel from '../../../components/InputLabel'
 import SubmitButton from '../../../components/SubmitButton'
-import { MovieModel, MovieModelSend } from '../../../types/MovieModelType'
+import { MovieModelSend } from '../../../types/MovieModelType'
 import useAuthHook from '../../../utils/auth/useAuth'
 
 interface MovieDialogType {
