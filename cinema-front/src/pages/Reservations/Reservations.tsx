@@ -49,6 +49,9 @@ const Wrapper = styled.div`
 `
 
 const Container = styled.div`
+	@media screen and (max-width: 800px) {
+		width: 90%;
+	}
 	width: 50%;
 	margin: 40px auto;
 `

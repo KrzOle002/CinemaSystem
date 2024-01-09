@@ -60,7 +60,7 @@ const Footer = () => {
 				icon={<VideocamIcon />}
 			/>
 			<BottomNavigationAction
-				onClick={() => navigate('/')}
+				onClick={() => navigate('/news')}
 				label='Aktualności'
 				sx={{
 					color: '#f5f5f5',

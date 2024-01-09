@@ -12,10 +12,9 @@ const MainPage = () => {
 export default MainPage
 
 export const Wrapper = styled.div`
-	width: 100%;
-	height: 100%;
 	background: ${({ theme }) => theme.colors.original};
-	background-attachment: fixed;
+	margin: 0;
+	padding: 0;
 	display: flex;
 	flex-direction: column;
 	position: relative;

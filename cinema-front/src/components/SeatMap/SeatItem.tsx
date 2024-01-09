@@ -15,7 +15,7 @@ const SeatItem = ({ seat, selected, setSelected }: SeatItemType) => {
 
 	const seatColor = () => {
 		if (!seat.empty) return 'gray'
-		if (isSelected()) return 'yellow'
+		if (isSelected()) return '#584A86'
 		return ''
 	}
 
@@ -45,12 +45,18 @@ const SeatItem = ({ seat, selected, setSelected }: SeatItemType) => {
 export default SeatItem
 
 const Wrapper = styled.div`
+	@media screen and (max-width: 800px) {
+		width: 1.2em;
+		height: 1.2em;
+		min-height: 0;
+		min-width: 0;
+	}
 	user-select: none;
 	width: 30px;
 	min-width: 30px;
 	height: 30px;
 	min-height: 30px;
-	background-color: #109110;
+	background-color: ${({ theme }) => theme.colors.primary};
 
 	color: ${({ theme }) => theme.colors.white};
 	display: flex;
@@ -62,5 +68,8 @@ const Wrapper = styled.div`
 	}
 `
 const Container = styled.div`
+	@media screen and (max-width: 800px) {
+		font-size: 10px;
+	}
 	font-weight: bold;
 `
