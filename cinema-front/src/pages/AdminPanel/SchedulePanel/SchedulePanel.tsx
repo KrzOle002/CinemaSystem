@@ -1,4 +1,3 @@
-import SubmitButton from '../../../components/SubmitButton'
 import styled from 'styled-components'
 import CinemaSchedule from './CinemaSchedule'
 import ScheduleCalendar from './ScheduleCalendar'
@@ -19,14 +18,27 @@ export interface PostScreeningType {
 const SchedulePanel = () => {
 	const [postScreening, setPostScreening] = useState<PostScreeningType | null>(null)
 
+	const handleFinalizeCinemaSchedule = (roomScreenings: Record<string, ScreeningData[]>) => {
+		const allScreenings = Object.values(roomScreenings).flat()
+
+		if (postScreening) {
+			setPostScreening({
+				...postScreening,
+				screeningData: allScreenings,
+			})
+		} else {
+			setPostScreening({
+				dateFrom: new Date(),
+				dateTo: new Date(),
+				screeningData: allScreenings,
+			})
+		}
+	}
+
 	return (
 		<Wrapper>
 			<ScheduleCalendar setPostScreening={setPostScreening} />
-
-			<CinemaSchedule postScreening={postScreening} setPostScreening={setPostScreening} />
-			<SubmitButton fullWidth type={'button'} className='primary'>
-				Zatwierdź repertuar
-			</SubmitButton>
+			<CinemaSchedule onFinalize={handleFinalizeCinemaSchedule} />
 		</Wrapper>
 	)
 }

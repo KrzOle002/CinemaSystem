@@ -1,5 +1,5 @@
 import styled from 'styled-components'
-import { ChangeEvent, ReactNode } from 'react'
+import { ReactNode } from 'react'
 
 interface SelectLabelType {
 	type?: string
@@ -9,16 +9,17 @@ interface SelectLabelType {
 	className?: string
 	children: ReactNode
 	onChange?: (args: any) => void
+	value?: string | number
 }
 
-const SelectWithLabel = ({ title, inputRef, required, className, children, onChange }: SelectLabelType) => {
+const SelectWithLabel = ({ title, inputRef, required, className, children, onChange, value }: SelectLabelType) => {
 	return (
 		<Wrapper>
 			<Label>
 				{title}
 				{required ? <RequiredDot>*</RequiredDot> : null}
 			</Label>
-			<StyledSelect onChange={onChange} className={className} {...inputRef}>
+			<StyledSelect value={value} onChange={onChange} className={className} {...inputRef}>
 				{children}
 			</StyledSelect>
 		</Wrapper>
