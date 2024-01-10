@@ -2,6 +2,7 @@ import styled from 'styled-components'
 import CinemaSchedule from './CinemaSchedule'
 import ScheduleCalendar from './ScheduleCalendar'
 import { useState } from 'react'
+import useAuthHook from '../../../utils/auth/useAuth'
 
 export interface ScreeningData {
 	hour: string
@@ -17,8 +18,8 @@ export interface PostScreeningType {
 
 const SchedulePanel = () => {
 	const [postScreening, setPostScreening] = useState<PostScreeningType | null>(null)
-
-	const handleFinalizeCinemaSchedule = (roomScreenings: Record<string, ScreeningData[]>) => {
+	const { api, axiosAuth } = useAuthHook()
+	const handleFinalizeCinemaSchedule = async (roomScreenings: Record<string, ScreeningData[]>) => {
 		const allScreenings = Object.values(roomScreenings).flat()
 
 		if (postScreening) {
@@ -33,6 +34,13 @@ const SchedulePanel = () => {
 				screeningData: allScreenings,
 			})
 		}
+
+		await sendReservation()
+	}
+
+	const sendReservation = async () => {
+		const data = postScreening
+		console.log(data)
 	}
 
 	return (

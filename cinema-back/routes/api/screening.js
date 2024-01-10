@@ -6,7 +6,7 @@ const Movie = require('../../models/Movie')
 const Screening = require('../../models/Screening')
 const auth = require('../../middleware/auth')
 const moment = require('moment')
-// Pobieranie wszystkich ekranizacji
+
 router.get('/screenings', async (req, res) => {
 	try {
 		const screenings = await Screening.find()
@@ -115,33 +115,43 @@ router.get('/schedule', async (req, res) => {
 router.post('/screenings', async (req, res) => {
 	try {
 		const screening = req.body
-		const hour = screening.hour + 1
-		const dateRange = []
 
 		let currentDate = moment(screening.dateFrom)
+		const endDate = moment(screening.dateTo)
 
-		while (currentDate <= moment(screening.dateTo)) {
-			currentDate.set({ hour, minute: 0, second: 0, millisecond: 0 })
-			dateRange.push(currentDate.format('YYYY-MM-DDTHH:mm:ss'))
+		const screeningsToCreate = []
+
+		while (currentDate <= endDate) {
+			screening.screeningData.forEach(screeningItem => {
+				if (screeningItem.movieId) {
+					const dateTime = moment(currentDate).set({
+						hour: parseInt(screeningItem.hour.split(':')[0] + 1),
+						minute: parseInt(screeningItem.hour.split(':')[1]),
+						second: 0,
+						millisecond: 0,
+					})
+
+					screeningsToCreate.push({
+						roomId: screeningItem.roomId,
+						movieId: screeningItem.movieId,
+						date: dateTime.format('YYYY-MM-DDTHH:mm:ss'),
+					})
+				}
+			})
 			currentDate.add(1, 'days')
 		}
 
 		await Promise.all(
-			dateRange.map(async date => {
-				const newScreening = new Screening({
-					roomId: screening.roomId,
-					movieId: screening.movieId,
-					date: date,
-				})
-
+			screeningsToCreate.map(async screeningData => {
+				const newScreening = new Screening(screeningData)
 				await newScreening.save()
 			})
 		)
 
-		res.status(201).json({ success: true, message: 'Utworzono ekranizacje' })
+		res.status(201).json({ success: true, message: 'Ustawiono Harmonogram' })
 	} catch (error) {
 		console.error(error)
-		res.status(500).json({ success: false, message: 'Błąd serwera' })
+		res.status(500).json({ success: false, message: 'Server error' })
 	}
 })
 
