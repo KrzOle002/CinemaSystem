@@ -34,7 +34,7 @@ const SchedulePanel = () => {
 				...postScreening,
 				screeningData: allScreenings,
 			})
-			console.log(newScreeningSchedule)
+
 			try {
 				const response = await axiosAuth.post(`${api}/api/screening/screenings`, newScreeningSchedule).then(res => {
 					toast.success('Ustawiono harmonogram')
