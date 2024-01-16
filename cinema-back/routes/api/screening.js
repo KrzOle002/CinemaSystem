@@ -116,17 +116,23 @@ router.post('/screenings', async (req, res) => {
 	try {
 		const screening = req.body
 
-		let currentDate = moment(screening.dateFrom)
-		const endDate = moment(screening.dateTo)
+		// Dodajemy jeden dzień do daty początkowej i końcowej
+		let currentDate = moment.utc(screening.dateFrom).add(1, 'days')
+		const endDate = moment.utc(screening.dateTo).add(1, 'days')
 
 		const screeningsToCreate = []
 
 		while (currentDate <= endDate) {
 			screening.screeningData.forEach(screeningItem => {
 				if (screeningItem.movieId) {
-					const dateTime = moment(currentDate).set({
-						hour: parseInt(screeningItem.hour.split(':')[0] + 1),
-						minute: parseInt(screeningItem.hour.split(':')[1]),
+					const hourParts = screeningItem.hour.split(':')
+					const hour = parseInt(hourParts[0], 10)
+					const minute = parseInt(hourParts[1], 10)
+
+					// Ustawianie czasu na podstawie obecnej daty w UTC
+					const dateTime = moment.utc(currentDate).set({
+						hour: hour,
+						minute: minute,
 						second: 0,
 						millisecond: 0,
 					})
@@ -134,13 +140,17 @@ router.post('/screenings', async (req, res) => {
 					screeningsToCreate.push({
 						roomId: screeningItem.roomId,
 						movieId: screeningItem.movieId,
-						date: dateTime.format('YYYY-MM-DDTHH:mm:ss'),
+						// Formatujemy jako UTC
+						date: dateTime.toISOString(),
 					})
 				}
 			})
+
+			// Przechodzimy do następnego dnia w UTC
 			currentDate.add(1, 'days')
 		}
 
+		// Tworzymy seanse w bazie danych
 		await Promise.all(
 			screeningsToCreate.map(async screeningData => {
 				const newScreening = new Screening(screeningData)

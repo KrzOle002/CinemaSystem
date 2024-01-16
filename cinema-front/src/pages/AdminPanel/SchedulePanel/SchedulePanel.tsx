@@ -3,6 +3,8 @@ import CinemaSchedule from './CinemaSchedule'
 import ScheduleCalendar from './ScheduleCalendar'
 import { useState } from 'react'
 import useAuthHook from '../../../utils/auth/useAuth'
+import { toast } from 'react-toastify'
+import { useNavigate } from 'react-router-dom'
 
 export interface ScreeningData {
 	hour: string
@@ -18,29 +20,33 @@ export interface PostScreeningType {
 
 const SchedulePanel = () => {
 	const [postScreening, setPostScreening] = useState<PostScreeningType | null>(null)
+	const navigate = useNavigate()
 	const { api, axiosAuth } = useAuthHook()
+
 	const handleFinalizeCinemaSchedule = async (roomScreenings: Record<string, ScreeningData[]>) => {
 		const allScreenings = Object.values(roomScreenings).flat()
 
-		if (postScreening) {
+		const isNotEmpty = allScreenings.some(screening => screening.movieId != null && screening.movieId !== '')
+
+		if (postScreening?.dateFrom && postScreening.dateTo && isNotEmpty) {
+			const newScreeningSchedule = { ...postScreening, screeningData: allScreenings }
 			setPostScreening({
 				...postScreening,
 				screeningData: allScreenings,
 			})
+			console.log(newScreeningSchedule)
+			try {
+				const response = await axiosAuth.post(`${api}/api/screening/screenings`, newScreeningSchedule).then(res => {
+					toast.success('Ustawiono harmonogram')
+				})
+				return response
+			} catch (error) {
+				console.error('Błąd przy wysyłaniu harmonogramu:', error)
+				throw error
+			}
 		} else {
-			setPostScreening({
-				dateFrom: new Date(),
-				dateTo: new Date(),
-				screeningData: allScreenings,
-			})
+			toast.error('Harmonogram nie może być pusty')
 		}
-
-		await sendReservation()
-	}
-
-	const sendReservation = async () => {
-		const data = postScreening
-		console.log(data)
 	}
 
 	return (

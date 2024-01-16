@@ -4,13 +4,15 @@ import useAuthHook from '../../../utils/auth/useAuth'
 import { toast } from 'react-toastify'
 import axios from 'axios'
 import { Wrapper } from './MovieItem.style'
+import { useUserAuthContext } from '../../../context/UserAuthContext'
 
 interface MovieRatingType {
 	movie: number
 }
 
 const MovieRating = ({ movie }: MovieRatingType) => {
-	const { isAuthenticated, api, axiosAuth, userData } = useAuthHook()
+	const { isAuthenticated, api, axiosAuth } = useAuthHook()
+	const { userData } = useUserAuthContext()
 	const [rating, setRating] = useState<number>(0)
 	const changeRaiting = async (event: any, newValue: any) => {
 		if (isAuthenticated() && userData?._id) {
