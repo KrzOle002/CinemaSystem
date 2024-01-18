@@ -2,7 +2,7 @@ import styled from 'styled-components'
 import { Slideshow } from '../../utils/slider/Slideshow'
 import Actualshow from './Components/Actualshow'
 import Announcements from './Components/Announcements'
-import Discount from './Components/Discount'
+
 import PageFooter from '../PageFooter'
 
 const Dashboards = () => {
@@ -11,7 +11,7 @@ const Dashboards = () => {
 			<Slideshow />
 			<Actualshow />
 			<Announcements />
-			<Discount />
+
 			<PageFooter />
 		</Wrapper>
 	)

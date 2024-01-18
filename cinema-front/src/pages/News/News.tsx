@@ -51,6 +51,7 @@ const Container = styled.div`
 	h1 {
 		font-family: 'Saira', sans-serif;
 		text-align: center;
+		color: white;
 		padding: 20px 0;
 	}
 `
