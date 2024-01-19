@@ -46,12 +46,14 @@ export default Reservations
 
 const Wrapper = styled.div`
 	color: ${({ theme }) => theme.colors.white};
+	height: 100vh;
 `
 
 const Container = styled.div`
 	@media screen and (max-width: 800px) {
 		width: 90%;
 	}
+	
 	width: 50%;
 	margin: 40px auto;
 `
