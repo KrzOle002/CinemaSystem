@@ -11,10 +11,11 @@ const transporter = nodemailer.createTransport({
 	},
 })
 cron.schedule('0 18 * * 5', () => {
-	sendEmailFunction()
+	sendDiscountFunction()
+
 })
 
-const sendEmailFunction = async () => {
+const sendDiscountFunction = async () => {
 	const users = await User.find()
 	for (const user of users) {
 		const emailContent = user.email

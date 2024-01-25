@@ -7,6 +7,7 @@ import InputLabel from '../../../components/InputLabel'
 import SubmitButton from '../../../components/SubmitButton'
 import { MovieModelSend } from '../../../types/MovieModelType'
 import useAuthHook from '../../../utils/auth/useAuth'
+import axios from "axios";
 
 interface MovieDialogType {
 	isOpen: boolean
@@ -41,7 +42,8 @@ const AdditionMovieDialog = ({ isOpen, close, movieId }: MovieDialogType) => {
 				headers: {
 					'Content-Type': 'multipart/form-data',
 				},
-			})
+			}).then(()=>{axios.post(api + '/api/mail/send-email', data)})
+
 			toast.success('Dodano film')
 		} catch (err) {
 			toast.error('Nie dodać filmu')

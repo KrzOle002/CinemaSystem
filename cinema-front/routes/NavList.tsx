@@ -18,7 +18,8 @@ import AdminPanel from '../src/pages/AdminPanel/AdminPanel'
 import { useUserAuthContext } from '../src/context/UserAuthContext'
 
 const NavList = () => {
-	const { isAdmin } = useUserAuthContext()
+
+	const { isAdmin, } = useUserAuthContext()
 	return (
 		<Routes>
 			<Route

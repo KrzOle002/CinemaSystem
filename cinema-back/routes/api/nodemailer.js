@@ -4,6 +4,7 @@ const Reservation = require('../../models/Reservation')
 const Movie = require('../../models/Movie')
 const Room = require('../../models/Room')
 const Seat = require('../../models/Seat')
+const User = require("../../models/User");
 const router = express.Router()
 const transporter = nodemailer.createTransport({
 	host: 'smtp-mail.outlook.com',
@@ -15,63 +16,71 @@ const transporter = nodemailer.createTransport({
 	},
 })
 
-// Treść HTML maila
 
-router.get('/send-email', (req, res) => {
-	const htmlTemplate = `
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Nowy film trafił do naszego repertuaru</title>
-</head>
-<body style="background-color: #1C1C27; color: #FFF9FB; font-family: 'Arial', sans-serif; ">
 
-    <div style="background-color: #D0153F; padding: 20px; text-align: center; font-size: 32px">
-        <h1>Nowy film trafił do naszego repertuaru</h1>
-    </div>
+router.post('/send-email', async (req, res) => {
+	const mailInfo = req.body;
 
-    <div style="padding: 20px; font-size: 20px">
-    <p>Cześć Joe Doe,</p>
-    <p>Z radością informujemy Cię o najnowszym dodatku do naszej kolekcji filmowej!</p>
-    <p>Sprawdź szczegóły i upewnij się, że nie przegapisz nowego hitu kinowego.</p>
-    
-    <!-- Szczegóły filmu (Zamień na rzeczywiste dane filmowe) -->
-    <h2>Tytuł filmu: O psie, który jeździł koleją</h2>
-    <p>Data premiery: 10.11.2023</p>
-    <p>Gatunek: Przygodowy</p>
-    
-    <p>Miłego spędzenia czasu w kinie!</p>
-    
-    <div style="margin-top: 20px;">
-        <p>Z pozdrowieniami,</p>
-        <p>Twój Zespół Kina</p>
-    </div>
-    </div>
+	try {
+		const users = await User.find();
+		let failedEmails = [];
 
-</body>
-</html>
-`
+		for (const user of users) {
+			const htmlTemplate = `
+                <!DOCTYPE html>
+                <html lang="en">
+                <head>
+                    <meta charset="UTF-8">
+                    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+                    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+                    <title>Nowy film trafił do naszego repertuaru</title>
+                </head>
+                <body style="background-color: #1C1C27; color: #FFF9FB; font-family: 'Arial', sans-serif;">
+                    <div style="background-color: #D0153F; padding: 20px; text-align: center; font-size: 32px">
+                        <h1>Nowy film trafił do naszego repertuaru</h1>
+                    </div>
+                    <div style="padding: 20px; font-size: 20px">
+                        <p>Cześć ${user.name} ${user.surname},</p>
+                        <p>Z radością informujemy Cię o najnowszym dodatku do naszej kolekcji filmowej!</p>
+                        <p>Sprawdź szczegóły i upewnij się, że nie przegapisz nowego hitu kinowego.</p>
+                        <h2>Tytuł filmu: ${mailInfo.title}</h2>
+                        <p>Gatunek: ${mailInfo.genre}</p>
+                        <p>Miłego spędzenia czasu w kinie!</p>
+                        <div style="margin-top: 20px;">
+                            <p>Z pozdrowieniami,</p>
+                            <p>Twój Zespół Kina</p>
+                        </div>
+                    </div>
+                </body>
+                </html>
+            `;
 
-	const mailOptions = {
-		from: 'noreply@kino-fordon.pl <cinemaFordon12@outlook.com>',
-		to: 'Thekriso@wp.pl',
-		subject: 'Nowy film trafił do naszego repertuaru',
-		html: htmlTemplate,
-	}
+			const mailOptions = {
+				from: 'noreply@kino-fordon.pl <cinemaFordon12@outlook.com>',
+				to: user.email,
+				subject: 'Nowy film trafił do naszego repertuaru',
+				html: htmlTemplate,
+			};
 
-	transporter.sendMail(mailOptions, function (err, info) {
-		if (err) {
-			console.log(err)
-			res.status(500).json({ error: 'Error sending email' })
-			return
+			try {
+				await transporter.sendMail(mailOptions);
+
+			} catch (err) {
+				console.error('Error sending email to: ' + user.email, err);
+				failedEmails.push(user.email);
+			}
 		}
-		console.log('Sent: ' + info.response)
-		res.json({ message: 'Email sent successfully' })
-	})
-})
+
+		if (failedEmails.length > 0) {
+			res.status(500).json({ error: 'Error sending emails to some addresses', failedEmails });
+		} else {
+			res.json({ message: 'All emails sent successfully' });
+		}
+	} catch (err) {
+		console.error('Error fetching users', err);
+		res.status(500).json({ error: 'Error fetching users' });
+	}
+});
 
 router.post('/reservation-mail', async (req, res) => {
 	try {
@@ -161,14 +170,14 @@ router.post('/reservation-mail', async (req, res) => {
 <body style="background-color: #1C1C27; color: #FFF9FB; font-family: 'Arial', sans-serif; ">
 
     <div style="background-color: #D0153F; padding: 20px; text-align: center; font-size: 32px">
-        <h1>Potwierdzenie rezerwacji biletów</h1>
+        <h1>Zakupione bilety</h1>
     </div>
 
     <div style="padding: 20px; font-size: 20px">
         <div style="padding: 20px; font-size: 20px">
             <p>Cześć ${mailInfo.user.name} ${mailInfo.user.surname},</p>
-            <p>Dziękujemy za zarezerwowanie biletów w naszym kinie!</p>
-            <p>Poniżej znajdziesz szczegóły Twojej rezerwacji:</p>
+            <p>Dziękujemy za zakup biletów w naszym kinie!</p>
+            <p>Poniżej znajdziesz listę biletów:</p>
             
             ${ticketsHtml}
             
@@ -187,7 +196,7 @@ router.post('/reservation-mail', async (req, res) => {
 		const mailOptions = {
 			from: 'noreply@kino-fordon.pl <cinemaFordon12@outlook.com>',
 			to: mailInfo.user.email,
-			subject: `Nowa Rezerwacja nr ${mailInfo.reservationId}`,
+			subject: `Zakupione bilety Cinema Fordon z nr transakcji ${mailInfo.reservationId}`,
 			html: htmlTemplate,
 		}
 

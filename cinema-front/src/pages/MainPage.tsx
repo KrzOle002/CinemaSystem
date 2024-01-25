@@ -15,6 +15,7 @@ export const Wrapper = styled.div`
 	background: ${({ theme }) => theme.colors.original};
 	margin: 0;
 	padding: 0;
+	height: 100%;
 	display: flex;
 	flex-direction: column;
 	position: relative;

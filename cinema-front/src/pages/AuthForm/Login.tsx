@@ -10,7 +10,6 @@ import axios from 'axios'
 import { useSignIn } from 'react-auth-kit'
 import { toast } from 'react-toastify'
 import { useNavigate } from 'react-router-dom'
-import { useUserAuthContext } from '../../context/UserAuthContext'
 import useAuthHook from '../../utils/auth/useAuth'
 import { useEffect } from 'react'
 
@@ -18,11 +17,7 @@ interface LoginDataType {
 	email: string
 	password: string
 }
-interface ResponseType {
-	data: {
-		token: string
-	}
-}
+
 
 const Login = () => {
 	const resolution = useScreenWidth()
@@ -53,9 +48,10 @@ const Login = () => {
 				expiresIn: 300,
 				authState: { email: data.email },
 			})
+			console.log(response.status)
 
 			toast.success('Zalogowano')
-			navigate(-1)
+			navigate("/")
 		} catch (err) {
 			toast.error('Nie udało się zalogować')
 		}
