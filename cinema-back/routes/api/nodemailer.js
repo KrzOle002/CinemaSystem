@@ -1,32 +1,30 @@
-const nodemailer = require('nodemailer')
-const express = require('express')
-const Reservation = require('../../models/Reservation')
-const Movie = require('../../models/Movie')
-const Room = require('../../models/Room')
-const Seat = require('../../models/Seat')
+const nodemailer = require("nodemailer");
+const express = require("express");
+const Reservation = require("../../models/Reservation");
+const Movie = require("../../models/Movie");
+const Room = require("../../models/Room");
+const Seat = require("../../models/Seat");
 const User = require("../../models/User");
-const router = express.Router()
+const router = express.Router();
 const transporter = nodemailer.createTransport({
-	host: 'smtp-mail.outlook.com',
-	port: 587,
-	secure: false,
-	auth: {
-		user: 'cinemaFordon12@outlook.com',
-		pass: 'P@ssword2!',
-	},
-})
+  host: "smtp-mail.outlook.com",
+  port: 587,
+  secure: false,
+  auth: {
+    user: "cinemaFordon12@outlook.com",
+    pass: "P@ssword2!",
+  },
+});
 
+router.post("/send-email", async (req, res) => {
+  const mailInfo = req.body;
 
+  try {
+    const users = await User.find();
+    let failedEmails = [];
 
-router.post('/send-email', async (req, res) => {
-	const mailInfo = req.body;
-
-	try {
-		const users = await User.find();
-		let failedEmails = [];
-
-		for (const user of users) {
-			const htmlTemplate = `
+    for (const user of users) {
+      const htmlTemplate = `
                 <!DOCTYPE html>
                 <html lang="en">
                 <head>
@@ -55,73 +53,78 @@ router.post('/send-email', async (req, res) => {
                 </html>
             `;
 
-			const mailOptions = {
-				from: 'noreply@kino-fordon.pl <cinemaFordon12@outlook.com>',
-				to: user.email,
-				subject: 'Nowy film trafił do naszego repertuaru',
-				html: htmlTemplate,
-			};
+      const mailOptions = {
+        from: "noreply@kino-fordon.pl <cinemaFordon12@outlook.com>",
+        to: user.email,
+        subject: "Nowy film trafił do naszego repertuaru",
+        html: htmlTemplate,
+      };
 
-			try {
-				await transporter.sendMail(mailOptions);
+      try {
+        await transporter.sendMail(mailOptions);
+      } catch (err) {
+        console.error("Error sending email to: " + user.email, err);
+        failedEmails.push(user.email);
+      }
+    }
 
-			} catch (err) {
-				console.error('Error sending email to: ' + user.email, err);
-				failedEmails.push(user.email);
-			}
-		}
-
-		if (failedEmails.length > 0) {
-			res.status(500).json({ error: 'Error sending emails to some addresses', failedEmails });
-		} else {
-			res.json({ message: 'All emails sent successfully' });
-		}
-	} catch (err) {
-		console.error('Error fetching users', err);
-		res.status(500).json({ error: 'Error fetching users' });
-	}
+    if (failedEmails.length > 0) {
+      res.status(500).json({
+        error: "Error sending emails to some addresses",
+        failedEmails,
+      });
+    } else {
+      res.json({ message: "All emails sent successfully" });
+    }
+  } catch (err) {
+    console.error("Error fetching users", err);
+    res.status(500).json({ error: "Error fetching users" });
+  }
 });
 
-router.post('/reservation-mail', async (req, res) => {
-	try {
-		const mailInfo = req.body
+router.post("/reservation-mail", async (req, res) => {
+  try {
+    const mailInfo = req.body;
+    console.log(mailInfo);
+    const reservationInfo = await Reservation.findById(mailInfo.reservationId)
+      .populate("screeningId")
+      .populate({
+        path: "seats",
+        model: Seat,
+      })
+      .exec();
 
-		const reservationInfo = await Reservation.findById(mailInfo.reservationId)
-			.populate('screeningId')
-			.populate({
-				path: 'seats',
-				model: Seat,
-			})
-			.exec()
+    const movieInfo = await Movie.findById(reservationInfo.screeningId.movieId);
+    const roomInfo = await Room.findById(reservationInfo.screeningId.roomId);
 
-		const movieInfo = await Movie.findById(reservationInfo.screeningId.movieId)
-		const roomInfo = await Room.findById(reservationInfo.screeningId.roomId)
-
-		const ticketsHtml = reservationInfo.seats
-			.map(
-				seat => `
+    const ticketsHtml = reservationInfo.seats
+      .map(
+        (seat) => `
 	<div class="ticket">
 		<div class="movie-title">Tytuł filmu: ${movieInfo.title}</div>
-		<div class="details">Data seansu: ${reservationInfo.screeningId.date.toLocaleDateString('pl-PL', {
-			day: '2-digit',
-			month: '2-digit',
-			year: 'numeric',
-		})}, godzina ${reservationInfo.screeningId.date.getUTCHours()}:00</div>
+		<div class="details">Data seansu: ${reservationInfo.screeningId.date.toLocaleDateString(
+      "pl-PL",
+      {
+        day: "2-digit",
+        month: "2-digit",
+        year: "numeric",
+      },
+    )}, godzina ${reservationInfo.screeningId.date.getUTCHours()}:00</div>
 		<div class="details">Miejsce: Sala ${roomInfo.roomNumber}, Rząd ${seat.row}</div>
 		<div class="seat-number">Numer miejsca: ${seat.number}</div>
 		<div class="barcode">${generateRandomNumber()}</div>
 	</div>
-`
-			)
-			.join('')
+`,
+      )
+      .join("");
 
-		const htmlTemplate = `<!DOCTYPE html>
+    const htmlTemplate = `<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Potwierdzenie rezerwacji biletów</title>
+    <title>Zakupiono bilety</title>
 	<style>
         body {
             font-family: 'Arial', sans-serif;
@@ -191,37 +194,37 @@ router.post('/reservation-mail', async (req, res) => {
     </div>
 
 </body>
-</html>`
+</html>`;
 
-		const mailOptions = {
-			from: 'noreply@kino-fordon.pl <cinemaFordon12@outlook.com>',
-			to: mailInfo.user.email,
-			subject: `Zakupione bilety Cinema Fordon z nr transakcji ${mailInfo.reservationId}`,
-			html: htmlTemplate,
-		}
+    const mailOptions = {
+      from: "noreply@kino-fordon.pl <cinemaFordon12@outlook.com>",
+      to: mailInfo.user.email,
+      subject: `Zakupione bilety Cinema Fordon z nr transakcji ${mailInfo.reservationId}`,
+      html: htmlTemplate,
+    };
 
-		transporter.sendMail(mailOptions, function (err, info) {
-			if (err) {
-				console.log(err)
-				res.status(500).json({ error: 'Error sending email' })
-				return
-			}
-		})
-		res.json({ message: 'Email sent successfully' })
-	} catch (err) {
-		console.error(err.message)
-		res.status(500).send('Server Error')
-	}
-})
-module.exports = router
+    transporter.sendMail(mailOptions, function (err, info) {
+      if (err) {
+        console.log(err);
+        res.status(500).json({ error: "Error sending email" });
+        return;
+      }
+    });
+    res.json({ message: "Email sent successfully" });
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).send("Server Error");
+  }
+});
+module.exports = router;
 
 function generateRandomNumber() {
-	const section1 = Math.floor(Math.random() * 10000)
-		.toString()
-		.padStart(4, '0')
-	const section2 = Math.floor(Math.random() * 10000)
-		.toString()
-		.padStart(4, '0')
-	const randomNumber = `${section1}-${section2}`
-	return randomNumber
+  const section1 = Math.floor(Math.random() * 10000)
+    .toString()
+    .padStart(4, "0");
+  const section2 = Math.floor(Math.random() * 10000)
+    .toString()
+    .padStart(4, "0");
+  const randomNumber = `${section1}-${section2}`;
+  return randomNumber;
 }
