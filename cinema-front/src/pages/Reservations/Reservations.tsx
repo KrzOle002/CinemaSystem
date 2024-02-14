@@ -30,7 +30,8 @@ const Reservations = () => {
 	}, [])
 
 	return (
-		<Wrapper>
+		<>
+			<Wrapper>
 			<Container>
 				<SectionHeader>Rezerwacje</SectionHeader>
 				<ReservationsFilter setFilteredReservations={setFilteredReservations} reservations={reservations} />
@@ -38,8 +39,9 @@ const Reservations = () => {
 					<ReservationsItem key={index} reservation={reservation} />
 				)):<h3 style={{display:"flex",justifyContent:"center",alignItems:"center"}}>Brak rezerwacji</h3>}
 			</Container>
-			<PageFooter />
-		</Wrapper>
+			</Wrapper>
+			<PageFooter/>
+		</>
 	)
 }
 
@@ -47,6 +49,7 @@ export default Reservations
 
 const Wrapper = styled.div`
 	color: ${({ theme }) => theme.colors.white};
+	min-height: 100vh;
 
 `
 
@@ -54,7 +57,7 @@ const Container = styled.div`
 	@media screen and (max-width: 800px) {
 		width: 90%;
 	}
-	height: 100vh;
+	min-height: 100vh;
 	width: 50%;
 	margin: 40px auto;
 `

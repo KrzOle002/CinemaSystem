@@ -1,8 +1,7 @@
 import styled from "styled-components";
 import MovieInstance from "./MovieInstance";
 import SectionHeader from "../../../components/SectionHeader";
-import Pagination from "@mui/material/Pagination"; // Importowanie komponentu Pagination
-
+import Pagination from "@mui/material/Pagination";
 import { MovieModel } from "../../../types/MovieModelType";
 import { useEffect, useState } from "react";
 import axios from "axios";
@@ -15,9 +14,9 @@ const Actualshow = () => {
 
   const { api } = useAuthHook();
 
-  const fetchMovies = async (page: number = 1) => {
+  const fetchMovies = async (page: number = 1, limit:number = 8 ) => {
     try {
-      const response = await axios.get(`${api}/api/movie/movies?page=${page}`);
+      const response = await axios.get(`${api}/api/movie/movies?page=${page}&limit=${limit}`);
 
       setMovieList(response.data.movies);
       setTotalPages(response.data.totalPages); // Ustawianie całkowitej liczby stron

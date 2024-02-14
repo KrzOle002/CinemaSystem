@@ -86,7 +86,7 @@ router.delete("/movies/:id", async (req, res) => {
 router.get("/movies", async (req, res) => {
   const title = req.query.title;
   const page = parseInt(req.query.page) || 1;
-  const limit = 5; // Liczba rekordów na stronę
+  const limit = parseInt(req.query.limit);
   const skip = (page - 1) * limit;
 
   try {

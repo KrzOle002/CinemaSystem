@@ -32,11 +32,11 @@ const MovieSchedule = () => {
     fetchMovies(undefined, value);
   };
 
-  const fetchMovies = async (title?: string, page: number = 1) => {
+  const fetchMovies = async (title?: string, page: number = 1, limit: number = 5) => {
     try {
       const getter = title
-        ? `/api/movie/movies?title=${title}&page=${page}`
-        : `/api/movie/movies?page=${page}`;
+        ? `/api/movie/movies?title=${title}&page=${page}&limit=${limit}`
+        : `/api/movie/movies?page=${page}&limit=${limit}`;
       const response = await axios.get(api + getter);
 
       setMovieList(response.data.movies);
