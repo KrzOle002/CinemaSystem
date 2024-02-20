@@ -1,4 +1,4 @@
-import { eachDayOfInterval, format, getISOWeek, startOfWeek } from 'date-fns'
+import { eachDayOfInterval, format, getISOWeek, isBefore, startOfWeek } from 'date-fns'
 import { useState } from 'react'
 import styled from 'styled-components'
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos'
@@ -52,6 +52,8 @@ const Calendar = ({ reservationDate, setReservationDate }: CalendarType) => {
 		const week = eachDayOfInterval({ start: startDate, end: endDate })
 		return week.map(day => {
 			const isActive = format(day, 'yyyy-MM-dd') === format(reservationDate, 'yyyy-MM-dd')
+			const isDisable = isBefore(day, todayDate.setDate(todayDate.getDate() - 1))
+			console.log(isDisable)
 			return (
 				<div key={day.toString()} className={`day ${isActive ? 'active' : ''}`} onClick={() => handleDayClick(day)}>
 					<div className='dayOfWeek'>{format(day, 'dd.MM')}</div>

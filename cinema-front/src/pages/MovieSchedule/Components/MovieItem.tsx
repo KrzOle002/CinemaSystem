@@ -64,8 +64,7 @@ const MovieItem = ({ movie, reservationDate }: MovieItemType) => {
 							.map(screening => {
 								const dateObject = new Date(screening.date)
 								const now = new Date()
-								console.log(now.getDate())
-								console.log(dateObject.getDate())
+
 								const isDisabled =
 									now.getDate() == dateObject.getDate() && now.getMonth() == dateObject.getMonth()
 										? now.getHours() - dateObject.getUTCHours() >= 2
