@@ -46,8 +46,7 @@ const Calendar = ({ reservationDate, setReservationDate }: CalendarType) => {
 	}
 
 	const renderDays = () => {
-
-		const startDate = startOfWeek(todayDate, { weekStartsOn: 1 });
+		const startDate = startOfWeek(todayDate, { weekStartsOn: 1 })
 		const endDate = new Date(startDate)
 		endDate.setDate(endDate.getDate() + 6)
 		const week = eachDayOfInterval({ start: startDate, end: endDate })
@@ -55,9 +54,7 @@ const Calendar = ({ reservationDate, setReservationDate }: CalendarType) => {
 			const isActive = format(day, 'yyyy-MM-dd') === format(reservationDate, 'yyyy-MM-dd')
 			return (
 				<div key={day.toString()} className={`day ${isActive ? 'active' : ''}`} onClick={() => handleDayClick(day)}>
-					<div className='dayOfWeek' style={{ fontSize: '20px' }}>
-						{format(day, 'dd.MM')}
-					</div>
+					<div className='dayOfWeek'>{format(day, 'dd.MM')}</div>
 				</div>
 			)
 		})
@@ -141,12 +138,12 @@ const StyledCalendarDays = styled.div`
 		}
 
 		.dayOfWeek {
-			@media screen and (max-width: 800px) {
-				font-size: 8px;
+			@media screen and (max-width: 1080px) {
+				font-size: 10px;
 				color: #ffffff;
 			}
 
-			font-size: 14px;
+			font-size: 20px;
 			color: #ffffff;
 		}
 	}

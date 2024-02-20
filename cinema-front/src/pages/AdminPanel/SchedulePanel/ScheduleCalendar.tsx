@@ -18,7 +18,7 @@ const ScheduleCalendar = ({ setPostScreening }: ScheduleCalendarType) => {
 	const { api } = useAuthHook()
 
 	const addDate = (date: Date) => {
-		const nextDate = new Date(date) // Tworzymy kopię oryginalnej daty
+		const nextDate = new Date(date)
 		nextDate.setDate(nextDate.getDate() + 7)
 
 		const startDate = startOfWeek(nextDate, { weekStartsOn: 1 })
