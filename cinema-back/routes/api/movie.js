@@ -79,6 +79,36 @@ router.delete('/movies/:id', async (req, res) => {
 })
 
 router.get('/movies', async (req, res) => {
+	const title = req.query.title
+	const page = parseInt(req.query.page) || 1
+	const limit = parseInt(req.query.limit)
+	const skip = (page - 1) * limit
+
+	try {
+		const query = title ? { title: new RegExp(title, 'i') } : {}
+
+		const movies = await Movie.find(query).skip(skip).limit(limit)
+
+		const moviesWithScreenings = await Promise.all(
+			movies.map(async movie => {
+				const screenings = await Screening.find({ movieId: movie.id }).populate('roomId').exec()
+
+				return { ...movie.toObject(), screenings }
+			})
+		)
+		const total = await Movie.countDocuments(query)
+		res.json({
+			movies: moviesWithScreenings,
+			currentPage: page,
+			totalPages: Math.ceil(total / limit),
+			totalMovies: total,
+		})
+	} catch (error) {
+		res.status(500).json({ message: error.message })
+	}
+})
+
+router.get('/repertuar', async (req, res) => {
 	const date = req.query.date
 	const title = req.query.title
 	const page = parseInt(req.query.page) || 1
@@ -102,12 +132,12 @@ router.get('/movies', async (req, res) => {
 
 		const movieList = moviesWithScreenings.filter(movie => movie.screenings.length > 0)
 		const total = await Movie.countDocuments(query)
-		console.log(movieList)
+
 		res.json({
 			movies: movieList,
 			currentPage: page,
 			totalPages: Math.ceil(movieList.length / limit),
-			totalMovies: total,
+			totalMovies: movieList.length,
 		})
 	} catch (error) {
 		res.status(500).json({ message: error.message })

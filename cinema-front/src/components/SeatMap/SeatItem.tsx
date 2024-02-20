@@ -30,7 +30,15 @@ const SeatItem = ({ seat, selected, setSelected }: SeatItemType) => {
 					return prev.filter(seatId => seatId !== seat.seatId)
 				})
 		else {
-			toast.warning('Możesz zarezerwować maksymalnie 10 miejsc')
+			toast.warning('Możesz zarezerwować maksymalnie 10 miejsc. Skontaktuj się z obsługą pod numerem 123-456-456, aby zarezerwować więcej miejsc.', {
+				position: 'top-center',
+				autoClose: false,
+				hideProgressBar: false,
+				closeOnClick: true,
+				pauseOnHover: true,
+				draggable: true,
+				progress: undefined,
+			})
 			setSelected([seat.seatId])
 		}
 	}

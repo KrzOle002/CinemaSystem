@@ -34,8 +34,8 @@ const MovieSchedule = () => {
 	const fetchMovies = async (title?: string, page: number = 1, limit: number = 5, date?: Date) => {
 		try {
 			const getter = title
-				? `/api/movie/movies?title=${title}&page=${page}&limit=${limit}&date=${date}`
-				: `/api/movie/movies?page=${page}&limit=${limit}&date=${date}`
+				? `/api/movie/repertuar?title=${title}&page=${page}&limit=${limit}&date=${date}`
+				: `/api/movie/repertuar?page=${page}&limit=${limit}&date=${date}`
 			const response = await axios.get(api + getter)
 
 			setMovieList(response.data.movies)
