@@ -8,7 +8,6 @@ import PageFooter from '../PageFooter'
 const Dashboards = () => {
 	return (
 		<Wrapper>
-			<Slideshow />
 			<Actualshow />
 			<Announcements />
 

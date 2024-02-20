@@ -51,7 +51,6 @@ const MovieSchedule = () => {
 
 	return (
 		<Wrapper>
-			<Slideshow />
 			<Container>
 				<SectionHeader>Repertuar Cinema Fordon</SectionHeader>
 
@@ -98,6 +97,7 @@ const Container = styled.div`
 	}
 	width: 50%;
 	margin: 0 auto;
+	padding: 40px 0;
 `
 
 const PaginationContainer = styled.div`

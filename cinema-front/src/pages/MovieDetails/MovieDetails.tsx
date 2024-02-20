@@ -28,7 +28,7 @@ const MovieDetails = () => {
 	}, [])
 
 	return (
-		<>
+		<Wrapper>
 			<CardContainer>
 				{movie ? (
 					<CardContent>
@@ -41,13 +41,13 @@ const MovieDetails = () => {
 						<CardBody>
 							<MovieTitle>{movie.title}</MovieTitle>
 							<MovieCard>
-								<p>{`Genre: ${movie.genre.join(', ')}`}</p>
-								<p>{`Director: ${movie.director}`}</p>
-								<p>{`Casts: ${movie.casts.join(', ')}`}</p>
-								<p>{`Production Country: ${movie.productionCountry}`}</p>
-								<p>{`Production Year: ${movie.productionYear}`}</p>
-								<p>{`Screening Length: ${movie.screeningLength} min`}</p>
-								{movie.ageRestrictions && <p>{`Age Restrictions: ${movie.ageRestrictions}+`}</p>}
+								<p>{`Gatunek: ${movie.genre.join(', ')}`}</p>
+								<p>{`Reżyser: ${movie.director}`}</p>
+								<p>{`Obsada: ${movie.casts.join(', ')}`}</p>
+								<p>{`Kraj produkcji: ${movie.productionCountry}`}</p>
+								<p>{`Rok produkcji: ${movie.productionYear}`}</p>
+								<p>{`Długość: ${movie.screeningLength} min`}</p>
+								{movie.ageRestrictions && <p>{`Kategoria wiekowa: ${movie.ageRestrictions}+`}</p>}
 							</MovieCard>
 							<MovieDescription>{movie.description}</MovieDescription>
 						</CardBody>
@@ -57,11 +57,18 @@ const MovieDetails = () => {
 				)}
 			</CardContainer>
 			<PageFooter />
-		</>
+		</Wrapper>
 	)
 }
 
 export default MovieDetails
+
+const Wrapper = styled.div`
+	min-height: 100vh;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+`
 
 const CoverContainer = styled.div`
 	@media screen and (max-width: 640px) {
