@@ -37,7 +37,9 @@ const ScheduleCalendar = ({ setPostScreening }: ScheduleCalendarType) => {
 			const response = await axios.get(api + '/api/screening/last-screening')
 			addDate(response.data)
 		} catch (error) {
-			addDate(new Date())
+			const today = new Date()
+			today.setDate(today.getDate() - 7)
+			addDate(today)
 		}
 	}
 

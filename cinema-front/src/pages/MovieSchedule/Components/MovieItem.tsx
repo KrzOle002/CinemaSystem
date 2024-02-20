@@ -46,16 +46,43 @@ const MovieItem = ({ movie, reservationDate }: MovieItemType) => {
 					</MovieBasicInfo>
 					<MovieRating movie={movie._id} />
 					<MovieButtons>
-						{movie.screenings.map(screening => {
-							const dateObject = new Date(screening.date)
+						{movie.screenings
+							.filter(screening => {
+								const screeningDateObject = new Date(screening.date)
+								const reservationDateObject = reservationDate
+								return (
+									screeningDateObject.getFullYear() === reservationDateObject.getFullYear() &&
+									screeningDateObject.getMonth() === reservationDateObject.getMonth() &&
+									screeningDateObject.getDate() === reservationDateObject.getDate()
+								)
+							})
+							.sort((screening, nextScreening) => {
+								const screeningHour = new Date(screening.date).getHours()
+								const nextScreeningHour = new Date(nextScreening.date).getHours()
+								return screeningHour - nextScreeningHour
+							})
+							.map(screening => {
+								const dateObject = new Date(screening.date)
+								const now = new Date()
+								console.log(now.getDate())
+								console.log(dateObject.getDate())
+								const isDisabled =
+									now.getDate() == dateObject.getDate() && now.getMonth() == dateObject.getMonth()
+										? now.getHours() - dateObject.getUTCHours() >= 2
+										: false
 
-							return (
-								<SubmitButton key={screening._id} type={'button'} className='primary' onClick={() => handleReservationClick(screening._id)}>
-									{dateObject.getUTCHours() > 9 ? dateObject.getUTCHours() : '0' + dateObject.getUTCHours()}:
-									{dateObject.getUTCMinutes().toString().padStart(2, '0')}
-								</SubmitButton>
-							)
-						})}
+								return (
+									<SubmitButton
+										key={screening._id}
+										disabled={isDisabled}
+										type={'button'}
+										className='primary'
+										onClick={() => handleReservationClick(screening._id)}>
+										{dateObject.getUTCHours() > 9 ? dateObject.getUTCHours() : '0' + dateObject.getUTCHours()}:
+										{dateObject.getUTCMinutes().toString().padStart(2, '0')}
+									</SubmitButton>
+								)
+							})}
 					</MovieButtons>
 				</MovieInfo>
 			</MovieItemContainer>
