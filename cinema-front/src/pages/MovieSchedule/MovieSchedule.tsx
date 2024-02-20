@@ -60,7 +60,7 @@ const MovieSchedule = () => {
 					<InputLabel placeholder={'Filtr'} onChange={handleFilterMovies} />
 				</MovieControl>
 				<MoviesList>
-					{movieList?.length == 0 ? <EmptySlot>Brak filmu o takiej nazwie</EmptySlot> : null}
+					{movieList?.length == 0 ? <EmptySlot>Brak filmów</EmptySlot> : null}
 					{movieList ? (
 						movieList.map(movie => {
 							return <MovieItem key={movie._id} movie={movie} reservationDate={reservationDate} />
