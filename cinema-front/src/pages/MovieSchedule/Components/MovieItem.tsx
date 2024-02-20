@@ -11,6 +11,7 @@ import AdditionMovieDialog from '../../AdminPanel/components/AdditionMovieDialog
 import { MovieBasicInfo, MovieButtons, MovieImage, MovieInfo, MovieItemContainer, MovieTitle, Wrapper } from './MovieItem.style'
 import MovieRating from './MovieRating'
 import EmptyState from '../../../utils/empty/EmptyState'
+import { isBefore, isSameDay } from 'date-fns'
 
 interface MovieItemType {
 	movie: MovieModel
@@ -64,12 +65,13 @@ const MovieItem = ({ movie, reservationDate }: MovieItemType) => {
 							.map(screening => {
 								const dateObject = new Date(screening.date)
 								const now = new Date()
+								const yesterday = new Date(now)
+								yesterday.setDate(now.getDate() - 1)
 
-								const isDisabled =
-									now.getDate() == dateObject.getDate() && now.getMonth() == dateObject.getMonth()
-										? now.getHours() - dateObject.getUTCHours() >= 2
-										: false
+								const isYesterday = isSameDay(dateObject, yesterday)
+								const isTodayWithin2Hours = isSameDay(dateObject, now) && now.getHours() - dateObject.getUTCHours() >= 1
 
+								const isDisabled = isYesterday || isTodayWithin2Hours
 								return (
 									<SubmitButton
 										key={screening._id}

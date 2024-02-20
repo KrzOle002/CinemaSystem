@@ -52,8 +52,6 @@ const Calendar = ({ reservationDate, setReservationDate }: CalendarType) => {
 		const week = eachDayOfInterval({ start: startDate, end: endDate })
 		return week.map(day => {
 			const isActive = format(day, 'yyyy-MM-dd') === format(reservationDate, 'yyyy-MM-dd')
-			const isDisable = isBefore(day, todayDate.setDate(todayDate.getDate() - 1))
-			console.log(isDisable)
 			return (
 				<div key={day.toString()} className={`day ${isActive ? 'active' : ''}`} onClick={() => handleDayClick(day)}>
 					<div className='dayOfWeek'>{format(day, 'dd.MM')}</div>
@@ -64,9 +62,6 @@ const Calendar = ({ reservationDate, setReservationDate }: CalendarType) => {
 	return (
 		<StyledWeeklyCalendar>
 			<StyledCalendarContent>
-				<SubmitButton onClick={() => handleNextWeekClick('back')} type={'button'} className='primary'>
-					<ArrowBackIosIcon />
-				</SubmitButton>
 				<StyledCalendarDays>{renderDays()}</StyledCalendarDays>
 				<SubmitButton onClick={() => handleNextWeekClick('next')} type={'button'} className='primary'>
 					<ArrowForwardIosIcon />
