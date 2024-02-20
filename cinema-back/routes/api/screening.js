@@ -6,7 +6,7 @@ const Movie = require('../../models/Movie')
 const Screening = require('../../models/Screening')
 const auth = require('../../middleware/auth')
 const moment = require('moment')
-// Pobieranie wszystkich ekranizacji
+
 router.get('/screenings', async (req, res) => {
 	try {
 		const screenings = await Screening.find()
@@ -59,7 +59,11 @@ router.put('/screenings/:id', async (req, res) => {
 		if (!updatedScreening) {
 			return res.status(404).json({ success: false, message: 'Ekranizacja nie znaleziona' })
 		}
-		res.status(200).json({ success: true, message: 'Zaktualizowano ekranizację', data: updatedScreening })
+		res.status(200).json({
+			success: true,
+			message: 'Zaktualizowano ekranizację',
+			data: updatedScreening,
+		})
 	} catch (error) {
 		console.error(error)
 		res.status(500).json({ success: false, message: 'Błąd serwera' })
@@ -73,14 +77,18 @@ router.delete('/screenings/:id', async (req, res) => {
 		if (!deletedScreening) {
 			return res.status(404).json({ success: false, message: 'Ekranizacja nie znaleziona' })
 		}
-		res.status(200).json({ success: true, message: 'Usunięto ekranizację', data: deletedScreening })
+		res.status(200).json({
+			success: true,
+			message: 'Usunięto ekranizację',
+			data: deletedScreening,
+		})
 	} catch (error) {
 		console.error(error)
 		res.status(500).json({ success: false, message: 'Błąd serwera' })
 	}
 })
 
-router.get('/schedule', async (req, res) => {
+router.post('/schedule', async (req, res) => {
 	const screeningHours = [9, 11, 13, 15, 17, 19, 21]
 	try {
 		const screenings = await Screening.find()
@@ -115,30 +123,61 @@ router.get('/schedule', async (req, res) => {
 router.post('/screenings', async (req, res) => {
 	try {
 		const screening = req.body
-		const hour = screening.hour + 1
-		const dateRange = []
 
-		let currentDate = moment(screening.dateFrom)
+		// Dodajemy jeden dzień do daty początkowej i końcowej
+		let currentDate = moment.utc(screening.dateFrom).add(1, 'days')
+		const endDate = moment.utc(screening.dateTo).add(1, 'days')
 
-		while (currentDate <= moment(screening.dateTo)) {
-			currentDate.set({ hour, minute: 0, second: 0, millisecond: 0 })
-			dateRange.push(currentDate.format('YYYY-MM-DDTHH:mm:ss'))
+		const screeningsToCreate = []
+
+		while (currentDate <= endDate) {
+			screening.screeningData.forEach(screeningItem => {
+				if (screeningItem.movieId) {
+					const hourParts = screeningItem.hour.split(':')
+					const hour = parseInt(hourParts[0], 10)
+					const minute = parseInt(hourParts[1], 10)
+
+					const dateTime = moment.utc(currentDate).set({
+						hour: hour,
+						minute: minute,
+						second: 0,
+						millisecond: 0,
+					})
+
+					screeningsToCreate.push({
+						roomId: screeningItem.roomId,
+						movieId: screeningItem.movieId,
+						date: dateTime.toISOString(),
+					})
+				}
+			})
+
 			currentDate.add(1, 'days')
 		}
 
 		await Promise.all(
-			dateRange.map(async date => {
-				const newScreening = new Screening({
-					roomId: screening.roomId,
-					movieId: screening.movieId,
-					date: date,
-				})
-
+			screeningsToCreate.map(async screeningData => {
+				const newScreening = new Screening(screeningData)
 				await newScreening.save()
 			})
 		)
 
-		res.status(201).json({ success: true, message: 'Utworzono ekranizacje' })
+		res.status(201).json({ success: true, message: 'Ustawiono Harmonogram' })
+	} catch (error) {
+		console.error(error)
+		res.status(500).json({ success: false, message: 'Server error' })
+	}
+})
+
+router.get('/last-screening', async (req, res) => {
+	try {
+		const lastScreening = await Screening.findOne().sort({ date: -1 })
+
+		if (lastScreening) {
+			res.status(200).json(lastScreening.date)
+		} else {
+			res.status(404).json({ success: false, message: 'Brak seansów' })
+		}
 	} catch (error) {
 		console.error(error)
 		res.status(500).json({ success: false, message: 'Błąd serwera' })

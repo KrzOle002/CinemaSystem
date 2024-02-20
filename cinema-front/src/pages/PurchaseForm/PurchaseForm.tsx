@@ -73,6 +73,10 @@ const PurchaseForm = () => {
 export default PurchaseForm
 
 const DashboardContainer = styled.div`
+	@media screen and (max-width: 800px) {
+		flex-direction: column;
+		width: 90%;
+	}
 	color: white;
 	display: flex;
 	flex-direction: row;
@@ -82,6 +86,11 @@ const DashboardContainer = styled.div`
 `
 
 const Main = styled.div`
+	@media screen and (max-width: 800px) {
+		border-left: 0;
+		justify-content: center;
+		padding: 0;
+	}
 	width: 100%;
 	border-left: 1px solid white;
 	padding: 0 10px;
@@ -89,6 +98,10 @@ const Main = styled.div`
 	justify-content: flex-start;
 `
 const SummaryItems = styled.div`
+	@media screen and (max-width: 800px) {
+		min-width: 95px;
+		width: 100%;
+	}
 	min-width: 95px;
 	width: 20%;
 	display: flex;
@@ -97,6 +110,10 @@ const SummaryItems = styled.div`
 `
 
 const MovieInfo = styled.span`
+	@media screen and (max-width: 800px) {
+		font-size: 30px;
+		line-height: 35px;
+	}
 	font-size: 12px;
 	line-height: 20px;
 	text-transform: capitalize;

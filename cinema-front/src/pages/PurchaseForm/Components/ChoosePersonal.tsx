@@ -37,9 +37,18 @@ export default ChoosePersonal
 const Wrapper = styled.div`
 	display: flex;
 	flex-direction: column;
+	@media screen and (max-width: 800px) {
+		width: 100%;
+	}
 `
 
 const Container = styled.div`
+	@media screen and (max-width: 800px) {
+		flex-direction: column;
+		padding: 0;
+		margin: 0;
+		width: 100%;
+	}
 	display: flex;
 	flex-direction: row;
 `

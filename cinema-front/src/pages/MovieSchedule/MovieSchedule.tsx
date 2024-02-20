@@ -10,35 +10,47 @@ import EmptyState from '../../utils/empty/EmptyState'
 import PageFooter from '../PageFooter'
 import Calendar from '../../components/Calendar'
 import SectionHeader from '../../components/SectionHeader'
+import Pagination from '@mui/material/Pagination'
 
 const MovieSchedule = () => {
 	const { api } = useAuthHook()
 
 	const [reservationDate, setReservationDate] = useState<Date>(new Date())
 	const [movieList, setMovieList] = useState<MovieModel[] | null>(null)
+	const [page, setPage] = useState(1)
+	const [totalPages, setTotalPages] = useState(0)
+	const [searchTitle, setSearchTitle] = useState('')
 
 	const handleFilterMovies = (e: ChangeEvent<HTMLInputElement>) => {
-		fetchMovies(e.target.value)
+		fetchMovies(e.target.value, page, 5, reservationDate)
+		setSearchTitle(e.target.value)
 	}
 
-	const fetchMovies = async (title?: string) => {
+	const handlePageChange = (event: React.ChangeEvent<unknown>, value: number) => {
+		setPage(value)
+		fetchMovies(searchTitle, value, 5, reservationDate)
+	}
+
+	const fetchMovies = async (title?: string, page: number = 1, limit: number = 5, date?: Date) => {
 		try {
-			const getter = title ? `/api/movie/movies?title=${title}` : `/api/movie/movies`
+			const getter = title
+				? `/api/movie/repertuar?title=${title}&page=${page}&limit=${limit}&date=${date}`
+				: `/api/movie/repertuar?page=${page}&limit=${limit}&date=${date}`
 			const response = await axios.get(api + getter)
 
-			setMovieList(response.data)
+			setMovieList(response.data.movies)
+			setTotalPages(response.data.totalPages)
 		} catch (error) {
 			setMovieList(null)
 		}
 	}
 
 	useEffect(() => {
-		fetchMovies()
-	}, [])
+		fetchMovies(searchTitle, page, 5, reservationDate)
+	}, [reservationDate])
 
 	return (
 		<Wrapper>
-			<Slideshow />
 			<Container>
 				<SectionHeader>Repertuar Cinema Fordon</SectionHeader>
 
@@ -47,7 +59,7 @@ const MovieSchedule = () => {
 					<InputLabel placeholder={'Filtr'} onChange={handleFilterMovies} />
 				</MovieControl>
 				<MoviesList>
-					{movieList?.length == 0 ? <EmptySlot>Brak filmu o takiej nazwie</EmptySlot> : null}
+					{movieList?.length == 0 ? <EmptySlot>Brak filmów</EmptySlot> : null}
 					{movieList ? (
 						movieList.map(movie => {
 							return <MovieItem key={movie._id} movie={movie} reservationDate={reservationDate} />
@@ -56,6 +68,15 @@ const MovieSchedule = () => {
 						<EmptyState />
 					)}
 				</MoviesList>
+				<PaginationContainer
+					style={{
+						color: 'white',
+						backgroundColor: 'white',
+						borderRadius: '25px',
+						padding: '10px 0',
+					}}>
+					<Pagination color={'primary'} count={totalPages} page={page} onChange={handlePageChange} />
+				</PaginationContainer>
 			</Container>
 			<PageFooter />
 		</Wrapper>
@@ -69,13 +90,25 @@ const Wrapper = styled.div`
 	width: 100%;
 	min-height: 100vh;
 `
+
 const Container = styled.div`
 	@media screen and (max-width: 640px) {
 		width: 80%;
 	}
 	width: 50%;
 	margin: 0 auto;
+	padding: 40px 0;
 `
+
+const PaginationContainer = styled.div`
+	display: flex;
+	justify-content: center;
+	width: 60%;
+	min-width: 260px;
+	margin: 0 auto;
+	padding: 20px 0;
+`
+
 const MovieControl = styled.div`
 	@media screen and (max-width: 640px) {
 		flex-direction: column-reverse;
@@ -92,12 +125,14 @@ const MovieControl = styled.div`
 		width: 50%;
 	}
 `
+
 const MoviesList = styled.div`
 	min-height: 250px;
 	width: 100%;
 	display: flex;
 	flex-direction: column;
 `
+
 const EmptySlot = styled.p`
 	font-weight: 100;
 	text-align: center;

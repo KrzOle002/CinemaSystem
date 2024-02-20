@@ -6,11 +6,13 @@ import { useReservationContext } from '../../../context/ReservationContext'
 import SubmitButton from '../../../components/SubmitButton'
 import useAuthHook from '../../../utils/auth/useAuth'
 import { useNavigate } from 'react-router-dom'
+import { useUserAuthContext } from '../../../context/UserAuthContext'
 
 const Tickets = () => {
 	const { reservation, setReservation, setStep } = useReservationContext()
 
-	const { isAuthenticated, userData } = useAuthHook()
+	const { isAuthenticated } = useAuthHook()
+	const { userData } = useUserAuthContext()
 	const [selected, setSelected] = useState<string[]>([])
 	const navigate = useNavigate()
 	const addReservation = () => {
@@ -65,6 +67,9 @@ const Wrapper = styled.div`
 	width: 100%;
 	display: flex;
 	flex-direction: column;
+	@media screen and (max-width: 800px) {
+		padding: 0 0 40px 0;
+	}
 `
 const TicketHeader = styled.span`
 	@media screen and (max-width: 640px) {

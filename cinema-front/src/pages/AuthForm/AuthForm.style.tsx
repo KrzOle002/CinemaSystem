@@ -1,6 +1,9 @@
 import styled from 'styled-components'
 
 export const Wrapper = styled.div`
+	@media screen and (max-width: 640px) {
+		height: unset;
+	}
 	position: relative;
 	background: ${({ theme }) => theme.gradient.main};
 	width: 100%;
@@ -13,7 +16,7 @@ export const AuthContainer = styled.div`
 	@media screen and (max-width: 640px) {
 		width: 100%;
 		border-radius: 10px;
-		height: 100vh;
+
 		border-radius: 0px;
 		display: flex;
 		align-items: center;

@@ -139,6 +139,9 @@ const CostTable = styled.div`
 	row-gap: 30px;
 `
 const Container = styled.div`
+	@media screen and (max-width: 800px) {
+		flex-direction: column;
+	}
 	display: flex;
 	flex-direction: row;
 	column-gap: 20px;

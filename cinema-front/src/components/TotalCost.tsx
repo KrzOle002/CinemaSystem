@@ -49,6 +49,9 @@ const Wrapper = styled.div`
 	line-height: 15px;
 `
 const Container = styled.div`
+	@media screen and (max-width: 800px) {
+		flex-direction: column;
+	}
 	width: 100%;
 	display: flex;
 	justify-content: space-between;

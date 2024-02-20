@@ -83,6 +83,9 @@ const ReservationsItem = ({ reservation }: ReservationItemType) => {
 export default ReservationsItem
 
 const TicketContainer = styled.div`
+	@media screen and (max-width: 800px) {
+		margin: 20px 0px;
+	}
 	border: 1px solid #606060;
 	padding: 20px;
 	margin: 60px;

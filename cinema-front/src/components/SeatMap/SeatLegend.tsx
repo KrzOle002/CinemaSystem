@@ -4,7 +4,7 @@ const SeatLegend = () => {
 	return (
 		<SeatWrapper>
 			<SeatLegendInstance>
-				<SeatLegendColor style={{ backgroundColor: '#109110' }} />
+				<SeatLegendColor style={{ backgroundColor: '#D0153F' }} />
 				<SeatLegendTitle>Wolne</SeatLegendTitle>
 			</SeatLegendInstance>
 			<SeatLegendInstance>
@@ -12,7 +12,7 @@ const SeatLegend = () => {
 				<SeatLegendTitle>Zajęte</SeatLegendTitle>
 			</SeatLegendInstance>
 			<SeatLegendInstance>
-				<SeatLegendColor style={{ backgroundColor: 'yellow' }} />
+				<SeatLegendColor style={{ backgroundColor: '#584A86' }} />
 				<SeatLegendTitle>Wybrane przez Ciebie</SeatLegendTitle>
 			</SeatLegendInstance>
 		</SeatWrapper>

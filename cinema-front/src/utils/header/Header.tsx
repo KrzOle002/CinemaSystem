@@ -1,6 +1,6 @@
 import MenuIcon from '@mui/icons-material/Menu'
 import { AppBar, Box, IconButton, Toolbar, Typography } from '@mui/material'
-import { useEffect, useState } from 'react'
+
 import { useNavigate } from 'react-router-dom'
 import styled from 'styled-components'
 import logo from '../../assets/logo-icon.png'
@@ -14,24 +14,16 @@ const Header = () => {
 	const { toggleMenuBar } = useMenuBarContext()
 	const navigate = useNavigate()
 
-	const [scrolledPixels, setScrolledPixels] = useState(0)
-
-	const handleScroll = () => {
-		setScrolledPixels(window.scrollY)
-	}
-
-	useEffect(() => {
-		window.addEventListener('scroll', handleScroll)
-
-		return () => {
-			window.removeEventListener('scroll', handleScroll)
-		}
-	}, [])
 	const { isAuthenticated } = useAuthHook()
 
 	return (
-		<Box sx={{ position: scrolledPixels > 100 ? 'fixed' : 'relative', zIndex: 101, width: '100%' }}>
-			<AppBar sx={{ zIndex: theme => theme.zIndex.drawer + 1, backgroundColor: '#D0153F ', position: 'relative' }}>
+		<Box sx={{ position: 'fixed', zIndex: 101, width: '100%' }}>
+			<AppBar
+				sx={{
+					zIndex: theme => theme.zIndex.drawer + 1,
+					backgroundColor: '#D0153F ',
+					position: 'relative',
+				}}>
 				<Toolbar>
 					<IconButton size='large' edge='start' color='inherit' aria-label='menu' sx={{ mr: 2 }} onClick={() => toggleMenuBar()}>
 						<MenuIcon />

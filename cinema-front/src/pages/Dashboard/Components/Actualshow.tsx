@@ -1,22 +1,27 @@
 import styled from 'styled-components'
 import MovieInstance from './MovieInstance'
 import SectionHeader from '../../../components/SectionHeader'
-import { Grid } from '@mui/material'
+import Pagination from '@mui/material/Pagination'
 import { MovieModel } from '../../../types/MovieModelType'
 import { useEffect, useState } from 'react'
 import axios from 'axios'
 import useAuthHook from '../../../utils/auth/useAuth'
+import EmptyState from '../../../utils/empty/EmptyState'
+import { CircularProgress } from '@mui/material'
 
 const Actualshow = () => {
-	const [movieList, setMovieList] = useState<MovieModel[] | null>()
+	const [movieList, setMovieList] = useState<MovieModel[] | null>(null)
+	const [page, setPage] = useState(1) // Stan dla bieżącej strony
+	const [totalPages, setTotalPages] = useState(0) // Stan dla całkowitej liczby stron
 
 	const { api } = useAuthHook()
 
-	const fetchMovies = async () => {
+	const fetchMovies = async (page: number = 1, limit: number = 8) => {
 		try {
-			const response = await axios.get(api + '/api/movie/movies')
+			const response = await axios.get(`${api}/api/movie/movies?page=${page}&limit=${limit}`)
 
-			setMovieList(response.data)
+			setMovieList(response.data.movies)
+			setTotalPages(response.data.totalPages)
 		} catch (error) {
 			setMovieList(null)
 		}
@@ -26,15 +31,38 @@ const Actualshow = () => {
 		fetchMovies()
 	}, [])
 
+	const handlePageChange = (event: React.ChangeEvent<unknown>, value: number) => {
+		setPage(value)
+		fetchMovies(value)
+	}
+
 	return (
-		<Wrapper>
-			<SectionHeader>Teraz gramy</SectionHeader>
-			<Container>
-				{movieList?.map(movie => (
-					<MovieInstance key={movie._id} movie={movie} />
-				))}
-			</Container>
-		</Wrapper>
+		<>
+			<Wrapper>
+				<SectionHeader>Teraz gramy</SectionHeader>
+				{movieList == null ? (
+					<EmptySlot>
+						Błąd ładowania filmów
+						<CircularProgress />
+					</EmptySlot>
+				) : (
+					<Container>
+						{movieList.map(movie => (
+							<MovieInstance key={movie._id} movie={movie} />
+						))}
+					</Container>
+				)}
+			</Wrapper>
+			<PaginationContainer
+				style={{
+					color: 'white',
+					backgroundColor: 'white',
+					borderRadius: '25px',
+					padding: '10px 0',
+				}}>
+				<Pagination color={'primary'} count={totalPages} page={page} onChange={handlePageChange} />
+			</PaginationContainer>
+		</>
 	)
 }
 
@@ -43,9 +71,18 @@ export default Actualshow
 const Wrapper = styled.div`
 	color: ${({ theme }) => theme.colors.white};
 	width: 50%;
-
 	margin: 0 auto;
 	padding: 40px 0;
+`
+const EmptySlot = styled.p`
+	font-weight: 100;
+	text-align: center;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	gap: 40px;
+	opacity: 50%;
 `
 const Container = styled.div`
 	width: 100%;
@@ -53,4 +90,13 @@ const Container = styled.div`
 	flex-direction: row;
 	flex-wrap: wrap;
 	gap: 20px;
+`
+
+const PaginationContainer = styled.div`
+	display: flex;
+	justify-content: center;
+	padding: 20px 0;
+	width: 20%;
+	min-width: 260px;
+	margin: 0 auto;
 `

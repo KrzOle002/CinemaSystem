@@ -1,4 +1,4 @@
-import { eachDayOfInterval, format } from 'date-fns'
+import { eachDayOfInterval, format, getISOWeek, isBefore, startOfWeek } from 'date-fns'
 import { useState } from 'react'
 import styled from 'styled-components'
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos'
@@ -11,7 +11,7 @@ interface CalendarType {
 }
 
 const Calendar = ({ reservationDate, setReservationDate }: CalendarType) => {
-	const [startDate, setStartDate] = useState(new Date())
+	const [todayDate, setTodayDate] = useState(new Date())
 
 	const PolishMonths = [
 		'Styczeń',
@@ -32,7 +32,7 @@ const Calendar = ({ reservationDate, setReservationDate }: CalendarType) => {
 
 	const setDateNow = () => {
 		setReservationDate(new Date())
-		setStartDate(new Date())
+		setTodayDate(new Date())
 	}
 
 	const handleDayClick = (clickedDate: Date) => {
@@ -40,23 +40,21 @@ const Calendar = ({ reservationDate, setReservationDate }: CalendarType) => {
 	}
 
 	const handleNextWeekClick = (next: string) => {
-		const newStartDate = new Date(startDate)
+		const newStartDate = new Date(todayDate)
 		newStartDate.setDate(next == 'next' ? newStartDate.getDate() + 7 : newStartDate.getDate() - 7)
-		setStartDate(newStartDate)
+		setTodayDate(newStartDate)
 	}
 
 	const renderDays = () => {
+		const startDate = startOfWeek(todayDate, { weekStartsOn: 1 })
 		const endDate = new Date(startDate)
 		endDate.setDate(endDate.getDate() + 6)
 		const week = eachDayOfInterval({ start: startDate, end: endDate })
-
 		return week.map(day => {
 			const isActive = format(day, 'yyyy-MM-dd') === format(reservationDate, 'yyyy-MM-dd')
 			return (
 				<div key={day.toString()} className={`day ${isActive ? 'active' : ''}`} onClick={() => handleDayClick(day)}>
-					<div className='dayOfWeek' style={{ fontSize: '20px' }}>
-						{PolishDays[day.getDay()]}
-					</div>
+					<div className='dayOfWeek'>{format(day, 'dd.MM')}</div>
 				</div>
 			)
 		})
@@ -64,9 +62,6 @@ const Calendar = ({ reservationDate, setReservationDate }: CalendarType) => {
 	return (
 		<StyledWeeklyCalendar>
 			<StyledCalendarContent>
-				<SubmitButton onClick={() => handleNextWeekClick('back')} type={'button'} className='primary'>
-					<ArrowBackIosIcon />
-				</SubmitButton>
 				<StyledCalendarDays>{renderDays()}</StyledCalendarDays>
 				<SubmitButton onClick={() => handleNextWeekClick('next')} type={'button'} className='primary'>
 					<ArrowForwardIosIcon />
@@ -140,12 +135,12 @@ const StyledCalendarDays = styled.div`
 		}
 
 		.dayOfWeek {
-			@media screen and (max-width: 800px) {
-				font-size: 8px;
+			@media screen and (max-width: 1080px) {
+				font-size: 10px;
 				color: #ffffff;
 			}
 
-			font-size: 14px;
+			font-size: 20px;
 			color: #ffffff;
 		}
 	}

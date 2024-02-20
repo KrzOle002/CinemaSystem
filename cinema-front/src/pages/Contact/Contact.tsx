@@ -1,4 +1,3 @@
-import React from 'react'
 import MapView from './MapView'
 import styled from 'styled-components'
 import SubmitButton from '../../components/SubmitButton'
@@ -21,11 +20,10 @@ const Contact = () => {
 					<p>E-mail: info@cinemafordon.com </p>
 					<h1>Godziny Otwarcia</h1>
 					<span>
-						Jesteśmy dostępni dla Ciebie w następujących godzinach: <p>Poniedziałek - Piątek: 10:00 - 22:00</p>{' '}
-						<p>Sobota - Niedziela: 12:00 - 24:00</p> Skontaktuj się z Nami Online Jeśli wolisz, możesz również skorzystać z naszych mediów
-						społecznościowych, aby być na bieżąco z naszymi najnowszymi premierami, wydarzeniami specjalnymi i konkursami.{' '}
-						<p>Facebook - Bądź na bieżąco z naszymi aktualnościami.</p> <p>Instagram - Podglądaj kulisy naszych wydarzeń.</p>{' '}
-						<p>Twitter - Śledź nasze tweete i bierz udział w dyskusjach. </p>
+						Jesteśmy dostępni dla Ciebie w następujących godzinach: <p>Poniedziałek - Piątek: 9:00 - 22:00</p> <p>Sobota - Niedziela: 9:00 - 23:00</p>{' '}
+						Skontaktuj się z Nami Online Jeśli wolisz, możesz również skorzystać z naszych mediów społecznościowych, aby być na bieżąco z naszymi
+						najnowszymi premierami, wydarzeniami specjalnymi i konkursami. <p>Facebook - Bądź na bieżąco z naszymi aktualnościami.</p>{' '}
+						<p>Instagram - Podglądaj kulisy naszych wydarzeń.</p> <p>Twitter - Śledź nasze tweete i bierz udział w dyskusjach. </p>
 					</span>
 				</div>
 				<h1>Skontaktuj się z nami</h1>
@@ -38,7 +36,13 @@ const Contact = () => {
 					action='mailto:
 					cinemafordon12@outlook.com'
 					method='post'
-					style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', rowGap: '20px', padding: '20px 0' }}>
+					style={{
+						display: 'flex',
+						flexDirection: 'column',
+						alignItems: 'center',
+						rowGap: '20px',
+						padding: '20px 0',
+					}}>
 					<InputLabel type='text' title={'Imię i Nazwisko:'} />
 					<InputLabel type='text' title={'Adres E-mail:'} />
 					<InputLabel type='text' title={'Wiadomość:'} />

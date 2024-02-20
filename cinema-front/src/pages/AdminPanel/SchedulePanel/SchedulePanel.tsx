@@ -1,11 +1,13 @@
-import SubmitButton from '../../../components/SubmitButton'
 import styled from 'styled-components'
 import CinemaSchedule from './CinemaSchedule'
 import ScheduleCalendar from './ScheduleCalendar'
 import { useState } from 'react'
+import useAuthHook from '../../../utils/auth/useAuth'
+import { toast } from 'react-toastify'
+import { useNavigate } from 'react-router-dom'
 
-interface ScreeningData {
-	hour: [number]
+export interface ScreeningData {
+	hour: string
 	roomId: string
 	movieId: string
 }
@@ -13,69 +15,44 @@ interface ScreeningData {
 export interface PostScreeningType {
 	dateFrom: Date
 	dateTo: Date
-	screeningData: [ScreeningData]
+	screeningData: ScreeningData[]
 }
 
 const SchedulePanel = () => {
 	const [postScreening, setPostScreening] = useState<PostScreeningType | null>(null)
-	// contorlny
-	// <InputLabel
-	// 					title={'Data transmisji'}
-	// 					type={'date'}
-	// 					inputRef={{
-	// 						...register('dateFrom', {
-	// 							required: true,
-	// 						}),
-	// 					}}
-	// 					required
-	// 					className={errors.dateFrom && 'error'}
-	// 				/>
-	// 				<InputLabel
-	// 					title={'Data zakończenia'}
-	// 					type={'date'}
-	// 					inputRef={{
-	// 						...register('dateTo', {
-	// 							required: true,
-	// 						}),
-	// 					}}
-	// 					required
-	// 					className={errors.dateTo && 'error'}
-	// 				/>
-	// 				<div>
-	// 					Wybór godziny
-	// 					{schedules?.map((option, index) => {
-	// 						return (
-	// 							<div key={index} style={{ display: 'flex', flexDirection: 'row', gap: '10px', alignItems: 'center', padding: '10px 0' }}>
-	// 								Sala nr {index + 1}:
-	// 								{option.schedule.map((schedule, index) => {
-	// 									return (
-	// 										<SubmitButton
-	// 											key={index}
-	// 											className={selectedSchedule?.hour == schedule.hour && selectedSchedule.roomId == option.roomId ? 'warn' : 'primary'}
-	// 											disabled={schedule.occupied}
-	// 											type={'button'}
-	// 											onClick={() => {
-	// 												setSelectedSchedule({
-	// 													roomId: option.roomId,
-	// 													hour: schedule.hour,
-	// 												})
-	// 											}}>
-	// 											{schedule.hour}
-	// 										</SubmitButton>
-	// 									)
-	// 								})}
-	// 							</div>
-	// 						)
-	// 					})}
-	// 				</div>
+	const navigate = useNavigate()
+	const { api, axiosAuth } = useAuthHook()
+
+	const handleFinalizeCinemaSchedule = async (roomScreenings: Record<string, ScreeningData[]>) => {
+		const allScreenings = Object.values(roomScreenings).flat()
+
+		const isNotEmpty = allScreenings.some(screening => screening.movieId != null && screening.movieId !== '')
+
+		if (postScreening?.dateFrom && postScreening.dateTo && isNotEmpty) {
+			const newScreeningSchedule = { ...postScreening, screeningData: allScreenings }
+			setPostScreening({
+				...postScreening,
+				screeningData: allScreenings,
+			})
+
+			try {
+				const response = await axiosAuth.post(`${api}/api/screening/screenings`, newScreeningSchedule).then(res => {
+					toast.success('Ustawiono harmonogram')
+				})
+				return response
+			} catch (error) {
+				console.error('Błąd przy wysyłaniu harmonogramu:', error)
+				throw error
+			}
+		} else {
+			toast.error('Harmonogram nie może być pusty')
+		}
+	}
+
 	return (
 		<Wrapper>
-			<ScheduleCalendar date={new Date()} setPostScreening={setPostScreening} />
-
-			<CinemaSchedule />
-			<SubmitButton fullWidth type={'button'} className='primary'>
-				Zatwierdź repertuar
-			</SubmitButton>
+			<ScheduleCalendar setPostScreening={setPostScreening} />
+			<CinemaSchedule onFinalize={handleFinalizeCinemaSchedule} />
 		</Wrapper>
 	)
 }

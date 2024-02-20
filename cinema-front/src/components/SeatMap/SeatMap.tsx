@@ -70,6 +70,10 @@ const Wrapper = styled.div`
 	margin: 0 auto;
 `
 const Container = styled.div`
+	@media screen and (max-width: 800px) {
+		width: 90%;
+		align-items: center;
+	}
 	width: 390px;
 	margin: 0 auto;
 	display: flex;
@@ -77,6 +81,9 @@ const Container = styled.div`
 	justify-content: center;
 `
 const SeatColumn = styled.div`
+	@media screen and (max-width: 800px) {
+		gap: 10px;
+	}
 	gap: 10px;
 	display: flex;
 	flex-direction: column;
@@ -85,6 +92,9 @@ const SeatColumn = styled.div`
 const SeatRow = styled.div`
 	display: flex;
 	flex-direction: row;
+	@media screen and (max-width: 800px) {
+		gap: 10px;
+	}
 	gap: 10px;
 `
 const ObjectRow = styled.div`

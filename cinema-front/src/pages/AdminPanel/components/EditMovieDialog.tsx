@@ -28,7 +28,6 @@ const EditMovieDialog = ({ isOpen, close, movieId }: MovieDialogType) => {
 	} = useForm<MovieModelSend>()
 
 	const onSubmit = async (data: MovieModelSend) => {
-		console.log('dziala')
 		const formData = new FormData()
 		formData.append('title', data.title)
 		formData.append('description', data.description)

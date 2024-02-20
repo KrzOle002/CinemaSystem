@@ -3,13 +3,15 @@ import SubmitButton from '../../../components/SubmitButton'
 import { MovieModel } from '../../../types/MovieModelType'
 import useAuthHook from '../../../utils/auth/useAuth'
 
-import { Dispatch, SetStateAction, useEffect } from 'react'
+import { useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { toast } from 'react-toastify'
+
 import { useDialogHandler } from '../../../utils/dialog/useDialogHandler'
 import AdditionMovieDialog from '../../AdminPanel/components/AdditionMovieDialog'
 import { MovieBasicInfo, MovieButtons, MovieImage, MovieInfo, MovieItemContainer, MovieTitle, Wrapper } from './MovieItem.style'
 import MovieRating from './MovieRating'
+import EmptyState from '../../../utils/empty/EmptyState'
+import { isBefore, isSameDay } from 'date-fns'
 
 interface MovieItemType {
 	movie: MovieModel
@@ -55,11 +57,28 @@ const MovieItem = ({ movie, reservationDate }: MovieItemType) => {
 									screeningDateObject.getDate() === reservationDateObject.getDate()
 								)
 							})
+							.sort((screening, nextScreening) => {
+								const screeningHour = new Date(screening.date).getHours()
+								const nextScreeningHour = new Date(nextScreening.date).getHours()
+								return screeningHour - nextScreeningHour
+							})
 							.map(screening => {
 								const dateObject = new Date(screening.date)
+								const now = new Date()
+								const yesterday = new Date(now)
+								yesterday.setDate(now.getDate() - 1)
 
+								const isYesterday = isSameDay(dateObject, yesterday)
+								const isTodayWithin2Hours = isSameDay(dateObject, now) && now.getHours() - dateObject.getUTCHours() >= 1
+
+								const isDisabled = isYesterday || isTodayWithin2Hours
 								return (
-									<SubmitButton key={screening._id} type={'button'} className='primary' onClick={() => handleReservationClick(screening._id)}>
+									<SubmitButton
+										key={screening._id}
+										disabled={isDisabled}
+										type={'button'}
+										className='primary'
+										onClick={() => handleReservationClick(screening._id)}>
 										{dateObject.getUTCHours() > 9 ? dateObject.getUTCHours() : '0' + dateObject.getUTCHours()}:
 										{dateObject.getUTCMinutes().toString().padStart(2, '0')}
 									</SubmitButton>

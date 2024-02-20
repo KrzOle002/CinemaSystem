@@ -11,12 +11,16 @@ const Nav = () => {
 		<Wrapper>
 			{location.pathname != '/login' && location.pathname != '/register' ? (
 				resolution > 600 ? (
-					<Header />
+					<Wrapper style={{ height: '64px' }}>
+						<Header />
+					</Wrapper>
 				) : (
-					<Top>
-						<img src={logo} />
-						<span>Cinema Fordon</span>
-					</Top>
+					<Wrapper style={{ height: '40px' }}>
+						<Top>
+							<img src={logo} />
+							<span>Cinema Fordon</span>
+						</Top>
+					</Wrapper>
 				)
 			) : null}
 		</Wrapper>
