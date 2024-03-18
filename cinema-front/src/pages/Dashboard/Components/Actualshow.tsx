@@ -83,6 +83,7 @@ const EmptySlot = styled.p`
 	align-items: center;
 	gap: 40px;
 	opacity: 50%;
+	padding: 100px 0;
 `
 const Container = styled.div`
 	width: 100%;
